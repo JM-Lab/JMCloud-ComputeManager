@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/resources/META-INF/aws/ec2/aws-ec2-env.properties=UTF-8
+encoding//src/main/resources/sys/bin/region-city.properties=UTF-8
+encoding//src/main/resources/sys/bin/region-contry.properties=UTF-8
+encoding//src/main/resources/sys/sys-env.properties=UTF-8
