@@ -2,33 +2,35 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<!-- 콘솔 로그 (콘솔창에 표시할 Level 설정) -->
-	<root>
-		<level value="info" />
-		<appender-ref ref="console" />
-		<appender-ref ref="rolling" />
-	</root>
-
 	<!-- Appenders -->
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%t> [%d{yyyy-MM-dd HH:mm:ss}] [%c{1}] [%L] [%p] %m %n" />
+			<param name="ConversionPattern"
+				value="%t> [%d{yyyy-MM-dd HH:mm:ss}] [%c{1}] [%L] [%p] %m %n" />
 		</layout>
 	</appender>
 
 	<!-- 특정 크기마다 백업하며 로그 -->
 	<appender class="org.apache.log4j.RollingFileAppender" name="rolling">
 		<!-- 로그파일 설정 -->
-		<param name="file" value="JMCloud/ComputManager/log/size/JMCloud-ComputeManager.log" />
+		<param name="file" value="${log.home}/log/size/JMCloud-ComputeManager.log" />
 		<param name="Append" value="true" />
 		<param name="MaxFileSize" value="10MB" />
 		<param name="MaxBackupIndex" value="1000" />
 
 		<!-- 패턴 레이아웃 설정 -->
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"	value="%t> [%d{yyyy-MM-dd HH:mm:ss}] [%c{1}] [%L] [%p] %m %n" />
+			<param name="ConversionPattern"
+				value="%t> [%d{yyyy-MM-dd HH:mm:ss}] [%c{1}] [%L] [%p] %m %n" />
 		</layout>
 	</appender>
+
+	<!-- 콘솔 로그 (콘솔창에 표시할 Level 설정) -->
+	<root>
+		<level value="info" />
+		<appender-ref ref="console" />
+		<appender-ref ref="rolling" />
+	</root>
 
 </log4j:configuration>

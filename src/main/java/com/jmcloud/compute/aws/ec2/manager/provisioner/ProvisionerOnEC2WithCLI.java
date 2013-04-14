@@ -43,62 +43,74 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 		return true;
 	}
 
+	@Override
 	public String runEC2CLI(String command) {
 		return returnBooleanAfterRun(command) ? runEC2CLI.getResultOut()
 				: SystemString.FALSE;
 	}
 
+	@Override
 	public String describeRegions() {
 		return runEC2CLI("ec2-describe-regions");
 	}
 
+	@Override
 	public String describeAvailabilityZones(String region) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-availability-zones",
 				"--region", region));
 	}
 
+	@Override
 	public String createKeypair(String region, String keypair) {
 		return runEC2CLI(buildFinalCommand("ec2-create-keypair", keypair,
 				"--region", region));
 	}
 
+	@Override
 	public boolean deleteKeypair(String region, String keypair) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-delete-keypair",
 				keypair, "--region", region));
 	}
 
+	@Override
 	public String getAllKeypairs(String region) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-keypairs", "--region",
 				region));
 	}
 
+	@Override
 	public String searchKeypair(String region, String keypairWithWildcard) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-keypairs",
 				"-F \"key-name=" + keypairWithWildcard + "\"", "--region",
 				region));
 	}
 
+	@Override
 	public String createSecurityGroup(String region, String securityGroup) {
 		return runEC2CLI(buildFinalCommand("ec2-create-group", securityGroup,
 				"-d", securityGroup, "--region", region));
 	}
 
+	@Override
 	public boolean deleteSecurityGroup(String region, String securityGroup) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-delete-group",
 				securityGroup, "--region", region));
 	}
 
+	@Override
 	public String getAllSecurityGroups(String region) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-group", "--region",
 				region));
 	}
 
+	@Override
 	public String searchSecurityGroup(String region, String keypairWithWildcard) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-group",
 				"-F \"group-name=" + keypairWithWildcard + "\"", "--region",
 				region));
 	}
 
+	@Override
 	public boolean registerSecurityRule(String region, String securityGroup,
 			String tcpOrUdp, String portRange, String cidrRange) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-authorize",
@@ -106,6 +118,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				cidrRange, "--region", region));
 	}
 
+	@Override
 	public boolean removeSecurityRule(String region, String securityGroup,
 			String tcpOrUdp, String portRange, String cidrRange) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-revoke",
@@ -113,6 +126,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				cidrRange, "--region", region));
 	}
 
+	@Override
 	public boolean registerSecurityRuleForICMP(String region,
 			String securityGroup, String cidrRange) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-authorize",
@@ -120,6 +134,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				"--region", region));
 	}
 
+	@Override
 	public boolean removeSecurityRuleForICMP(String region,
 			String securityGroup, String cidrRange) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-revoke",
@@ -127,6 +142,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				"--region", region));
 	}
 
+	@Override
 	public String serchImageID(String region, String i386ORx86_64,
 			String nameWithWildcard, String otherOptions, boolean isWindows) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-images",
@@ -136,6 +152,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				isWindows ? "-F \"platform=windows\"" : "", "--region", region));
 	}
 
+	@Override
 	public String createCompute(String region, String imageID,
 			String numOfCompute, String securityGroup, String keypair,
 			String computeType) {
@@ -144,16 +161,19 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				computeType, "--region", region));
 	}
 
+	@Override
 	public String getAllComputesInfo(String region) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-instances",
 				"--region", region));
 	}
 
+	@Override
 	public String getComputeInfo(String region, String computeID) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-instances", computeID,
 				"--region", region));
 	}
 
+	@Override
 	public String getComputesInfoByTag(String region, String tagKey,
 			String tagValue) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-instances",
@@ -161,6 +181,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 						+ "\"", "--region", region));
 	}
 
+	@Override
 	public String createTag(String region, String tagKey, String tagValue,
 			String... resourceIDs) {
 		return runEC2CLI(buildFinalCommand("ec2-create-tags",
@@ -168,6 +189,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 						+ "=" + tagValue + "\"", "--region", region));
 	}
 
+	@Override
 	public boolean deleteTag(String region, String tagKey, String tagValue,
 			String... resourceIDs) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-delete-tags",
@@ -175,6 +197,7 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 						+ "=" + tagValue + "\"", "--region", region));
 	}
 
+	@Override
 	public String findComputesWithTagKeyValue(String region, String tagKey,
 			String tagValue) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-tags", "-F \"key="
@@ -182,38 +205,45 @@ public class ProvisionerOnEC2WithCLI implements ProvisionerOnCloud {
 				"-F \"resource-type=instance\"", "--region", region));
 	}
 
+	@Override
 	public String findComputesWithTagKey(String region, String tagKey) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-tags", "-F \"key="
 				+ tagKey + "\"", "-F \"resource-type=instance\"", "--region",
 				region));
 	}
 
+	@Override
 	public String findComputesWithTagValue(String region, String tagValue) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-tags", "-F \"value="
 				+ tagValue + "\"", "-F \"resource-type=instance\"", "--region",
 				region));
 	}
 
+	@Override
 	public String findComputesWithAllTags(String region) {
 		return runEC2CLI(buildFinalCommand("ec2-describe-tags",
 				"-F \"resource-type=instance\"", "--region", region));
 	}
 
+	@Override
 	public boolean stopCompute(String region, String... computeIDs) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-stop-instances",
 				returnSpaceSeperatedString(computeIDs), "--region", region));
 	}
 
+	@Override
 	public boolean startCompute(String region, String... computeIDs) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-start-instances",
 				returnSpaceSeperatedString(computeIDs), "--region", region));
 	}
 
+	@Override
 	public boolean rebootCompute(String region, String... computeIDs) {
 		return returnBooleanAfterRun(buildFinalCommand("ec2-reboot-instances",
 				returnSpaceSeperatedString(computeIDs), "--region", region));
 	}
 
+	@Override
 	public boolean terminateCompute(String region, String... computeIDs) {
 		return returnBooleanAfterRun(buildFinalCommand(
 				"ec2-terminate-instances",

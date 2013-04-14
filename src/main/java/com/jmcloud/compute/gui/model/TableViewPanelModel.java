@@ -52,6 +52,7 @@ public class TableViewPanelModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}

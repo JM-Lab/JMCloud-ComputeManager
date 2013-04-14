@@ -23,7 +23,7 @@ public class SysUtils {
 
 	public static URI getResourceURI(String pathInClassPath) {
 		try {
-			return ClassLoader.getSystemResource(pathInClassPath).toURI();
+			return getResourceURL(pathInClassPath).toURI();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 			return null;
@@ -33,7 +33,8 @@ public class SysUtils {
 	public static Properties getProperties(String pathInClassPath) {
 		Properties properties = new Properties();
 		try {
-			InputStream is = ClassLoader.getSystemResourceAsStream(pathInClassPath);
+			InputStream is = ClassLoader
+					.getSystemResourceAsStream(pathInClassPath);
 			properties.load(is);
 			is.close();
 		} catch (IOException e) {

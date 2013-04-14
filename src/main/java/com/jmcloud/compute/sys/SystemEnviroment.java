@@ -1,7 +1,6 @@
 package com.jmcloud.compute.sys;
 
 import java.io.File;
-import java.nio.file.Path;
 import java.util.Properties;
 
 import com.jmcloud.compute.util.SysUtils;
@@ -11,11 +10,16 @@ public class SystemEnviroment {
 	private static final Properties sysEnvProperty = SysUtils
 			.getProperties("sys/sys-env.properties");
 
-	private static final String userHome = System.getProperty("user.home") == null ? ""
-			: System.getProperty("user.home") + File.separatorChar;
+	private static final String deployDir = new File(
+			SysUtils.getResourceURI("user")).getAbsolutePath()
+			+ "/";
 
 	private static String getString(String key) {
 		return sysEnvProperty.getProperty(key);
+	}
+	
+	private static String getDeployDirPlusString(String key){
+		return deployDir + getString(key);
 	}
 
 	public static String getImagesDir() {
@@ -43,15 +47,18 @@ public class SystemEnviroment {
 	}
 
 	public static String getUserEC2EnvPath() {
-		System.out.println(userHome + getString("USER_EC2_ENV_PATH"));
-		return userHome + getString("USER_EC2_ENV_PATH");
+		return getDeployDirPlusString("USER_EC2_ENV_PATH");
 	}
 
 	public static String getKeypairDir() {
-		return userHome + getString("KEY_PAIR_DIR");
+		return getDeployDirPlusString("KEY_PAIR_DIR");
 	}
 
 	public static String getDataSaveDir() {
-		return userHome + getString("DATA_SAVE_DIR");
+		return getDeployDirPlusString("DATA_SAVE_DIR");
+	}
+
+	public static String getLogHome() {
+		return deployDir;
 	}
 }

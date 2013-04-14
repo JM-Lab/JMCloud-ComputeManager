@@ -191,9 +191,14 @@ public class JMCloudEC2Manager implements JMCloudComputeManager {
 	@Override
 	public void loadComputeGroupFromLocal() {
 		Path groupInfoPath = Paths.get(SystemEnviroment.getDataSaveDir());
+		File gropuInfoDir = groupInfoPath.toFile();
+		if (!gropuInfoDir.exists()) {
+			if (!gropuInfoDir.mkdirs()) {
+				return;
+			}
+		}
 
-		File[] groupInfoFiles = groupInfoPath.toFile().listFiles(
-				groupInfoFileFilter);
+		File[] groupInfoFiles = gropuInfoDir.listFiles(groupInfoFileFilter);
 		if (groupInfoFiles == null || groupInfoFiles.length == 0) {
 			return;
 		}

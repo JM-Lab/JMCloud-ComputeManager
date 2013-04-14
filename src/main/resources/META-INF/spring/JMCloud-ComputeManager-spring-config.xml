@@ -14,7 +14,7 @@
 	<tx:annotation-driven />
 
 	<!-- ########## Properties 사용 ########## -->
-	<util:properties id="defaultAWSEC2EnvProperties" location="classpath:META-INF/aws/ec2/aws-ec2-env.properties" />
+	<util:properties id="defaultAWSEC2EnvProperties" location="classpath:sys/aws/ec2/aws-ec2-env.properties" />
 	
 	<!-- ######################## -->
 	

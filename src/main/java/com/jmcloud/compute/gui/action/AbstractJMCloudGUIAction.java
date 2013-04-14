@@ -67,8 +67,8 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 	}
 
 	protected String showInputDialog(String message) {
-		return (String) JOptionPane.showInputDialog(mainFrame, message,
-				actionCommand, JOptionPane.QUESTION_MESSAGE);
+		return JOptionPane.showInputDialog(mainFrame, message, actionCommand,
+				JOptionPane.QUESTION_MESSAGE);
 	}
 
 	protected int showComfirmDialog(String message) {
@@ -136,6 +136,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 		progressSpinnerRunnable = null;
 	}
 
+	@Override
 	public void doAction(final ActionEvent e) {
 		Thread doActionThread = new Thread(new Runnable() {
 			@Override

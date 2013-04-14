@@ -4,7 +4,7 @@
 
 	<groupId>JMCloud</groupId>
 	<artifactId>JMCloud-ComputeManager</artifactId>
-	<version>0.1.0</version>
+	<version>0.1.1</version>
 	<packaging>jar</packaging>
 
 	<name>JMCloud-ComputeManager</name>
@@ -18,7 +18,7 @@
 		<spring.integration.version>2.1.2.RELEASE</spring.integration.version>
 		<log4j.version>1.2.16</log4j.version>
 		<junit.version>4.10</junit.version>
-		<deployment.dir>./Deployment</deployment.dir>		
+		<deployment.dir>./Deployment</deployment.dir>
 	</properties>
 
 	<repositories>
@@ -98,9 +98,11 @@
 							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 							<addClasspath>true</addClasspath>
 							<mainClass>com.jmcloud.compute.JMCloudComputeMain</mainClass>
-							<addClasspath>true</addClasspath>
 							<classpathPrefix>./lib/</classpathPrefix>
 						</manifest>
+						<manifestEntries>
+							<Class-Path>./sys/</Class-Path>
+						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
@@ -118,7 +120,24 @@
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-empty-directory</id>
+						<phase>package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<mkdir dir="${deployment.dir}/sys/user" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

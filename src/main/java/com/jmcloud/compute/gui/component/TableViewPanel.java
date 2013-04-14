@@ -110,6 +110,7 @@ public class TableViewPanel extends JPanel {
 	}
 
 	private class StatusCellRenderer extends DefaultTableCellRenderer {
+		@Override
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
@@ -137,6 +138,7 @@ public class TableViewPanel extends JPanel {
 			this.col = col;
 		}
 
+		@Override
 		public boolean imageUpdate(Image img, int flags, int x, int y, int w,
 				int h) {
 			if ((flags & (FRAMEBITS | ALLBITS)) != 0) {

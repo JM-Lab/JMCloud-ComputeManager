@@ -87,6 +87,7 @@ public class SecurityRuleInputJPanel extends JPanel {
 		ipRangeTextField.setColumns(10);
 
 		protocalComboBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (protocalComboBox.getSelectedIndex() != 2) {
 					portRangeTextField.setEnabled(true);

@@ -34,6 +34,8 @@ public class JMCloudComputeMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		System.setProperty("log.home", SystemEnviroment.getLogHome());
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
 				SPING_CONF);
 		context.registerShutdownHook();
@@ -81,6 +83,7 @@ public class JMCloudComputeMain {
 				.setSecretKey(userProperties.getProperty(AWS_SECRET_KEY));
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				computeManagerGUI.setVisible(true);
 			}

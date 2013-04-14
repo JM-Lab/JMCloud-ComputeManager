@@ -241,7 +241,8 @@ public class DialogsUtil {
 		JTextField secretKeyTextField = userPropertiesInputJPanel
 				.getSecretKeyTextField();
 		String message = "<html>Give Your AWS EC2 Properties!<br>Save As : "
-				+ SystemEnviroment.getUserEC2EnvPath().replace("\\", "/") + "</html>";
+				+ SystemEnviroment.getUserEC2EnvPath().replace("\\", "/")
+				+ "</html>";
 		messageLabel.setText(message);
 
 		String EC2_CLI_HOME = "EC2_CLI_HOME";
