@@ -10,7 +10,7 @@ public class SystemEnviroment {
 	private static final Properties sysEnvProperty = SysUtils
 			.getProperties("sys/sys-env.properties");
 
-	private static final String deployDir = new File(
+	private static final String userDir = new File(
 			SysUtils.getResourceURI("user")).getAbsolutePath()
 			+ "/";
 
@@ -18,8 +18,8 @@ public class SystemEnviroment {
 		return sysEnvProperty.getProperty(key);
 	}
 	
-	private static String getDeployDirPlusString(String key){
-		return deployDir + getString(key);
+	private static String getUserDirPlusString(String key){
+		return userDir + getString(key);
 	}
 
 	public static String getImagesDir() {
@@ -47,18 +47,18 @@ public class SystemEnviroment {
 	}
 
 	public static String getUserEC2EnvPath() {
-		return getDeployDirPlusString("USER_EC2_ENV_PATH");
+		return getUserDirPlusString("USER_EC2_ENV_PATH");
 	}
 
 	public static String getKeypairDir() {
-		return getDeployDirPlusString("KEY_PAIR_DIR");
+		return getUserDirPlusString("KEY_PAIR_DIR");
 	}
 
 	public static String getDataSaveDir() {
-		return getDeployDirPlusString("DATA_SAVE_DIR");
+		return getUserDirPlusString("DATA_SAVE_DIR");
 	}
 
-	public static String getLogHome() {
-		return deployDir;
+	public static String getUserDir() {
+		return userDir;
 	}
 }

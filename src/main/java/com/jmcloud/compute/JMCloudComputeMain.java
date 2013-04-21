@@ -2,6 +2,7 @@ package com.jmcloud.compute;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -29,22 +30,30 @@ public class JMCloudComputeMain {
 	private static final String AWS_SECRET_KEY = "AWS_SECRET_KEY";
 
 	public static void main(String[] args) {
+		
+		// set required system properties
+		System.setProperty("user.dir", SystemEnviroment.getUserDir());
+		if(!new File(SystemEnviroment.getUserDir()).exists()){
+			new File(SystemEnviroment.getUserDir()).mkdirs();
+		}	
+
+		// set spring context
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
+				SPING_CONF);
+		context.registerShutdownHook();
+		
+		// set initial GUI
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-
-		System.setProperty("log.home", SystemEnviroment.getLogHome());
-		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
-				SPING_CONF);
-		context.registerShutdownHook();
+		}		
 		final ComputeManagerGUI computeManagerGUI = context.getBean(
 				"computeManagerGUI", ComputeManagerGUI.class);
 		computeManagerGUI.setBounds(100, 100, 800, 600);
 		computeManagerGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		computeManagerGUI.initComponent();
-
+		
 		// Center the window
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension frameSize = computeManagerGUI.getSize();
@@ -56,7 +65,8 @@ public class JMCloudComputeMain {
 		}
 		computeManagerGUI.setLocation((screenSize.width - frameSize.width) / 2,
 				(screenSize.height - frameSize.height) / 2);
-
+		
+		// set user properties
 		Path userEC2EnvPath = Paths.get(SystemEnviroment.getUserEC2EnvPath());
 		if (!userEC2EnvPath.toFile().exists()) {
 			Properties defaultAWSEC2EnvProperties = context.getBean(
@@ -82,6 +92,7 @@ public class JMCloudComputeMain {
 		eC2EnviromentVO
 				.setSecretKey(userProperties.getProperty(AWS_SECRET_KEY));
 
+		// GUI run
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
