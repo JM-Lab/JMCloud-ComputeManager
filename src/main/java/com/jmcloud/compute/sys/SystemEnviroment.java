@@ -8,7 +8,7 @@ import com.jmcloud.compute.util.SysUtils;
 public class SystemEnviroment {
 
 	private static final Properties sysEnvProperty = SysUtils
-			.getProperties("sys/sys-env.properties");
+			.getProperties("system/sys-env.properties");
 
 	private static final String userDir = new File(
 			SysUtils.getResourceURI("user")).getAbsolutePath()

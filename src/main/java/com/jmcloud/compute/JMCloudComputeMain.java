@@ -22,38 +22,37 @@ import com.jmcloud.compute.util.SysUtils;
 
 public class JMCloudComputeMain {
 
-	private static final String SPING_CONF = SystemEnviroment
-			.getSpringConfPath();
-
 	private static final String EC2_CLI_HOME = "EC2_CLI_HOME";
 	private static final String AWS_ACCESS_KEY = "AWS_ACCESS_KEY";
 	private static final String AWS_SECRET_KEY = "AWS_SECRET_KEY";
 
 	public static void main(String[] args) {
-		
+
 		// set required system properties
 		System.setProperty("user.dir", SystemEnviroment.getUserDir());
-		if(!new File(SystemEnviroment.getUserDir()).exists()){
+		if (!new File(SystemEnviroment.getUserDir()).exists()) {
 			new File(SystemEnviroment.getUserDir()).mkdirs();
-		}	
+		}
 
-		// set spring context
-		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
-				SPING_CONF);
-		context.registerShutdownHook();
-		
-		// set initial GUI
+		// set GUI LookAndFeel
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
-		}		
+		}
+
+		// set spring context
+		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
+				SystemEnviroment.getSpringConfPath());
+		context.registerShutdownHook();
+		
+		// set GUI initial Configuration
 		final ComputeManagerGUI computeManagerGUI = context.getBean(
 				"computeManagerGUI", ComputeManagerGUI.class);
 		computeManagerGUI.setBounds(100, 100, 800, 600);
 		computeManagerGUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		computeManagerGUI.initComponent();
-		
+
 		// Center the window
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		Dimension frameSize = computeManagerGUI.getSize();
@@ -65,7 +64,7 @@ public class JMCloudComputeMain {
 		}
 		computeManagerGUI.setLocation((screenSize.width - frameSize.width) / 2,
 				(screenSize.height - frameSize.height) / 2);
-		
+
 		// set user properties
 		Path userEC2EnvPath = Paths.get(SystemEnviroment.getUserEC2EnvPath());
 		if (!userEC2EnvPath.toFile().exists()) {
