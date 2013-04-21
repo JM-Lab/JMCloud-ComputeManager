@@ -134,6 +134,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
+					<excludes>
+						<exclude>user/**</exclude>
+					</excludes>
 					<outputDirectory>${deployment.dir}</outputDirectory>
 					<archive>
 						<manifest>
