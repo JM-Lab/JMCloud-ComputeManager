@@ -85,12 +85,6 @@
 						<fileset>
 							<directory>${deployment.dir}</directory>
 						</fileset>
-						<fileset>
-							<directory>sys/user</directory>
-							<excludes>
-								<exclude>**/*.gitignore</exclude>
-							</excludes>
-						</fileset>
 					</filesets>
 				</configuration>
 			</plugin>
@@ -105,10 +99,10 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${deployment.dir}/sys</outputDirectory>
+							<outputDirectory>${deployment.dir}/sys/user</outputDirectory>
 							<resources>
 								<resource>
-									<directory>sys</directory>
+									<directory>src/main/resources/user</directory>
 									<filtering>true</filtering>
 								</resource>
 							</resources>
