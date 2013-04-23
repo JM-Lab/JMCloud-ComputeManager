@@ -83,6 +83,9 @@
 					<excludeDefaultDirectories>true</excludeDefaultDirectories>
 					<filesets>
 						<fileset>
+							<directory>target/classes</directory>
+						</fileset>
+						<fileset>
 							<directory>${deployment.dir}</directory>
 						</fileset>
 					</filesets>
