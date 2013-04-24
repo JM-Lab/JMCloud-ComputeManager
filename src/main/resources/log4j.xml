@@ -14,7 +14,7 @@
 	<!-- 특정 크기마다 백업하며 로그 -->
 	<appender class="org.apache.log4j.RollingFileAppender" name="rolling">
 		<!-- 로그파일 설정 -->
-		<param name="file" value="${user.dir}/log/size/JMCloud-ComputeManager.log" />
+		<param name="file" value="${user.dir}/log/JMCloud-ComputeManager.log" />
 		<param name="Append" value="true" />
 		<param name="MaxFileSize" value="10MB" />
 		<param name="MaxBackupIndex" value="1000" />

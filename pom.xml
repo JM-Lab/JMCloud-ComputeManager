@@ -91,7 +91,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>2.6</version>
 				<executions>
@@ -102,7 +102,7 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${deployment.dir}/sys/user</outputDirectory>
+							<outputDirectory>${deployment.dir}/user</outputDirectory>
 							<resources>
 								<resource>
 									<directory>src/main/resources/user</directory>
@@ -112,7 +112,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -131,9 +131,9 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
 				<configuration>
-					<excludes>
+					<!-- <excludes>
 						<exclude>user/**</exclude>
-					</excludes>
+					</excludes> -->
 					<outputDirectory>${deployment.dir}</outputDirectory>
 					<archive>
 						<manifest>
@@ -143,7 +143,7 @@
 							<classpathPrefix>./lib/</classpathPrefix>
 						</manifest>
 						<manifestEntries>
-							<Class-Path>./sys/</Class-Path>
+							<Class-Path>./</Class-Path>
 						</manifestEntries>
 					</archive>
 				</configuration>

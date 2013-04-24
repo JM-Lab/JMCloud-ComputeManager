@@ -1,5 +1,5 @@
 eclipse.preferences.version=1
-encoding//src/main/resources/system/aws/ec2/aws-ec2-env.properties=UTF-8
-encoding//src/main/resources/system/aws/ec2/region-city.properties=UTF-8
-encoding//src/main/resources/system/aws/ec2/region-contry.properties=UTF-8
-encoding//src/main/resources/system/sys-env.properties=UTF-8
+encoding//src/main/resources/sys/aws/ec2/aws-ec2-env.properties=UTF-8
+encoding//src/main/resources/sys/aws/ec2/region-city.properties=UTF-8
+encoding//src/main/resources/sys/aws/ec2/region-contry.properties=UTF-8
+encoding//src/main/resources/sys/sys-env.properties=UTF-8

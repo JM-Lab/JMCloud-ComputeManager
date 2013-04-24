@@ -8,18 +8,18 @@ import com.jmcloud.compute.util.SysUtils;
 public class SystemEnviroment {
 
 	private static final Properties sysEnvProperty = SysUtils
-			.getProperties("system/sys-env.properties");
+			.getProperties("sys/sys-env.properties");
 
-	private static final String userDir = new File(
-			SysUtils.getResourceURI("user")).getAbsolutePath()
+	private static final String installDir = new File(
+			SysUtils.getResourceURI("./")).getAbsolutePath()
 			+ "/";
 
 	private static String getString(String key) {
 		return sysEnvProperty.getProperty(key);
 	}
 	
-	private static String getUserDirPlusString(String key){
-		return userDir + getString(key);
+	private static String getInstallDirPlusString(String key){
+		return installDir + getString(key);
 	}
 
 	public static String getImagesDir() {
@@ -47,18 +47,18 @@ public class SystemEnviroment {
 	}
 
 	public static String getUserEC2EnvPath() {
-		return getUserDirPlusString("USER_EC2_ENV_PATH");
+		return getInstallDirPlusString("USER_EC2_ENV_PATH");
 	}
 
 	public static String getKeypairDir() {
-		return getUserDirPlusString("KEY_PAIR_DIR");
+		return getInstallDirPlusString("KEY_PAIR_DIR");
 	}
 
 	public static String getDataSaveDir() {
-		return getUserDirPlusString("DATA_SAVE_DIR");
+		return getInstallDirPlusString("DATA_SAVE_DIR");
 	}
 
 	public static String getUserDir() {
-		return userDir;
+		return installDir;
 	}
 }
