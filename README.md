@@ -2,7 +2,7 @@ JMCloud-ComputeManager
 ======================
 
 ## What is JMCloud-ComputeManager?
-JMCloud-ComputeManager is a Rich Client GUI application for Amazon EC2 Instances.
+JMCloud-ComputeManager is a stand-alone GUI application for managing Amazon public cloud.
 
 ### These functionalities are:
 * Managing Amazon EC2 Instances of all regions on one view

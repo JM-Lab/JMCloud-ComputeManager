@@ -58,13 +58,11 @@ public class RunEC2CLI implements RunCLI {
 
 	@Override
 	public String getResultOut() {
-		// TODO Auto-generated method stub
 		return runCLI.getResultOut();
 	}
 
 	@Override
 	public boolean getCheckError() {
-		// TODO Auto-generated method stub
 		return runCLI.getCheckError();
 	}
 
