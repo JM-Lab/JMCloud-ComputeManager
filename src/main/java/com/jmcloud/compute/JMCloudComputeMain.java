@@ -5,9 +5,11 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -22,14 +24,15 @@ import com.jmcloud.compute.util.SysUtils;
 
 public class JMCloudComputeMain {
 
-	private static final String EC2_CLI_HOME = "EC2_CLI_HOME";
+	private static final String EC2_HOME = "EC2_HOME";
 	private static final String AWS_ACCESS_KEY = "AWS_ACCESS_KEY";
 	private static final String AWS_SECRET_KEY = "AWS_SECRET_KEY";
 
 	public static void main(String[] args) {
 
-		// set required system properties
-		System.setProperty("user.dir", SystemEnviroment.getUserDir());
+		// set required system properties for log4j
+		System.setProperty("user.app.dir", SystemEnviroment.getUserDir());
+
 		if (!new File(SystemEnviroment.getUserDir()).exists()) {
 			new File(SystemEnviroment.getUserDir()).mkdirs();
 		}
@@ -45,7 +48,7 @@ public class JMCloudComputeMain {
 		AbstractApplicationContext context = new ClassPathXmlApplicationContext(
 				SystemEnviroment.getSpringConfPath());
 		context.registerShutdownHook();
-		
+
 		// set GUI initial Configuration
 		final ComputeManagerGUI computeManagerGUI = context.getBean(
 				"computeManagerGUI", ComputeManagerGUI.class);
@@ -65,6 +68,14 @@ public class JMCloudComputeMain {
 		computeManagerGUI.setLocation((screenSize.width - frameSize.width) / 2,
 				(screenSize.height - frameSize.height) / 2);
 
+		// EC2_HOME env check
+		String ec2Home = System.getenv(EC2_HOME);
+		
+		if(ec2Home == null || ec2Home.equals("")){
+			JOptionPane.showMessageDialog(computeManagerGUI, "Set EC2_HOME environment variable properly!!!", "JMCloud-ComputeManager", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+
 		// set user properties
 		Path userEC2EnvPath = Paths.get(SystemEnviroment.getUserEC2EnvPath());
 		if (!userEC2EnvPath.toFile().exists()) {
@@ -76,8 +87,11 @@ public class JMCloudComputeMain {
 							"Input Your AWS Information",
 							defaultAWSEC2EnvProperties);
 
+			userProperties.setProperty(EC2_HOME, System.getenv(EC2_HOME));
+
 			SysUtils.saveProperties(userProperties, userEC2EnvPath,
 					"User AWS EC2 Properties");
+
 		}
 
 		EC2EnviromentVO eC2EnviromentVO = context.getBean("eC2EnviromentVO",
@@ -85,7 +99,7 @@ public class JMCloudComputeMain {
 
 		Properties userProperties = SysUtils.getProperties(userEC2EnvPath
 				.toUri());
-		eC2EnviromentVO.setEC2CLIHome(userProperties.getProperty(EC2_CLI_HOME));
+		eC2EnviromentVO.setEC2CLIHome(userProperties.getProperty(EC2_HOME));
 		eC2EnviromentVO
 				.setAccessKey(userProperties.getProperty(AWS_ACCESS_KEY));
 		eC2EnviromentVO

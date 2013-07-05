@@ -127,6 +127,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 		progressSpinnerRunnable = new ProgressSpinnerRunnable();
 		new Thread(progressSpinnerRunnable).start();
 		while (!progressSpinnerRunnable.isShowing()) {
+			SysUtils.sleep(1);
 		}
 	}
 

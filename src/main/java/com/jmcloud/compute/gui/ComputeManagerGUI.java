@@ -524,7 +524,7 @@ public class ComputeManagerGUI extends JFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initializeGUI() {
-		this.setTitle("JMCloud");
+		this.setTitle("JMCloud-ComputeManager");
 		this.setIconImage(SystemImages.getMainImage().getImage());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

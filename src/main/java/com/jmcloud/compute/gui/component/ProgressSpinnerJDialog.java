@@ -25,6 +25,7 @@ public class ProgressSpinnerJDialog extends JDialog {
 		contentPanel.setLayout(new BorderLayout(0, 0));
 		setUndecorated(true);
 		setOpacity(0.5f);
+		setAlwaysOnTop(true);
 		setModal(true);
 
 		JLabel spinnerImageLabel = new JLabel(SystemImages.getSpinnerImage());

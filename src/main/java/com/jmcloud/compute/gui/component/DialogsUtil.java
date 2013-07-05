@@ -234,8 +234,6 @@ public class DialogsUtil {
 			String title, Properties defaultProperties) {
 		UserPropertiesInputJPanel userPropertiesInputJPanel = new UserPropertiesInputJPanel();
 		JLabel messageLabel = userPropertiesInputJPanel.getMessageLabel();
-		JTextField eC2HomeTextField = userPropertiesInputJPanel
-				.getEC2CLIHomeTextField();
 		JTextField accessKeyTextField = userPropertiesInputJPanel
 				.getAccessKeyTextField();
 		JTextField secretKeyTextField = userPropertiesInputJPanel
@@ -245,13 +243,10 @@ public class DialogsUtil {
 				+ "</html>";
 		messageLabel.setText(message);
 
-		String EC2_CLI_HOME = "EC2_CLI_HOME";
 		String AWS_ACCESS_KEY = "AWS_ACCESS_KEY";
 		String AWS_SECRET_KEY = "AWS_SECRET_KEY";
 
 		if (defaultProperties != null) {
-			eC2HomeTextField.setText(defaultProperties
-					.getProperty(EC2_CLI_HOME));
 			accessKeyTextField.setText(defaultProperties
 					.getProperty(AWS_ACCESS_KEY));
 			secretKeyTextField.setText(defaultProperties
@@ -263,10 +258,11 @@ public class DialogsUtil {
 				userPropertiesInputJPanel, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (result == JOptionPane.OK_OPTION) {
-			newProperties.put(EC2_CLI_HOME,
-					eC2HomeTextField.getText().replace("\\", "/"));
 			newProperties.put(AWS_ACCESS_KEY, accessKeyTextField.getText());
 			newProperties.put(AWS_SECRET_KEY, secretKeyTextField.getText());
+		}else{
+			JOptionPane.showMessageDialog(mainFrame, "Set AWS KEYs properly!!!", "JMCloud-ComputeManager", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
 		}
 		return newProperties;
 	}

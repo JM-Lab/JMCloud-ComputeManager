@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/main/java/com/jmcloud/compute/gui/action/AbstractJMCloudGUIAction.java=UTF-8
 encoding//src/main/resources/sys/aws/ec2/aws-ec2-env.properties=UTF-8
 encoding//src/main/resources/sys/aws/ec2/region-city.properties=UTF-8
 encoding//src/main/resources/sys/aws/ec2/region-contry.properties=UTF-8

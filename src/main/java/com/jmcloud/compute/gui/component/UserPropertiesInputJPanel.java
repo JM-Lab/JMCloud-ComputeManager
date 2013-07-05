@@ -11,7 +11,6 @@ import javax.swing.SwingConstants;
 
 public class UserPropertiesInputJPanel extends JPanel {
 	private JLabel messageLabel;
-	private JTextField eC2CLIHomeTextField;
 	private JTextField accessKeyTextField;
 	private JTextField secretKeyTextField;
 
@@ -34,28 +33,12 @@ public class UserPropertiesInputJPanel extends JPanel {
 		gbc_messageLabel.gridy = 0;
 		add(messageLabel, gbc_messageLabel);
 
-		JLabel eC2CLIHomeLabel = new JLabel("EC2 CLI Home");
-		eC2CLIHomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		GridBagConstraints gbc_eC2CLIHomeLabel = new GridBagConstraints();
-		gbc_eC2CLIHomeLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_eC2CLIHomeLabel.gridx = 0;
-		gbc_eC2CLIHomeLabel.gridy = 1;
-		this.add(eC2CLIHomeLabel, gbc_eC2CLIHomeLabel);
-
-		eC2CLIHomeTextField = new JTextField();
-		GridBagConstraints gbc_eC2CLIHomeTextField = new GridBagConstraints();
-		gbc_eC2CLIHomeTextField.insets = new Insets(0, 0, 5, 0);
-		gbc_eC2CLIHomeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_eC2CLIHomeTextField.gridx = 1;
-		gbc_eC2CLIHomeTextField.gridy = 1;
-		this.add(eC2CLIHomeTextField, gbc_eC2CLIHomeTextField);
-
 		JLabel accessKeyLabel = new JLabel("AWS ACCESS KEY");
 		accessKeyLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbc_accessKeyLabel = new GridBagConstraints();
 		gbc_accessKeyLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_accessKeyLabel.gridx = 0;
-		gbc_accessKeyLabel.gridy = 2;
+		gbc_accessKeyLabel.gridy = 1;
 		this.add(accessKeyLabel, gbc_accessKeyLabel);
 
 		accessKeyTextField = new JTextField();
@@ -63,7 +46,7 @@ public class UserPropertiesInputJPanel extends JPanel {
 		gbc_accessKeyTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_accessKeyTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_accessKeyTextField.gridx = 1;
-		gbc_accessKeyTextField.gridy = 2;
+		gbc_accessKeyTextField.gridy = 1;
 		this.add(accessKeyTextField, gbc_accessKeyTextField);
 
 		JLabel secretKeyLabel = new JLabel("AWS SECRET KEY");
@@ -71,7 +54,7 @@ public class UserPropertiesInputJPanel extends JPanel {
 		GridBagConstraints gbc_secretKeyLabel = new GridBagConstraints();
 		gbc_secretKeyLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_secretKeyLabel.gridx = 0;
-		gbc_secretKeyLabel.gridy = 3;
+		gbc_secretKeyLabel.gridy = 2;
 		this.add(secretKeyLabel, gbc_secretKeyLabel);
 		secretKeyLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -79,17 +62,13 @@ public class UserPropertiesInputJPanel extends JPanel {
 		GridBagConstraints gbc_secretKeyTextField = new GridBagConstraints();
 		gbc_secretKeyTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_secretKeyTextField.gridx = 1;
-		gbc_secretKeyTextField.gridy = 3;
+		gbc_secretKeyTextField.gridy = 2;
 		add(secretKeyTextField, gbc_secretKeyTextField);
 		secretKeyTextField.setColumns(10);
 	}
 
 	public JLabel getMessageLabel() {
 		return messageLabel;
-	}
-
-	public JTextField getEC2CLIHomeTextField() {
-		return eC2CLIHomeTextField;
 	}
 
 	public JTextField getAccessKeyTextField() {
