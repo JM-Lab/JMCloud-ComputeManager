@@ -269,7 +269,7 @@ public class ComputeManagerGUIModel {
 				timeout -= initSec;
 				List<ComputeVO> copyCheckComputeList = new ArrayList<>();
 				copyCheckComputeList.addAll(checkComputeList);
-				while (timeout > 0 && copyCheckComputeList.size() != 0) {
+				while (timeout > 0 && copyCheckComputeList.size() > 0) {
 					for (ComputeVO computeVO : copyCheckComputeList
 							.toArray(new ComputeVO[copyCheckComputeList.size()])) {
 						ComputeVO realComputeVO = jMCloudComputeManager

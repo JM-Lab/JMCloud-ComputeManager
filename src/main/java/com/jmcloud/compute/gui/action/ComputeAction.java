@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.aws.ec2.sys.EC2EnviromentVO;
 import com.jmcloud.compute.gui.component.DialogsUtil;
+import com.jmcloud.compute.util.SysUtils;
 import com.jmcloud.compute.vo.ComputeVO;
 
 @Service("computeAction")
@@ -177,7 +178,7 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 					COMPUTE_ID_INDEX);
 			if (!computeID.equals(newComputeID)) {
 				computeManagerGUIModel.showProgressResult("[" + actionCommand
-						+ "] " + computeID + " ComputeID Has Changed Into "
+						+ "] " + computeID + " ComputeID has changed into "
 						+ newComputeID + " !!!\n");
 			}
 			tempComputeVOList.add(getTempComputeVO(region, groupName,

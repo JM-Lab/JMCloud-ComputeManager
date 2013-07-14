@@ -68,7 +68,7 @@ public class JMCloudComputeMain {
 		computeManagerGUI.setLocation((screenSize.width - frameSize.width) / 2,
 				(screenSize.height - frameSize.height) / 2);
 
-		// EC2_HOME env check
+		// EC2_HOME env variable check
 		String ec2Home = System.getenv(EC2_HOME);
 		
 		if(ec2Home == null || ec2Home.equals("")){
@@ -104,7 +104,7 @@ public class JMCloudComputeMain {
 				.setAccessKey(userProperties.getProperty(AWS_ACCESS_KEY));
 		eC2EnviromentVO
 				.setSecretKey(userProperties.getProperty(AWS_SECRET_KEY));
-
+		
 		// GUI run
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

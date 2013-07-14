@@ -7,6 +7,9 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.util.Set;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -14,6 +17,7 @@ import javax.swing.JOptionPane;
 import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.sys.SystemEnviroment;
+import com.jmcloud.compute.sys.SystemString;
 
 @Service("keypairAction")
 public class KeypairAction extends AbstractJMCloudGUIAction {
@@ -40,9 +44,9 @@ public class KeypairAction extends AbstractJMCloudGUIAction {
 	private String downloadKeypairAction() {
 		String keypair = computeManagerGUIModel.getGroupKeypair(
 				regionOfselectionGroup, selectionGroup);
-		Path keypairPath = Paths.get(SystemEnviroment.getKeypairDir(), keypair);
-		if (keypairPath.toFile().isDirectory()
-				|| !keypairPath.toFile().exists()) {
+		Path keypairFilePath = Paths.get(SystemEnviroment.getKeypairDir(), keypair);
+		if (keypairFilePath.toFile().isDirectory()
+				|| !keypairFilePath.toFile().exists()) {
 			return returnErrorMessage(keypair
 					+ " Never Created A Group Keypair By JMCloud Compute Manager!!!");
 		}
@@ -53,7 +57,12 @@ public class KeypairAction extends AbstractJMCloudGUIAction {
 		}
 		startProgressSpinner();
 		try {
-			Files.copy(keypairPath, Paths.get(targetURI));
+			Path targetFilePath = Paths.get(targetURI);
+			Files.copy(keypairFilePath, targetFilePath);
+			Set<PosixFilePermission> perms = PosixFilePermissions.fromString("r--------");
+			Files.setPosixFilePermissions(targetFilePath, perms);
+		} catch (UnsupportedOperationException ue){
+			keypairFilePath.toFile().setReadOnly();			
 		} catch (IOException e) {
 			e.printStackTrace();
 			return returnErrorMessage(keypair + " Can't Download!!!");

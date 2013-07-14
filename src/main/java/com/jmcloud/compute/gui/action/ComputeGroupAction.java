@@ -200,7 +200,6 @@ public class ComputeGroupAction extends AbstractJMCloudGUIAction {
 				+ computeManagerGUIModel.getSecurityGroup(region, groupName));
 		doProgressMethod(computeManagerGUIModel.deleteSecurityGroup(region,
 				groupName));
-
 		computeManagerGUIModel.showProgressResult("[Delete Keypair] "
 				+ computeManagerGUIModel.getGroupKeypair(region, groupName));
 		doProgressMethod(computeManagerGUIModel

@@ -149,7 +149,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 					computeManagerGUIModel
 							.showResult(returnEndMessage(doAbstractAction(e)));
 				} finally {
-					if (progressSpinnerRunnable != null) {
+					if (progressSpinnerRunnable != null && progressSpinnerRunnable.isShowing()) {
 						stopProgressSpinner();
 					}
 				}

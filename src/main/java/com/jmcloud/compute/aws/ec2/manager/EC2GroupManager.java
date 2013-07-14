@@ -9,11 +9,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -320,8 +324,19 @@ public class EC2GroupManager implements
 			return SystemString.FALSE;
 		}
 		String privateKey = returnStrings[1];
+		Path keypairFilePath = getKeypairFilePath(keypair);
 		if (!EC2Util
-				.saveStringIntoFile(getKeypairFilePath(keypair), privateKey)) {
+				.saveStringIntoFile(keypairFilePath, privateKey)) {
+			return SystemString.FALSE;
+		}
+		try {
+			Set<PosixFilePermission> perms = PosixFilePermissions.fromString("r--------");
+			Files.setPosixFilePermissions(keypairFilePath, perms);
+		} catch (UnsupportedOperationException ue){
+			keypairFilePath.toFile().setReadOnly();			
+		} catch (IOException e) {
+			e.printStackTrace();
+			keypairFilePath.toFile().delete();
 			return SystemString.FALSE;
 		}
 		return privateKey;
@@ -335,7 +350,9 @@ public class EC2GroupManager implements
 			return false;
 		}
 		try {
-			Files.delete(keypairPath);
+			if(!Files.deleteIfExists(keypairPath)){
+				keypairPath.toFile().deleteOnExit();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;

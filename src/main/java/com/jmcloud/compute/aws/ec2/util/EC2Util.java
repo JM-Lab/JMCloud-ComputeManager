@@ -193,7 +193,6 @@ public class EC2Util {
 		}
 		try {
 			Files.createDirectories(filePath.getParent());
-			Files.createFile(filePath);
 			Files.write(filePath, string.getBytes(), StandardOpenOption.CREATE);
 		} catch (IOException e) {
 			e.printStackTrace();
