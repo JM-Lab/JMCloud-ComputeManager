@@ -257,13 +257,16 @@ public class DialogsUtil {
 		int result = JOptionPane.showConfirmDialog(mainFrame,
 				userPropertiesInputJPanel, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
-		if (result == JOptionPane.OK_OPTION) {
-			newProperties.put(AWS_ACCESS_KEY, accessKeyTextField.getText());
-			newProperties.put(AWS_SECRET_KEY, secretKeyTextField.getText());
-		}else{
-			JOptionPane.showMessageDialog(mainFrame, "Set AWS KEYs properly!!!", "JMCloud-ComputeManager", JOptionPane.ERROR_MESSAGE);
+		if ("".equals(accessKeyTextField.getText())
+				|| "".equals(secretKeyTextField.getText())
+				|| result != JOptionPane.OK_OPTION) {
+			JOptionPane.showMessageDialog(mainFrame,
+					"Set AWS KEYs properly!!!", "JMCloud-ComputeManager",
+					JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
+		newProperties.put(AWS_ACCESS_KEY, accessKeyTextField.getText());
+		newProperties.put(AWS_SECRET_KEY, secretKeyTextField.getText());
 		return newProperties;
 	}
 
