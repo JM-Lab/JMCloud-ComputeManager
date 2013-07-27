@@ -2,6 +2,7 @@ package com.jmcloud.compute.gui.component;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.Iterator;
@@ -239,7 +240,7 @@ public class DialogsUtil {
 		JTextField secretKeyTextField = userPropertiesInputJPanel
 				.getSecretKeyTextField();
 		String message = "<html>Give Your AWS EC2 Properties!<br>Save As : "
-				+ SystemEnviroment.getUserEC2EnvPath().replace("\\", "/")
+				+ SystemEnviroment.getUserEnvPath().replace("\\", "/")
 				+ "</html>";
 		messageLabel.setText(message);
 
@@ -253,21 +254,23 @@ public class DialogsUtil {
 					.getProperty(AWS_SECRET_KEY));
 		}
 
-		Properties newProperties = new Properties();
 		int result = JOptionPane.showConfirmDialog(mainFrame,
 				userPropertiesInputJPanel, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
-		if ("".equals(accessKeyTextField.getText())
-				|| "".equals(secretKeyTextField.getText())
-				|| result != JOptionPane.OK_OPTION) {
-			JOptionPane.showMessageDialog(mainFrame,
-					"Set AWS KEYs properly!!!", "JMCloud-ComputeManager",
-					JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
+		if (result == JOptionPane.OK_OPTION) {
+			Properties newProperties = new Properties();
+			newProperties.put(AWS_ACCESS_KEY, accessKeyTextField.getText());
+			newProperties.put(AWS_SECRET_KEY, secretKeyTextField.getText());
+			return newProperties;
 		}
-		newProperties.put(AWS_ACCESS_KEY, accessKeyTextField.getText());
-		newProperties.put(AWS_SECRET_KEY, secretKeyTextField.getText());
-		return newProperties;
+		return null;
+	}
+	
+	public static void showErrorDialogExit(Frame mainFrame, String message) {
+		JOptionPane.showMessageDialog(mainFrame,
+				message, mainFrame.getTitle(),
+				JOptionPane.ERROR_MESSAGE);
+		System.exit(1);
 	}
 
 }

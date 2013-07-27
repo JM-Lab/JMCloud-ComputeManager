@@ -1,11 +1,11 @@
 package com.jmcloud.compute;
 
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Toolkit;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.swing.JFrame;
@@ -27,6 +27,7 @@ public class JMCloudComputeMain {
 	private static final String EC2_HOME = "EC2_HOME";
 	private static final String AWS_ACCESS_KEY = "AWS_ACCESS_KEY";
 	private static final String AWS_SECRET_KEY = "AWS_SECRET_KEY";
+	private static final String CONSOLE_FILE_PATH = "CONSOLE_FILE_PATH";
 
 	public static void main(String[] args) {
 
@@ -70,15 +71,14 @@ public class JMCloudComputeMain {
 
 		// EC2_HOME env variable check
 		String ec2Home = System.getenv(EC2_HOME);
-		
-		if(ec2Home == null || ec2Home.equals("")){
-			JOptionPane.showMessageDialog(computeManagerGUI, "Set EC2_HOME environment variable properly!!!", "JMCloud-ComputeManager", JOptionPane.ERROR_MESSAGE);
-			System.exit(1);
+
+		if (ec2Home == null || ec2Home.equals("")) {
+			DialogsUtil.showErrorDialogExit(computeManagerGUI, "Set EC2_HOME environment variable properly!!!");
 		}
 
 		// set user properties
-		Path userEC2EnvPath = Paths.get(SystemEnviroment.getUserEC2EnvPath());
-		if (!userEC2EnvPath.toFile().exists()) {
+		Path userEnvPath = Paths.get(SystemEnviroment.getUserEnvPath());
+		if (!userEnvPath.toFile().exists()) {
 			Properties defaultAWSEC2EnvProperties = context.getBean(
 					"defaultAWSEC2EnvProperties", Properties.class);
 
@@ -86,25 +86,37 @@ public class JMCloudComputeMain {
 					.showUserPropertiesInputDialog(computeManagerGUI,
 							"Input Your AWS Information",
 							defaultAWSEC2EnvProperties);
+			if (userProperties == null
+					|| "".equals(userProperties.get(AWS_ACCESS_KEY))
+					|| "".equals(userProperties.get(AWS_SECRET_KEY))) {
+				DialogsUtil.showErrorDialogExit(computeManagerGUI, "Set AWS KEYs properly!!!");
+			}
 
-			userProperties.setProperty(EC2_HOME, System.getenv(EC2_HOME));
+			userProperties.setProperty(EC2_HOME, ec2Home);
 
-			SysUtils.saveProperties(userProperties, userEC2EnvPath,
-					"User AWS EC2 Properties");
+			if (SystemEnviroment.getConsoleFilePath() != null) {
+				userProperties.setProperty(CONSOLE_FILE_PATH,
+						SystemEnviroment.getConsoleFilePath());
+			}
+
+			if (!SysUtils.saveProperties(userProperties, userEnvPath,
+					"User Enviroment Properties")) {
+				DialogsUtil.showErrorDialogExit(computeManagerGUI, "Can't Save!!! : " + userEnvPath.toFile().getAbsolutePath());
+			}
 
 		}
 
 		EC2EnviromentVO eC2EnviromentVO = context.getBean("eC2EnviromentVO",
 				EC2EnviromentVO.class);
 
-		Properties userProperties = SysUtils.getProperties(userEC2EnvPath
-				.toUri());
+		Properties userProperties = SysUtils.getProperties(userEnvPath.toUri());
 		eC2EnviromentVO.setEC2CLIHome(userProperties.getProperty(EC2_HOME));
 		eC2EnviromentVO
 				.setAccessKey(userProperties.getProperty(AWS_ACCESS_KEY));
 		eC2EnviromentVO
 				.setSecretKey(userProperties.getProperty(AWS_SECRET_KEY));
-		
+		SystemEnviroment.setConsoleFilePath(userProperties.getProperty(CONSOLE_FILE_PATH));
+
 		// GUI run
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

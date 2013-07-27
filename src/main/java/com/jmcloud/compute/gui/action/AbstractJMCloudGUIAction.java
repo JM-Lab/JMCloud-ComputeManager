@@ -149,7 +149,8 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 					computeManagerGUIModel
 							.showResult(returnEndMessage(doAbstractAction(e)));
 				} finally {
-					if (progressSpinnerRunnable != null && progressSpinnerRunnable.isShowing()) {
+					if (progressSpinnerRunnable != null
+							&& progressSpinnerRunnable.isShowing()) {
 						stopProgressSpinner();
 					}
 				}
@@ -160,7 +161,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 
 	abstract protected String doAbstractAction(ActionEvent e);
 
-	private class ProgressSpinnerRunnable implements Runnable {
+	class ProgressSpinnerRunnable implements Runnable {
 		private JDialog progressSpinnerJdialog;
 
 		@Override

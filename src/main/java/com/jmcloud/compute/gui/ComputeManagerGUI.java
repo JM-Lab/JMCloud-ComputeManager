@@ -36,7 +36,8 @@ import com.jmcloud.compute.sys.SystemImages;
 public class ComputeManagerGUI extends JFrame {
 
 	private final Action saveRegionAction = new SaveAction();
-	private final Action loadRegionAction = new ReloadAction();
+	private final Action loadRegionAction = new LoadAction();
+	private final Action setConsoleAction = new SetConsoleAction();
 	private final Action exitAction = new ExitAction();
 
 	private final Action createGroupAction = new CreateGroupAction();
@@ -64,303 +65,172 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action rebootComputesAction = new RebootComputeAction();
 	private final Action terminateComputesAction = new TerminateComputeAction();
 
-	private class SaveAction extends AbstractAction {
+	private class AbstractComputeManagerGUIAction extends AbstractAction {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			action.doAction(e);
+		}
+
+	}
+
+	private class SaveAction extends AbstractComputeManagerGUIAction {
 		public SaveAction() {
 			putValue(NAME, "Save Region");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class ReloadAction extends AbstractAction {
-		public ReloadAction() {
+	private class LoadAction extends AbstractComputeManagerGUIAction {
+		public LoadAction() {
 			putValue(NAME, "Load Region");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class ExitAction extends AbstractAction {
+	public class SetConsoleAction extends AbstractComputeManagerGUIAction {
+
+		public SetConsoleAction() {
+			putValue(NAME, "Set Console");
+		}
+	}
+
+	private class ExitAction extends AbstractComputeManagerGUIAction {
 		public ExitAction() {
 			putValue(NAME, "Exit");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class CreateGroupAction extends AbstractAction {
+	private class CreateGroupAction extends AbstractComputeManagerGUIAction {
 		public CreateGroupAction() {
 			putValue(NAME, "Create Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class DeleteGroupAction extends AbstractAction {
+	private class DeleteGroupAction extends AbstractComputeManagerGUIAction {
 		public DeleteGroupAction() {
 			putValue(NAME, "Delete Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class RenameGroupAction extends AbstractAction {
+	private class RenameGroupAction extends AbstractComputeManagerGUIAction {
 		public RenameGroupAction() {
 			putValue(NAME, "Rename Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class ProvisioningGroupAction extends AbstractAction {
+	private class ProvisioningGroupAction extends
+			AbstractComputeManagerGUIAction {
 		public ProvisioningGroupAction() {
 			putValue(NAME, "Provision Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class StopGroupAction extends AbstractAction {
+	private class StopGroupAction extends AbstractComputeManagerGUIAction {
 		public StopGroupAction() {
 			putValue(NAME, "Stop Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class StartGroupAction extends AbstractAction {
+	private class StartGroupAction extends AbstractComputeManagerGUIAction {
 		public StartGroupAction() {
 			putValue(NAME, "Start Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class RebootGroupAction extends AbstractAction {
+	private class RebootGroupAction extends AbstractComputeManagerGUIAction {
 		public RebootGroupAction() {
 			putValue(NAME, "Reboot Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class TerminateGroupAction extends AbstractAction {
+	private class TerminateGroupAction extends AbstractComputeManagerGUIAction {
 		public TerminateGroupAction() {
 			putValue(NAME, "Terminate Group");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class DownloadKeypairAction extends AbstractAction {
+	private class DownloadKeypairAction extends AbstractComputeManagerGUIAction {
 		public DownloadKeypairAction() {
 			putValue(NAME, "Download Keypair");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class CreateGroupKeypairAction extends AbstractAction {
+	private class CreateGroupKeypairAction extends
+			AbstractComputeManagerGUIAction {
 		public CreateGroupKeypairAction() {
 			putValue(NAME, "Create Keypair");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class ShowFWRulesAction extends AbstractAction {
+	private class ShowFWRulesAction extends AbstractComputeManagerGUIAction {
 		public ShowFWRulesAction() {
 			putValue(NAME, "Show Rules");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class AddFWRuleAction extends AbstractAction {
+	private class AddFWRuleAction extends AbstractComputeManagerGUIAction {
 		public AddFWRuleAction() {
 			putValue(NAME, "Add Rule");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class RemoveFWRuleAction extends AbstractAction {
+	private class RemoveFWRuleAction extends AbstractComputeManagerGUIAction {
 		public RemoveFWRuleAction() {
 			putValue(NAME, "Remove Rule");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class CreateComputeAction extends AbstractAction {
+	private class CreateComputeAction extends AbstractComputeManagerGUIAction {
 		public CreateComputeAction() {
 			putValue(NAME, "Create Compute");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class CreateComputesAction extends AbstractAction {
+	private class CreateComputesAction extends AbstractComputeManagerGUIAction {
 		public CreateComputesAction() {
 			putValue(NAME, "Create Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class DeleteComputeAction extends AbstractAction {
+	private class DeleteComputeAction extends AbstractComputeManagerGUIAction {
 		public DeleteComputeAction() {
 			putValue(NAME, "Delete Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class RenameComputeAction extends AbstractAction {
+	private class RenameComputeAction extends AbstractComputeManagerGUIAction {
 		public RenameComputeAction() {
 			putValue(NAME, "Rename Compute");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class ProvisioningComputeAction extends AbstractAction {
+	private class ProvisioningComputeAction extends
+			AbstractComputeManagerGUIAction {
 		public ProvisioningComputeAction() {
 			putValue(NAME, "Provision Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class StopComputeAction extends AbstractAction {
+	private class StopComputeAction extends AbstractComputeManagerGUIAction {
 		public StopComputeAction() {
 			putValue(NAME, "Stop Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class StartComputeAction extends AbstractAction {
+	private class StartComputeAction extends AbstractComputeManagerGUIAction {
 		public StartComputeAction() {
 			putValue(NAME, "Start Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class RebootComputeAction extends AbstractAction {
+	private class RebootComputeAction extends AbstractComputeManagerGUIAction {
 		public RebootComputeAction() {
 			putValue(NAME, "Reboot Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
-	private class TerminateComputeAction extends AbstractAction {
+	private class TerminateComputeAction extends AbstractComputeManagerGUIAction {
 		public TerminateComputeAction() {
 			putValue(NAME, "Terminate Computes");
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			action.doAction(e);
 		}
 	}
 
@@ -401,6 +271,13 @@ public class ComputeManagerGUI extends JFrame {
 		JMenuItem mntmLoadRegion = new JMenuItem("Load Region");
 		mntmLoadRegion.setAction(loadRegionAction);
 		mnFile.add(mntmLoadRegion);
+
+		Separator separator_2 = new Separator();
+		mnFile.add(separator_2);
+
+		JMenuItem mntmSetConsole = new JMenuItem("Set Console");
+		mntmSetConsole.setAction(setConsoleAction);
+		mnFile.add(mntmSetConsole);
 
 		Separator separator_3 = new Separator();
 		mnFile.add(separator_3);

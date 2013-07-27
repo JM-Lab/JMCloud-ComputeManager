@@ -58,7 +58,7 @@ public class SysUtils {
 		return properties;
 	}
 
-	public static void saveProperties(Properties inProperties,
+	public static boolean saveProperties(Properties inProperties,
 			Path saveFilePath, String comment) {
 		try {
 			File saveFile = saveFilePath.toFile();
@@ -67,11 +67,13 @@ public class SysUtils {
 				saveFile.createNewFile();
 			}
 			BufferedWriter writer = Files.newBufferedWriter(saveFilePath,
-					Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+					Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING);
 			inProperties.store(writer, comment);
 			writer.close();
+			return true;
 		} catch (IOException ex) {
 			ex.printStackTrace();
+			return false;
 		}
 
 	}

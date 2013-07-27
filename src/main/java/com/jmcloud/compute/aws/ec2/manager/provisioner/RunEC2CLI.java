@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.aws.ec2.sys.EC2EnviromentVO;
 import com.jmcloud.compute.commons.RunCLI;
+import com.jmcloud.compute.sys.SystemEnviroment;
 
 @Service("runEC2CLI")
 public class RunEC2CLI implements RunCLI {
@@ -18,7 +19,7 @@ public class RunEC2CLI implements RunCLI {
 	@Resource(name = "runCLISimple")
 	private RunCLI runCLI;
 
-	private boolean isWindows = System.getProperty("os.name").contains(
+	private boolean isWindows = SystemEnviroment.getOS().contains(
 			"Windows");
 
 	private String getFinalCammand(String command) {
