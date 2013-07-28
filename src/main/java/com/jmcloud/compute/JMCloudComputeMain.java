@@ -25,6 +25,7 @@ import com.jmcloud.compute.util.SysUtils;
 public class JMCloudComputeMain {
 
 	private static final String EC2_HOME = "EC2_HOME";
+	private static final String CYGWIN_HOME = "CYGWIN_HOME";
 	private static final String AWS_ACCESS_KEY = "AWS_ACCESS_KEY";
 	private static final String AWS_SECRET_KEY = "AWS_SECRET_KEY";
 	private static final String CONSOLE_FILE_PATH = "CONSOLE_FILE_PATH";
@@ -70,10 +71,23 @@ public class JMCloudComputeMain {
 				(screenSize.height - frameSize.height) / 2);
 
 		// EC2_HOME env variable check
+		String path = System.getenv("path");
 		String ec2Home = System.getenv(EC2_HOME);
 
-		if (ec2Home == null || ec2Home.equals("")) {
-			DialogsUtil.showErrorDialogExit(computeManagerGUI, "Set EC2_HOME environment variable properly!!!");
+		if (ec2Home == null || ec2Home.equals("") || !path.contains(ec2Home)) {
+			DialogsUtil.showErrorDialogExit(computeManagerGUI,
+					"Set EC2_HOME & bin path environment variable properly!!!");
+		}
+
+		// CYGWIN_HOME env variable check only windows
+		if (SystemEnviroment.getOS().contains("Windows")) {
+			String cygwinHome = System.getenv(CYGWIN_HOME);
+
+			if (cygwinHome == null || cygwinHome.equals("")
+					|| !path.contains(cygwinHome)) {
+				DialogsUtil.showErrorDialogExit(computeManagerGUI,
+						"Set CYGWIN_HOME & bin path environment variable properly!!!");
+			}
 		}
 
 		// set user properties
@@ -89,7 +103,8 @@ public class JMCloudComputeMain {
 			if (userProperties == null
 					|| "".equals(userProperties.get(AWS_ACCESS_KEY))
 					|| "".equals(userProperties.get(AWS_SECRET_KEY))) {
-				DialogsUtil.showErrorDialogExit(computeManagerGUI, "Set AWS KEYs properly!!!");
+				DialogsUtil.showErrorDialogExit(computeManagerGUI,
+						"Set AWS KEYs properly!!!");
 			}
 
 			userProperties.setProperty(EC2_HOME, ec2Home);
@@ -101,7 +116,9 @@ public class JMCloudComputeMain {
 
 			if (!SysUtils.saveProperties(userProperties, userEnvPath,
 					"User Enviroment Properties")) {
-				DialogsUtil.showErrorDialogExit(computeManagerGUI, "Can't Save!!! : " + userEnvPath.toFile().getAbsolutePath());
+				DialogsUtil.showErrorDialogExit(computeManagerGUI,
+						"Can't Save!!! : "
+								+ userEnvPath.toFile().getAbsolutePath());
 			}
 
 		}
@@ -115,7 +132,8 @@ public class JMCloudComputeMain {
 				.setAccessKey(userProperties.getProperty(AWS_ACCESS_KEY));
 		eC2EnviromentVO
 				.setSecretKey(userProperties.getProperty(AWS_SECRET_KEY));
-		SystemEnviroment.setConsoleFilePath(userProperties.getProperty(CONSOLE_FILE_PATH));
+		SystemEnviroment.setConsoleFilePath(userProperties
+				.getProperty(CONSOLE_FILE_PATH));
 
 		// GUI run
 		SwingUtilities.invokeLater(new Runnable() {

@@ -57,13 +57,15 @@ public class ComputeManagerGUI extends JFrame {
 
 	private final Action createComputeAction = new CreateComputeAction();
 	private final Action createComputesAction = new CreateComputesAction();
-	private final Action deleteComputesAction = new DeleteComputeAction();
+	private final Action deleteComputesAction = new DeleteComputesAction();
 	private final Action renameComputeAction = new RenameComputeAction();
-	private final Action provisionComputesAction = new ProvisioningComputeAction();
-	private final Action stopComputesAction = new StopComputeAction();
-	private final Action startComputesAction = new StartComputeAction();
-	private final Action rebootComputesAction = new RebootComputeAction();
-	private final Action terminateComputesAction = new TerminateComputeAction();
+	private final Action provisionComputesAction = new ProvisioningComputesAction();
+	private final Action stopComputesAction = new StopComputesAction();
+	private final Action startComputesAction = new StartComputesAction();
+	private final Action rebootComputesAction = new RebootComputesAction();
+	private final Action terminateComputesAction = new TerminateComputesAction();
+	private final Action connectComputeAction = new ConnectComputeAction();
+	
 
 	private class AbstractComputeManagerGUIAction extends AbstractAction {
 
@@ -191,8 +193,8 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-	private class DeleteComputeAction extends AbstractComputeManagerGUIAction {
-		public DeleteComputeAction() {
+	private class DeleteComputesAction extends AbstractComputeManagerGUIAction {
+		public DeleteComputesAction() {
 			putValue(NAME, "Delete Computes");
 		}
 	}
@@ -203,36 +205,44 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-	private class ProvisioningComputeAction extends
+	private class ProvisioningComputesAction extends
 			AbstractComputeManagerGUIAction {
-		public ProvisioningComputeAction() {
+		public ProvisioningComputesAction() {
 			putValue(NAME, "Provision Computes");
 		}
 	}
 
-	private class StopComputeAction extends AbstractComputeManagerGUIAction {
-		public StopComputeAction() {
+	private class StopComputesAction extends AbstractComputeManagerGUIAction {
+		public StopComputesAction() {
 			putValue(NAME, "Stop Computes");
 		}
 	}
 
-	private class StartComputeAction extends AbstractComputeManagerGUIAction {
-		public StartComputeAction() {
+	private class StartComputesAction extends AbstractComputeManagerGUIAction {
+		public StartComputesAction() {
 			putValue(NAME, "Start Computes");
 		}
 	}
 
-	private class RebootComputeAction extends AbstractComputeManagerGUIAction {
-		public RebootComputeAction() {
+	private class RebootComputesAction extends AbstractComputeManagerGUIAction {
+		public RebootComputesAction() {
 			putValue(NAME, "Reboot Computes");
 		}
 	}
 
-	private class TerminateComputeAction extends AbstractComputeManagerGUIAction {
-		public TerminateComputeAction() {
+	private class TerminateComputesAction extends AbstractComputeManagerGUIAction {
+		public TerminateComputesAction() {
 			putValue(NAME, "Terminate Computes");
 		}
 	}
+	
+	private class ConnectComputeAction extends AbstractComputeManagerGUIAction {
+		public ConnectComputeAction() {
+			putValue(NAME, "Connect Compute");
+		}
+	}
+	
+	
 
 	@Resource(name = "computeManagerGUIModel")
 	private ComputeManagerGUIModel computeManagerGUIModel;
@@ -394,6 +404,13 @@ public class ComputeManagerGUI extends JFrame {
 		JMenuItem mntmTerminateComputes = new JMenuItem("Terminate Computes");
 		mntmTerminateComputes.setAction(terminateComputesAction);
 		mnCompute.add(mntmTerminateComputes);
+		
+		Separator separator_5 = new Separator();
+		mnCompute.add(separator_5);
+		
+		JMenuItem mntmConnectCompute = new JMenuItem("Connect Compute");
+		mntmConnectCompute.setAction(connectComputeAction);
+		mnCompute.add(mntmConnectCompute);
 
 	}
 
@@ -427,6 +444,7 @@ public class ComputeManagerGUI extends JFrame {
 		initializeTreePopUpMenu(tree);
 
 		TableViewPanel tableViewPanel = new TableViewPanel();
+		tableViewPanel.setDoubleClickAction(connectComputeAction);
 		mainTopSplitPane.setRightComponent(tableViewPanel);
 		table = tableViewPanel.getTable();
 		initializeTablePopUpMenu(table);
@@ -478,6 +496,13 @@ public class ComputeManagerGUI extends JFrame {
 		JMenuItem mntmTerminateComputes = new JMenuItem("Terminate Computes");
 		mntmTerminateComputes.setAction(terminateComputesAction);
 		tablePopupMenu.add(mntmTerminateComputes);
+		
+		Separator separator = new Separator();
+		tablePopupMenu.add(separator);
+		
+		JMenuItem mntmConnectCompute_1 = new JMenuItem("Connect Compute");
+		mntmConnectCompute_1.setAction(connectComputeAction);
+		tablePopupMenu.add(mntmConnectCompute_1);
 	}
 
 	private void initializeTreePopUpMenu(JTree tree) {

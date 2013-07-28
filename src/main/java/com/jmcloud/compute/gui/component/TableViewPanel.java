@@ -16,8 +16,12 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.ImageObserver;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +41,7 @@ import com.jmcloud.compute.sys.SystemImages;
 public class TableViewPanel extends JPanel {
 
 	private JTable table;
+	private Action doubleClickAction;
 
 	public TableViewPanel() {
 		setLayout(new BorderLayout(0, 0));
@@ -65,6 +70,48 @@ public class TableViewPanel extends JPanel {
 		// renderer.setHorizontalAlignment(JLabel.CENTER);
 		setColumeSize();
 		setColumnCellRenderer(STATUS_INDEX, new StatusCellRenderer());
+		
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() != 2) {
+					return;
+				}
+				doubleClickAction.actionPerformed(new ActionEvent(e, e.getID(), "Connect Compute"));
+				
+//				if(EC2Manager.RUNNING_STATUS.equals(table.getValueAt(row, STATUS_INDEX).toString())){	
+//					new RunFileOnWindows().run(SystemEnviroment.getConsoleFilePath());
+//					String pasteCommand = "ssh -i " + SystemEnviroment.getKeypairDir()+table.getValueAt(row, KEYPAIR_INDEX) + " " + table.getValueAt(row, PUBLIC_IP_INDEX) + " -l ubuntu";
+//					pasteCommand = pasteCommand.replace("\\", "\\\\");
+//					pasteCommand = pasteCommand.replace("/", "\\\\");
+//					pasteCommand = "cmd /c start cmd /c "+ pasteCommand;
+//					try {
+//						new ProcessBuilder(pasteCommand.split(" ")).start();
+//						
+//					} catch (IOException e1) {
+//						// TODO Auto-generated catch block
+//						e1.printStackTrace();
+//					}
+
+//					Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+//					StringSelection stringSelection = new StringSelection(pasteCommand);
+//	                clipboard.setContents(stringSelection, stringSelection);
+
+					
+//					new RunCLISimple().run("cmd.exe /c start \"" + SystemEnviroment.getConsoleFilePath() + "\"");
+//					new RunCLISimple().run("cmd.exe /c \"" + SystemEnviroment.getConsoleFilePath() + "\"");
+//					try {
+//						System.out.println("run : " + SystemEnviroment.getConsoleFilePath());
+//						Process process = new ProcessBuilder(command4.split(" ")).start();
+//						Runtime.getRuntime().exec("cmd.exe /c "+SystemEnviroment.getConsoleFilePath());
+//						Runtime.getRuntime().exec(SystemEnviroment.getConsoleFilePath());
+//					} catch (IOException ioe) {
+//						// TODO Auto-generated catch block
+//						ioe.printStackTrace();
+//					}
+//				}
+			}
+		});
 	}
 
 	private void setColumnCellRenderer(int col, TableCellRenderer renderer) {
@@ -151,5 +198,9 @@ public class TableViewPanel extends JPanel {
 
 	public JTable getTable() {
 		return table;
+	}
+
+	public void setDoubleClickAction(Action connectComputeAction) {
+		doubleClickAction = connectComputeAction;
 	}
 }

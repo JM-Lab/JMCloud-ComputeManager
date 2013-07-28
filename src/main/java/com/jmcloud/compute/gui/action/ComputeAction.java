@@ -6,10 +6,13 @@ import static com.jmcloud.compute.aws.ec2.manager.EC2Manager.STOPPED_STATUS;
 import static com.jmcloud.compute.aws.ec2.manager.EC2Manager.TERMINATED_STATUS;
 import static com.jmcloud.compute.gui.model.TableViewPanelModel.COMPUTE_ID_INDEX;
 import static com.jmcloud.compute.gui.model.TableViewPanelModel.GROUP_INDEX;
+import static com.jmcloud.compute.gui.model.TableViewPanelModel.KEYPAIR_INDEX;
+import static com.jmcloud.compute.gui.model.TableViewPanelModel.PUBLIC_IP_INDEX;
 import static com.jmcloud.compute.gui.model.TableViewPanelModel.REGION_INDEX;
 import static com.jmcloud.compute.gui.model.TableViewPanelModel.STATUS_INDEX;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,7 +27,7 @@ import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.aws.ec2.sys.EC2EnviromentVO;
 import com.jmcloud.compute.gui.component.DialogsUtil;
-import com.jmcloud.compute.util.SysUtils;
+import com.jmcloud.compute.sys.SystemEnviroment;
 import com.jmcloud.compute.vo.ComputeVO;
 
 @Service("computeAction")
@@ -50,13 +53,54 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 				|| "Create Computes".equals(e.getActionCommand())) {
 			result = createComputeOrComputes();
 		} else if ("Rename Compute".equals(e.getActionCommand())) {
-			result = renameAction();
+			result = renameCompute();
+		} else if ("Connect Compute".equals(e.getActionCommand())) {
+			result = connectCompute();
 		} else {
 			result = computesAction(e.getActionCommand());
 		}
 		saveTable();
 		computeManagerGUIModel.updateTableInfo();
 		return result;
+	}
+
+	private String connectCompute() {
+		if (selectionRows.length != 1) {
+			return returnErrorMessage("Must Select Only One Compute On The Table View!!!");
+		}
+		if(!RUNNING_STATUS.equals(computeManagerGUIModel.getComputeInfo(selectionRow,
+				STATUS_INDEX))){
+			return returnErrorMessage("Only Running Status, Can Connet Compute!!!");
+		}		
+		
+		String id = showInputDialog("Input Compute's Login ID!!!");
+		if (id.contains(" ") || id == null || "".equals(id)) {
+			return returnErrorMessage("Login ID Is Not Proper!!!");
+		}
+		startProgressSpinner();
+		String publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
+				PUBLIC_IP_INDEX);
+		String keypair = SystemEnviroment.getKeypairDir()
+				+ computeManagerGUIModel.getComputeInfo(selectionRow,
+						KEYPAIR_INDEX);
+
+		String command = "ssh -i ";
+		if (SystemEnviroment.getOS().contains("Windows")) {
+			keypair = keypair.replace("\\", "\\\\");
+			keypair = keypair.replace("/", "\\\\");
+
+			command = "cmd /c start cmd /c " + command + keypair + " " + id
+					+ "@" + publicIP;
+		}
+		logger.info("Command To Connect Compute : " + command);
+		try {
+			new ProcessBuilder(command.split(" ")).start();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return returnSuccessMessage(publicIP);
 	}
 
 	private void saveTable() {
@@ -83,11 +127,11 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 		}
 	}
 
-	private String renameAction() {
+	private String renameCompute() {
 		if (selectionRows.length != 1) {
-			return returnErrorMessage("Must Select Only One Compute On The Tree View!!!");
+			return returnErrorMessage("Must Select Only One Compute On The Table View!!!");
 		}
-		String newComputeName = showInputDialog("Give A New Compute Name!");
+		String newComputeName = showInputDialog("Input A New Compute Name!");
 		if (newComputeName.contains(" ")) {
 			return returnErrorMessage("Not Allowed To Change Compute Name With a Space!!!");
 		}
