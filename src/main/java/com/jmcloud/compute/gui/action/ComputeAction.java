@@ -12,6 +12,7 @@ import static com.jmcloud.compute.gui.model.TableViewPanelModel.REGION_INDEX;
 import static com.jmcloud.compute.gui.model.TableViewPanelModel.STATUS_INDEX;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,6 +73,12 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 				selectionRow, STATUS_INDEX))) {
 			return returnErrorMessage("Only Running Status, Can Connet Compute!!!");
 		}
+		String keypair = SystemEnviroment.getKeypairDir()
+				+ computeManagerGUIModel.getComputeInfo(selectionRow,
+						KEYPAIR_INDEX);
+		if (!new File(keypair).exists()) {
+			return returnErrorMessage("Keypair File Dosen't Exist!!!");
+		}
 
 		String id = showInputDialog("Input "
 				+ computeManagerGUIModel.getComputeInfo(selectionRow,
@@ -82,27 +89,29 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 
 		String publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
 				PUBLIC_IP_INDEX);
-		String keypair = SystemEnviroment.getKeypairDir()
-				+ computeManagerGUIModel.getComputeInfo(selectionRow,
-						KEYPAIR_INDEX);
-
+		
 		List<String> command = new ArrayList<>();
 		String commonCommand = "ssh -i " + keypair + " " + id + "@" + publicIP;
 		if (SystemEnviroment.getOS().contains("Windows")) {
 			commonCommand = commonCommand.replace("\\", "\\\\");
 			commonCommand = commonCommand.replace("/", "\\\\");
-			command.add("cmd /c start cmd /c ");
+			command.add("cmd");
+			command.add("/c");
+			command.add("start");
+			command.add("cmd");
+			command.add("/c");
 			command.add(commonCommand);
 		} else if (SystemEnviroment.getOS().contains("Mac")) {
 			command.add("osascript");
 			command.add("-e");
-			command.add("tell application \"Terminal\" to do script \""+ commonCommand+"\"");
+			command.add("tell application \"Terminal\" to do script \""
+					+ commonCommand + "\"");
 		} else {
-			returnErrorMessage("Not Support On "+ SystemEnviroment.getOS());
+			returnErrorMessage("Not Support On " + SystemEnviroment.getOS());
 		}
 		logger.info("Command To Connect Compute : " + printCommand(command));
 		try {
-			new ProcessBuilder(command).start();			
+			new ProcessBuilder(command).start();
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.fatal(e);
@@ -114,7 +123,7 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 
 	private String printCommand(List<String> command) {
 		StringBuilder sb = new StringBuilder();
-		for(String s: command){
+		for (String s : command) {
 			sb.append(s);
 			sb.append(" ");
 		}
