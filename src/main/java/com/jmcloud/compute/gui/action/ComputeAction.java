@@ -68,39 +68,57 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 		if (selectionRows.length != 1) {
 			return returnErrorMessage("Must Select Only One Compute On The Table View!!!");
 		}
-		if(!RUNNING_STATUS.equals(computeManagerGUIModel.getComputeInfo(selectionRow,
-				STATUS_INDEX))){
+		if (!RUNNING_STATUS.equals(computeManagerGUIModel.getComputeInfo(
+				selectionRow, STATUS_INDEX))) {
 			return returnErrorMessage("Only Running Status, Can Connet Compute!!!");
-		}		
-		
-		String id = showInputDialog("Input Compute's Login ID!!!");
-		if (id.contains(" ") || id == null || "".equals(id)) {
+		}
+
+		String id = showInputDialog("Input "
+				+ computeManagerGUIModel.getComputeInfo(selectionRow,
+						COMPUTE_ID_INDEX) + " 's Login ID!!!");
+		if (id == null || id.contains(" ") || id == null || "".equals(id)) {
 			return returnErrorMessage("Login ID Is Not Proper!!!");
 		}
-		startProgressSpinner();
+
 		String publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
 				PUBLIC_IP_INDEX);
 		String keypair = SystemEnviroment.getKeypairDir()
 				+ computeManagerGUIModel.getComputeInfo(selectionRow,
 						KEYPAIR_INDEX);
 
-		String command = "ssh -i ";
+		List<String> command = new ArrayList<>();
+		String commonCommand = "ssh -i " + keypair + " " + id + "@" + publicIP;
 		if (SystemEnviroment.getOS().contains("Windows")) {
-			keypair = keypair.replace("\\", "\\\\");
-			keypair = keypair.replace("/", "\\\\");
-
-			command = "cmd /c start cmd /c " + command + keypair + " " + id
-					+ "@" + publicIP;
+			commonCommand = commonCommand.replace("\\", "\\\\");
+			commonCommand = commonCommand.replace("/", "\\\\");
+			command.add("cmd /c start cmd /c ");
+			command.add(commonCommand);
+		} else if (SystemEnviroment.getOS().contains("Mac")) {
+			command.add("osascript");
+			command.add("-e");
+			command.add("tell application \"Terminal\" to do script \""+ commonCommand+"\"");
+		} else {
+			returnErrorMessage("Not Support On "+ SystemEnviroment.getOS());
 		}
-		logger.info("Command To Connect Compute : " + command);
+		logger.info("Command To Connect Compute : " + printCommand(command));
 		try {
-			new ProcessBuilder(command.split(" ")).start();
+			new ProcessBuilder(command).start();			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			logger.fatal(e);
+			return returnErrorMessage("Can't Connect Compute");
 		}
 
 		return returnSuccessMessage(publicIP);
+	}
+
+	private String printCommand(List<String> command) {
+		StringBuilder sb = new StringBuilder();
+		for(String s: command){
+			sb.append(s);
+			sb.append(" ");
+		}
+		return sb.toString();
 	}
 
 	private void saveTable() {

@@ -71,16 +71,19 @@ public class JMCloudComputeMain {
 				(screenSize.height - frameSize.height) / 2);
 
 		// EC2_HOME env variable check
-		String path = System.getenv("path");
 		String ec2Home = System.getenv(EC2_HOME);
 
-		if (ec2Home == null || ec2Home.equals("") || !path.contains(ec2Home)) {
+		if (ec2Home == null || ec2Home.equals("")) {
 			DialogsUtil.showErrorDialogExit(computeManagerGUI,
 					"Set EC2_HOME & bin path environment variable properly!!!");
 		}
 
 		// CYGWIN_HOME env variable check only windows
 		if (SystemEnviroment.getOS().contains("Windows")) {
+			String path = System.getenv("path");
+			if(path == null){
+				path = System.getenv("PATH");
+			}
 			String cygwinHome = System.getenv(CYGWIN_HOME);
 
 			if (cygwinHome == null || cygwinHome.equals("")
