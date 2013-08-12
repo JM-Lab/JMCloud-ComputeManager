@@ -1,25 +1,31 @@
 package com.jmcloud.compute.gui.component;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
 
 import com.jmcloud.compute.sys.SystemEnviroment;
+import com.jmcloud.compute.util.SysUtils;
 
 public class DialogsUtil {
 
@@ -90,38 +96,77 @@ public class DialogsUtil {
 		return properties;
 	}
 
+	private static Properties regionAMIMappingProperties;
+
 	public static String[] showCreateComputeInputDialog(Component mainFrame,
 			String title, String[] defaultRegions, String currentRegion,
 			String groupName) {
+		if (regionAMIMappingProperties == null) {
+			regionAMIMappingProperties = SysUtils
+					.getProperties(SystemEnviroment.getRegionAMIMappingPath());
+		}
 		CreateComputeInputJPanel createComputeInputPanel = new CreateComputeInputJPanel();
 		JLabel messageLabel = createComputeInputPanel.getMessageLabel();
 		JTextField computeNameTextField = createComputeInputPanel
 				.getComputeNameTextField();
-		JTextField imageIDTextField = createComputeInputPanel
-				.getImageIDTextField();
-		JComboBox<String> computeTypeComboBox = createComputeInputPanel
+		JComboBox<String> imageIDComboBox = createComputeInputPanel
+				.getImageIDComboBox();
+		String[] idAMIs = regionAMIMappingProperties.getProperty(currentRegion)
+				.split(",");
+		final Map<String, String> idAMIMap = new HashMap<>();
+		for (String s : idAMIs) {
+			String[] Strings = s.split(":");
+			idAMIMap.put(Strings[0], Strings[1]);
+		}
+		for (String key : idAMIMap.keySet()) {
+			imageIDComboBox.addItem(key);
+		}
+		
+		imageIDComboBox.setBackground(Color.white);
+
+		imageIDComboBox.setRenderer(new ListCellRenderer<String>() {
+			
+			@Override
+			public Component getListCellRendererComponent(
+					JList<? extends String> list, String value, int index,
+					boolean isSelected, boolean cellHasFocus) {
+				JLabel lbl = new JLabel(value);
+				if (isSelected) {
+					lbl.setForeground(Color.blue);
+				}
+				lbl.setToolTipText(idAMIMap.get(value));
+				return lbl;
+			}
+		});
+		imageIDComboBox.setSelectedIndex(-1);
+		JComboBox<String> computeTypesComboBox = createComputeInputPanel
 				.getComputeTypeComboBox();
-		createComputeInputPanel.setInstanceTypes(defaultRegions);
-		JComboBox<String> numOfComputeTextField = createComputeInputPanel
-				.getNumOfComputeTextField();
+		for (String instanceType : defaultRegions) {
+			computeTypesComboBox.addItem(instanceType);
+		}
+		computeTypesComboBox.setSelectedIndex(0);
+		JComboBox<String> numOfComputeComboBox = createComputeInputPanel
+				.getNumOfComputeComboBox();
 
 		String message = "<html>Give A Compute Infomation!<br>Current Region : "
 				+ currentRegion + ", Group : " + groupName + "</html>";
 		messageLabel.setText(message);
 		if ("Create Compute".equals(title)) {
-			numOfComputeTextField.setSelectedIndex(0);
-			numOfComputeTextField.setEnabled(false);
+			numOfComputeComboBox.setSelectedIndex(0);
+			numOfComputeComboBox.setEnabled(false);
 		}
 
 		String[] inputTexts = new String[4];
 		int result = JOptionPane.showConfirmDialog(mainFrame,
 				createComputeInputPanel, title, JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
+		int imageIDIndex;
 		while (result == JOptionPane.OK_OPTION) {
 			inputTexts[0] = computeNameTextField.getText();
-			inputTexts[1] = imageIDTextField.getText();
-			inputTexts[2] = computeTypeComboBox.getSelectedItem().toString();
-			inputTexts[3] = numOfComputeTextField.getSelectedItem().toString();
+			imageIDIndex = imageIDComboBox.getSelectedIndex();
+			inputTexts[1] = imageIDComboBox.getSelectedItem().toString();
+			inputTexts[2] = computeTypesComboBox.getSelectedItem().toString();
+			inputTexts[3] = numOfComputeComboBox.getSelectedItem().toString();
 			Scanner intScanner = new Scanner(inputTexts[3]);
 			if (!intScanner.hasNextInt() || intScanner.nextInt() <= 0
 					|| "".equals(inputTexts[0]) || "".equals(inputTexts[1])
@@ -131,9 +176,9 @@ public class DialogsUtil {
 								.replace("</html>",
 										"<br>Warnning : Must Properly Fill In All Fields!!!</html>"));
 				computeNameTextField.setText(inputTexts[0]);
-				imageIDTextField.setText(inputTexts[1]);
-				computeTypeComboBox.setSelectedItem(inputTexts[2]);
-				numOfComputeTextField.setSelectedItem(inputTexts[3]);
+				imageIDComboBox.setSelectedIndex(imageIDIndex);
+				computeTypesComboBox.setSelectedItem(inputTexts[2]);
+				numOfComputeComboBox.setSelectedItem(inputTexts[3]);
 				result = JOptionPane.showConfirmDialog(mainFrame,
 						createComputeInputPanel, title,
 						JOptionPane.OK_CANCEL_OPTION,
@@ -265,10 +310,9 @@ public class DialogsUtil {
 		}
 		return null;
 	}
-	
+
 	public static void showErrorDialogExit(Frame mainFrame, String message) {
-		JOptionPane.showMessageDialog(mainFrame,
-				message, mainFrame.getTitle(),
+		JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(),
 				JOptionPane.ERROR_MESSAGE);
 		System.exit(1);
 	}

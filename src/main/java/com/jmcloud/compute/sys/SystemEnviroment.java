@@ -58,6 +58,10 @@ public class SystemEnviroment {
 		return getString("REGION_CONTRY_MAPPING_PATH");
 	}
 
+	public static String getRegionAMIMappingPath() {
+		return getString("REGION_AMI_MAPPING_PATH");
+	}
+
 	public static String getDefaultEC2EnvPath() {
 		return getString("DEFAULT_EC2_ENV_PATH");
 	}
