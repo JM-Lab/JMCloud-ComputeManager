@@ -74,7 +74,7 @@ public class TableViewPanel extends JPanel {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() != 2) {
+				if (e.getClickCount() != 2 || table.getSelectedRow() < 0) {
 					return;
 				}
 				doubleClickAction.actionPerformed(new ActionEvent(e, e.getID(), "Connect Compute"));
