@@ -23,22 +23,22 @@ public class ComputeActionSelector implements JMCloudGUIAction {
 	@Resource(name = "securityGroupAction")
 	JMCloudGUIAction securityGroupAction;
 
-	@Resource(name = "systemAction")
-	JMCloudGUIAction computeSystemAction;
+	@Resource(name = "systemAndHelpAction")
+	JMCloudGUIAction systemAndHelpAction;
 
 	@Override
 	public void doAction(ActionEvent e) {
 		logger.info(GUI_ACTION_LOG + e.getActionCommand());
-		if (e.getActionCommand().matches(".*Group.*")) {
+		if (e.getActionCommand().matches(".* Group.*")) {
 			computeGroupAction.doAction(e);
-		} else if (e.getActionCommand().matches(".*Compute.*")) {
+		} else if (e.getActionCommand().matches(".* Compute.*")) {
 			computeAction.doAction(e);
-		} else if (e.getActionCommand().matches(".*Keypair.*")) {
+		} else if (e.getActionCommand().matches(".* Keypair.*")) {
 			computeKeypairAction.doAction(e);
-		} else if (e.getActionCommand().matches(".*Rule.*")) {
+		} else if (e.getActionCommand().matches(".* Rule.*")) {
 			securityGroupAction.doAction(e);
 		} else {
-			computeSystemAction.doAction(e);
+			systemAndHelpAction.doAction(e);
 		}
 	}
 

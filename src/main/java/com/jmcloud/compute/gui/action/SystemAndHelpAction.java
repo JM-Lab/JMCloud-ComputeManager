@@ -4,12 +4,13 @@ import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.tree.TreePath;
 
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import org.springframework.stereotype.Service;
 import com.jmcloud.compute.sys.SystemEnviroment;
 import com.jmcloud.compute.util.SysUtils;
 
-@Service("systemAction")
+@Service("systemAndHelpAction")
 public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 
 	@Override
@@ -40,12 +41,27 @@ public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 		case "Open User Information":
 			result = openUserInformationAction();
 			break;
-			
+		case "About JMCloud-ComputeManager":
+			result = aboutJMCloudComputeManagerAction();
+			break;			
 		default:
 			return returnErrorMessage(FAILURE_SIGNATURE);
 		}
 		computeManagerGUIModel.updateTree();
 		return result;
+	}
+	
+	
+	private String wikiPage = "https://github.com/JM-Lab/JMCloud-ComputeManager/wiki";
+	
+	private String aboutJMCloudComputeManagerAction() {
+		try {
+			Desktop.getDesktop().browse(new URI(wikiPage));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+			return returnErrorMessage("Can't Connect Wiki : " + wikiPage);
+		}
+		return returnSuccessMessage("Connect Wiki : " + wikiPage);
 	}
 
 	private String openUserInformationAction() {

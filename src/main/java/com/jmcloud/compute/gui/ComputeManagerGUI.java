@@ -67,6 +67,7 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action connectComputeAction = new ConnectComputeAction();
 	
 	private final Action openUserInformationAction = new OpenUserInformationAction();
+	private final Action aboutJMCloudComputeManagerAction = new AboutJMCloudComputeManagerAction();
 	
 	private class AbstractComputeManagerGUIAction extends AbstractAction {
 
@@ -248,6 +249,12 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 	
+	private class AboutJMCloudComputeManagerAction extends AbstractComputeManagerGUIAction {
+		public AboutJMCloudComputeManagerAction() {
+			putValue(NAME, "About JMCloud-ComputeManager");
+		}
+	}
+		
 
 	@Resource(name = "computeManagerGUIModel")
 	private ComputeManagerGUIModel computeManagerGUIModel;
@@ -428,6 +435,7 @@ public class ComputeManagerGUI extends JFrame {
 		mnHelp.add(separator_6);
 		
 		JMenuItem mntmAboutJmcloudcomputemanager = new JMenuItem("About JMCloud-ComputeManager");
+		mntmAboutJmcloudcomputemanager.setAction(aboutJMCloudComputeManagerAction);
 		mnHelp.add(mntmAboutJmcloudcomputemanager);
 
 	}
