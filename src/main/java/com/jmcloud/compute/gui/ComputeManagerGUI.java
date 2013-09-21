@@ -66,7 +66,8 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action terminateComputesAction = new TerminateComputesAction();
 	private final Action connectComputeAction = new ConnectComputeAction();
 	
-
+	private final Action openUserInformationAction = new OpenUserInformationAction();
+	
 	private class AbstractComputeManagerGUIAction extends AbstractAction {
 
 		@Override
@@ -119,8 +120,7 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-	private class ProvisioningGroupAction extends
-			AbstractComputeManagerGUIAction {
+	private class ProvisioningGroupAction extends AbstractComputeManagerGUIAction {
 		public ProvisioningGroupAction() {
 			putValue(NAME, "Provision Group");
 		}
@@ -242,6 +242,11 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 	
+	private class OpenUserInformationAction extends AbstractComputeManagerGUIAction {
+		public OpenUserInformationAction() {
+			putValue(NAME, "Open User Information");
+		}
+	}
 	
 
 	@Resource(name = "computeManagerGUIModel")
@@ -415,8 +420,9 @@ public class ComputeManagerGUI extends JFrame {
 		JMenu mnHelp = new JMenu("Help");
 		mainMenuBar.add(mnHelp);
 		
-		JMenuItem mntmSetAwsInformation = new JMenuItem("Set AWS Information");
-		mnHelp.add(mntmSetAwsInformation);
+		JMenuItem mntmOpenUserInformation = new JMenuItem("Open User Information");
+		mntmOpenUserInformation.setAction(openUserInformationAction);
+		mnHelp.add(mntmOpenUserInformation);
 		
 		Separator separator_6 = new Separator();
 		mnHelp.add(separator_6);

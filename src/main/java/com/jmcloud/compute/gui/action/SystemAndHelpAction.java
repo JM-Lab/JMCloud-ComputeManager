@@ -1,7 +1,9 @@
 package com.jmcloud.compute.gui.action;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -16,7 +18,7 @@ import com.jmcloud.compute.sys.SystemEnviroment;
 import com.jmcloud.compute.util.SysUtils;
 
 @Service("systemAction")
-public class SystemAction extends AbstractJMCloudGUIAction {
+public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 
 	@Override
 	protected String doAbstractAction(ActionEvent e) {
@@ -35,11 +37,28 @@ public class SystemAction extends AbstractJMCloudGUIAction {
 		case "Exit":
 			result = exitAction();
 			break;
+		case "Open User Information":
+			result = openUserInformationAction();
+			break;
+			
 		default:
 			return returnErrorMessage(FAILURE_SIGNATURE);
 		}
 		computeManagerGUIModel.updateTree();
 		return result;
+	}
+
+	private String openUserInformationAction() {
+		File userEnvFile = Paths.get(SystemEnviroment.getUserEnvPath()).toFile();
+		try {
+			Desktop.getDesktop().open(userEnvFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return returnErrorMessage("Can't Open User Infomation File : "
+					+ userEnvFile.getAbsolutePath());
+		}
+		return returnSuccessMessage("Open User Infomation File : "
+				+ userEnvFile.getAbsolutePath());
 	}
 
 	private JFileChooser fileChooser;

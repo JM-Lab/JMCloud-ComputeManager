@@ -118,7 +118,7 @@ public class JMCloudComputeMain {
 			}
 
 			if (!SysUtils.saveProperties(userProperties, userEnvPath,
-					"User Enviroment Properties")) {
+					"User Enviroment Properties\n########### If you change a value, you should restart ###########")) {
 				DialogsUtil.showErrorDialogExit(computeManagerGUI,
 						"Can't Save!!! : "
 								+ userEnvPath.toFile().getAbsolutePath());
