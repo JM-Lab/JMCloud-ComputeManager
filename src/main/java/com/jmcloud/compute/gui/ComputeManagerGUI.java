@@ -46,7 +46,7 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action provisionGroupAction = new ProvisioningGroupAction();
 	private final Action stopGroupAction = new StopGroupAction();
 	private final Action startGroupAction = new StartGroupAction();
-	private final Action rebootGroupAction = new RebootGroupAction();
+//	private final Action rebootGroupAction = new RebootGroupAction();
 	private final Action terminateGroupAction = new TerminateGroupAction();
 	private final Action downloadKeypairAction = new DownloadKeypairAction();
 	private final Action createKeypairAction = new CreateGroupKeypairAction();
@@ -338,9 +338,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartGroup.setAction(startGroupAction);
 		mnGroup.add(mntmStartGroup);
 
-		JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
-		mntmRebootGroup.setAction(rebootGroupAction);
-		mnGroup.add(mntmRebootGroup);
+//		JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
+//		mntmRebootGroup.setAction(rebootGroupAction);
+//		mnGroup.add(mntmRebootGroup);
 
 		JMenuItem mntmTerminateGroup = new JMenuItem("Terminate Group");
 		mntmTerminateGroup.setAction(terminateGroupAction);
@@ -409,9 +409,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartComputes.setAction(startComputesAction);
 		mnCompute.add(mntmStartComputes);
 
-		JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
-		mntmRebootComputes.setAction(rebootComputesAction);
-		mnCompute.add(mntmRebootComputes);
+//		JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
+//		mntmRebootComputes.setAction(rebootComputesAction);
+//		mnCompute.add(mntmRebootComputes);
 
 		JMenuItem mntmTerminateComputes = new JMenuItem("Terminate Computes");
 		mntmTerminateComputes.setAction(terminateComputesAction);
@@ -515,9 +515,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartComputes.setAction(startComputesAction);
 		tablePopupMenu.add(mntmStartComputes);
 
-		JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
-		mntmRebootComputes.setAction(rebootComputesAction);
-		tablePopupMenu.add(mntmRebootComputes);
+//		JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
+//		mntmRebootComputes.setAction(rebootComputesAction);
+//		tablePopupMenu.add(mntmRebootComputes);
 
 		JMenuItem mntmTerminateComputes = new JMenuItem("Terminate Computes");
 		mntmTerminateComputes.setAction(terminateComputesAction);
@@ -562,9 +562,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartGroup.setAction(startGroupAction);
 		treePopupMenu.add(mntmStartGroup);
 
-		JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
-		mntmRebootGroup.setAction(rebootGroupAction);
-		treePopupMenu.add(mntmRebootGroup);
+//		JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
+//		mntmRebootGroup.setAction(rebootGroupAction);
+//		treePopupMenu.add(mntmRebootGroup);
 
 		JMenuItem mntmTerminateGroup = new JMenuItem("Terminate Group");
 		mntmTerminateGroup.setAction(terminateGroupAction);
