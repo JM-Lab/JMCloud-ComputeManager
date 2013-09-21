@@ -88,7 +88,7 @@ public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 			fileChooser.setMultiSelectionEnabled(false);
 		}
 		if (consoleExecutableFile == null) {
-			consoleExecutableFile = getDefaultCurrentSelectedFile();
+			consoleExecutableFile = getConsoleExecutableFile();
 		}
 		if (consoleExecutableFile != null) {
 			fileChooser.setSelectedFile(consoleExecutableFile);
@@ -119,7 +119,7 @@ public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 		return returnErrorMessage("Cancel");
 	}
 
-	private File getDefaultCurrentSelectedFile() {
+	private File getConsoleExecutableFile() {
 		if (SystemEnviroment.getConsoleFilePath() == null) {
 			return null;
 		}

@@ -28,7 +28,8 @@ public class JMCloudComputeMain {
 	private static final String CYGWIN_HOME = "CYGWIN_HOME";
 	private static final String AWS_ACCESS_KEY = "AWS_ACCESS_KEY";
 	private static final String AWS_SECRET_KEY = "AWS_SECRET_KEY";
-	private static final String CONSOLE_FILE_PATH = "CONSOLE_FILE_PATH";
+
+	// private static final String CONSOLE_FILE_PATH = "CONSOLE_FILE_PATH";
 
 	public static void main(String[] args) {
 
@@ -70,28 +71,32 @@ public class JMCloudComputeMain {
 		computeManagerGUI.setLocation((screenSize.width - frameSize.width) / 2,
 				(screenSize.height - frameSize.height) / 2);
 
-		// EC2_HOME env variable check
-		String ec2Home = System.getenv(EC2_HOME);
-
-		if (ec2Home == null || ec2Home.equals("")) {
-			DialogsUtil.showErrorDialogExit(computeManagerGUI,
-					"Set EC2_HOME & bin path environment variable properly!!!");
-		}
-
 		// CYGWIN_HOME env variable check only windows
 		if (SystemEnviroment.getOS().contains("Windows")) {
 			String path = System.getenv("path");
-			if(path == null){
+			if (path == null) {
 				path = System.getenv("PATH");
 			}
 			String cygwinHome = System.getenv(CYGWIN_HOME);
 
 			if (cygwinHome == null || cygwinHome.equals("")
 					|| !path.contains(cygwinHome)) {
-				DialogsUtil.showErrorDialogExit(computeManagerGUI,
-						"Set CYGWIN_HOME & bin path environment variable properly!!!");
+				DialogsUtil
+						.showErrorDialogExit(computeManagerGUI,
+								"Set CYGWIN_HOME & bin path environment variable properly!!!");
 			}
 		}
+
+		EC2EnviromentVO eC2EnviromentVO = context.getBean("eC2EnviromentVO",
+				EC2EnviromentVO.class);
+
+		// EC2_HOME env variable check
+		String ec2Home = System.getenv(EC2_HOME);
+		if (ec2Home == null || ec2Home.equals("")) {
+			DialogsUtil.showErrorDialogExit(computeManagerGUI,
+					"Set EC2_HOME & bin path environment variable properly!!!");
+		}
+		eC2EnviromentVO.setEC2CLIHome(ec2Home);
 
 		// set user properties
 		Path userEnvPath = Paths.get(SystemEnviroment.getUserEnvPath());
@@ -110,33 +115,27 @@ public class JMCloudComputeMain {
 						"Set AWS KEYs properly!!!");
 			}
 
-			userProperties.setProperty(EC2_HOME, ec2Home);
+			// if (SystemEnviroment.getConsoleFilePath() != null) {
+			// userProperties.setProperty(CONSOLE_FILE_PATH,
+			// SystemEnviroment.getConsoleFilePath());
+			// }
 
-			if (SystemEnviroment.getConsoleFilePath() != null) {
-				userProperties.setProperty(CONSOLE_FILE_PATH,
-						SystemEnviroment.getConsoleFilePath());
-			}
-
-			if (!SysUtils.saveProperties(userProperties, userEnvPath,
-					"User Enviroment Properties\n########### If you change a value, you should restart ###########")) {
+			if (!SysUtils
+					.saveProperties(
+							userProperties,
+							userEnvPath,
+							"########### If you change a value, you should restart ###########\nUser Enviroment Properties")) {
 				DialogsUtil.showErrorDialogExit(computeManagerGUI,
 						"Can't Save!!! : "
 								+ userEnvPath.toFile().getAbsolutePath());
 			}
-
 		}
-
-		EC2EnviromentVO eC2EnviromentVO = context.getBean("eC2EnviromentVO",
-				EC2EnviromentVO.class);
-
 		Properties userProperties = SysUtils.getProperties(userEnvPath.toUri());
-		eC2EnviromentVO.setEC2CLIHome(userProperties.getProperty(EC2_HOME));
 		eC2EnviromentVO
 				.setAccessKey(userProperties.getProperty(AWS_ACCESS_KEY));
 		eC2EnviromentVO
 				.setSecretKey(userProperties.getProperty(AWS_SECRET_KEY));
-		SystemEnviroment.setConsoleFilePath(userProperties
-				.getProperty(CONSOLE_FILE_PATH));
+		// SystemEnviroment.setConsoleFilePath(userProperties.getProperty(CONSOLE_FILE_PATH));
 
 		// GUI run
 		SwingUtilities.invokeLater(new Runnable() {
