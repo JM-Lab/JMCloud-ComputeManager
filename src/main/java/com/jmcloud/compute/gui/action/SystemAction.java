@@ -43,7 +43,7 @@ public class SystemAction extends AbstractJMCloudGUIAction {
 	}
 
 	private JFileChooser fileChooser;
-	private File currentSelectedFile;
+	private File consoleExecutableFile;
 
 	private String setConsoleAction() {
 		if (fileChooser == null) {
@@ -52,32 +52,32 @@ public class SystemAction extends AbstractJMCloudGUIAction {
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			fileChooser.setMultiSelectionEnabled(false);
 		}
-		if (currentSelectedFile == null) {
-			currentSelectedFile = getDefaultCurrentSelectedFile();
+		if (consoleExecutableFile == null) {
+			consoleExecutableFile = getDefaultCurrentSelectedFile();
 		}
-		if (currentSelectedFile != null) {
-			fileChooser.setSelectedFile(currentSelectedFile);
+		if (consoleExecutableFile != null) {
+			fileChooser.setSelectedFile(consoleExecutableFile);
 		}
 
 		int status = fileChooser.showOpenDialog(mainFrame);
 
 		if (status == JFileChooser.APPROVE_OPTION) {
-			currentSelectedFile = fileChooser.getSelectedFile();
-			fileChooser.setSelectedFile(currentSelectedFile);
-			SystemEnviroment.setConsoleFilePath(currentSelectedFile
+			consoleExecutableFile = fileChooser.getSelectedFile();
+			fileChooser.setSelectedFile(consoleExecutableFile);
+			SystemEnviroment.setConsoleFilePath(consoleExecutableFile
 					.getAbsolutePath());
 			Path userEnvPath = Paths.get(SystemEnviroment.getUserEnvPath());
 			Properties userProperties = SysUtils.getProperties(userEnvPath
 					.toUri());
 			userProperties.put("CONSOLE_FILE_PATH",
-					currentSelectedFile.getAbsolutePath());
+					consoleExecutableFile.getAbsolutePath());
 			if (SysUtils.saveProperties(userProperties, userEnvPath,
 					"User Enviroment Properties")) {
 				return returnSuccessMessage("Set Console Execution File : "
-						+ currentSelectedFile.getAbsolutePath());
+						+ consoleExecutableFile.getAbsolutePath());
 			}else{
-				return returnErrorMessage("Can't Save File : "
-						+ currentSelectedFile.getAbsolutePath());
+				return returnErrorMessage("Set Console Execution File : "
+						+ consoleExecutableFile.getAbsolutePath());
 			}
 		}
 

@@ -37,7 +37,7 @@ public class ComputeManagerGUI extends JFrame {
 
 	private final Action saveRegionAction = new SaveAction();
 	private final Action loadRegionAction = new LoadAction();
-	private final Action setConsoleAction = new SetConsoleAction();
+//	private final Action setConsoleAction = new SetConsoleAction();
 	private final Action exitAction = new ExitAction();
 
 	private final Action createGroupAction = new CreateGroupAction();
@@ -285,12 +285,12 @@ public class ComputeManagerGUI extends JFrame {
 		Separator separator_2 = new Separator();
 		mnFile.add(separator_2);
 
-		JMenuItem mntmSetConsole = new JMenuItem("Set Console");
-		mntmSetConsole.setAction(setConsoleAction);
-		mnFile.add(mntmSetConsole);
-
-		Separator separator_3 = new Separator();
-		mnFile.add(separator_3);
+//		JMenuItem mntmSetConsole = new JMenuItem("Set Console");
+//		mntmSetConsole.setAction(setConsoleAction);
+//		mnFile.add(mntmSetConsole);
+//
+//		Separator separator_3 = new Separator();
+//		mnFile.add(separator_3);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.setAction(exitAction);
@@ -411,6 +411,18 @@ public class ComputeManagerGUI extends JFrame {
 		JMenuItem mntmConnectCompute = new JMenuItem("Connect Compute");
 		mntmConnectCompute.setAction(connectComputeAction);
 		mnCompute.add(mntmConnectCompute);
+		
+		JMenu mnHelp = new JMenu("Help");
+		mainMenuBar.add(mnHelp);
+		
+		JMenuItem mntmSetAwsInformation = new JMenuItem("Set AWS Information");
+		mnHelp.add(mntmSetAwsInformation);
+		
+		Separator separator_6 = new Separator();
+		mnHelp.add(separator_6);
+		
+		JMenuItem mntmAboutJmcloudcomputemanager = new JMenuItem("About JMCloud-ComputeManager");
+		mnHelp.add(mntmAboutJmcloudcomputemanager);
 
 	}
 

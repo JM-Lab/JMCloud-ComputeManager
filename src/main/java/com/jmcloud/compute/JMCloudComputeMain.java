@@ -101,7 +101,7 @@ public class JMCloudComputeMain {
 
 			Properties userProperties = DialogsUtil
 					.showUserPropertiesInputDialog(computeManagerGUI,
-							"Input Your AWS Information",
+							"Set Your AWS Information",
 							defaultAWSEC2EnvProperties);
 			if (userProperties == null
 					|| "".equals(userProperties.get(AWS_ACCESS_KEY))
