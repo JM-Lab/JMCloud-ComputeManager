@@ -83,7 +83,7 @@ public class JMCloudComputeMain {
 					|| !path.contains(cygwinHome)) {
 				DialogsUtil
 						.showErrorDialogExit(computeManagerGUI,
-								"Set CYGWIN_HOME & bin path environment variable properly!!!");
+								"<html> Set CYGWIN_HOME & bin path environment variable properly!!!<br><a href=https://github.com/JM-Lab/JMCloud-ComputeManager/wiki#requirements>See equirements</a></html>");
 			}
 		}
 
@@ -94,7 +94,7 @@ public class JMCloudComputeMain {
 		String ec2Home = System.getenv(EC2_HOME);
 		if (ec2Home == null || ec2Home.equals("")) {
 			DialogsUtil.showErrorDialogExit(computeManagerGUI,
-					"Set EC2_HOME & bin path environment variable properly!!!");
+					"<html> Set EC2_HOME & bin path environment variable properly!!!<br><a href=https://github.com/JM-Lab/JMCloud-ComputeManager/wiki#requirements>See Requirements</a></html>");
 		}
 		eC2EnviromentVO.setEC2CLIHome(ec2Home);
 
