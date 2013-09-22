@@ -81,8 +81,7 @@ public class JMCloudComputeMain {
 
 			if (cygwinHome == null || cygwinHome.equals("")
 					|| !path.contains(cygwinHome)) {
-				DialogsUtil
-						.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
+				DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
 								"<html>Set CYGWIN_HOME & bin path environment variable properly!!!<br><center>*** See Requirements on the Wiki ***</center></html>");
 			}
 		}
