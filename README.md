@@ -14,13 +14,16 @@ JMCloud-ComputeManager is a stand-alone GUI application for managing Amazon publ
 * Managing keypair of each instance
 
 ## Requirements:
-* JAVA JDK 1.7  
+* JAVA JDK 1.7
 	- set the JAVA_HOME environment variable and bin path
-* the Amazon EC2 API tools (http://aws.amazon.com/developertools/351)
+* the Amazon EC2 API tools
+	- download site : http://aws.amazon.com/developertools/351
 	- set the EC2_HOME environment variable and bin path
-* Amazon AWS account
+* Amazon AWS account 
+	- Web site : http://aws.amazon.com
 * Cygwin for Windows OS
-	- install with openssh package  
+	- download site : http://www.cygwin.com/install.html
+	- install with openssh package
 	- set the CYGWIN_HOME environment variable and bin path
 
 ===========================================================

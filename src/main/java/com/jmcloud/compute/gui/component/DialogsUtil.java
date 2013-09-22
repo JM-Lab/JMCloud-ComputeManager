@@ -3,9 +3,13 @@ package com.jmcloud.compute.gui.component;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -121,11 +125,11 @@ public class DialogsUtil {
 		for (String key : idAMIMap.keySet()) {
 			imageIDComboBox.addItem(key);
 		}
-		
+
 		imageIDComboBox.setBackground(Color.white);
 
 		imageIDComboBox.setRenderer(new ListCellRenderer<String>() {
-			
+
 			@Override
 			public Component getListCellRendererComponent(
 					JList<? extends String> list, String value, int index,
@@ -311,9 +315,15 @@ public class DialogsUtil {
 		return null;
 	}
 
-	public static void showErrorDialogExit(Frame mainFrame, String message) {
+	public static void showErrorDialogAndConnetWikiAndExit(Frame mainFrame, String message) {
 		JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(),
 				JOptionPane.ERROR_MESSAGE);
+		String wikiPage = "https://github.com/JM-Lab/JMCloud-ComputeManager/wiki#requirements";
+		try {
+			Desktop.getDesktop().browse(new URI(wikiPage));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+		}
 		System.exit(1);
 	}
 

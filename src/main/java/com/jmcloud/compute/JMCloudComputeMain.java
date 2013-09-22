@@ -82,8 +82,8 @@ public class JMCloudComputeMain {
 			if (cygwinHome == null || cygwinHome.equals("")
 					|| !path.contains(cygwinHome)) {
 				DialogsUtil
-						.showErrorDialogExit(computeManagerGUI,
-								"Set CYGWIN_HOME & bin path environment variable properly!!!");
+						.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
+								"<html>Set CYGWIN_HOME & bin path environment variable properly!!!<br><center>*** See Requirements on the Wiki ***</center></html>");
 			}
 		}
 
@@ -93,8 +93,8 @@ public class JMCloudComputeMain {
 		// EC2_HOME env variable check
 		String ec2Home = System.getenv(EC2_HOME);
 		if (ec2Home == null || ec2Home.equals("")) {
-			DialogsUtil.showErrorDialogExit(computeManagerGUI,
-					"Set EC2_HOME & bin path environment variable properly!!!");
+			DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
+					"<html>Set EC2_HOME & bin path environment variable properly!!!<br><center>*** See Requirements on the Wiki ***</center></html>");
 		}
 		eC2EnviromentVO.setEC2CLIHome(ec2Home);
 
@@ -111,7 +111,7 @@ public class JMCloudComputeMain {
 			if (userProperties == null
 					|| "".equals(userProperties.get(AWS_ACCESS_KEY))
 					|| "".equals(userProperties.get(AWS_SECRET_KEY))) {
-				DialogsUtil.showErrorDialogExit(computeManagerGUI,
+				DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
 						"Set AWS KEYs properly!!!");
 			}
 
@@ -125,7 +125,7 @@ public class JMCloudComputeMain {
 							userProperties,
 							userEnvPath,
 							"########### If you change a value, you should restart ###########\nUser Enviroment Properties")) {
-				DialogsUtil.showErrorDialogExit(computeManagerGUI,
+				DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
 						"Can't Save!!! : "
 								+ userEnvPath.toFile().getAbsolutePath());
 			}
