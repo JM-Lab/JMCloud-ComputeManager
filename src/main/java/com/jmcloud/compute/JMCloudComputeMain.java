@@ -1,7 +1,6 @@
 package com.jmcloud.compute;
 
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Toolkit;
 import java.io.File;
 import java.nio.file.Path;
@@ -9,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -81,7 +79,9 @@ public class JMCloudComputeMain {
 
 			if (cygwinHome == null || cygwinHome.equals("")
 					|| !path.contains(cygwinHome)) {
-				DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
+				DialogsUtil
+						.showErrorDialogAndConnetWikiAndExit(
+								computeManagerGUI,
 								"<html>Set CYGWIN_HOME & bin path environment variable properly!!!<br><center>*** See Requirements on the Wiki ***</center></html>");
 			}
 		}
@@ -92,8 +92,10 @@ public class JMCloudComputeMain {
 		// EC2_HOME env variable check
 		String ec2Home = System.getenv(EC2_HOME);
 		if (ec2Home == null || ec2Home.equals("")) {
-			DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
-					"<html>Set EC2_HOME & bin path environment variable properly!!!<br><center>*** See Requirements on the Wiki ***</center></html>");
+			DialogsUtil
+					.showErrorDialogAndConnetWikiAndExit(
+							computeManagerGUI,
+							"<html>Set EC2_HOME & bin path environment variable properly!!!<br><center>*** See Requirements on the Wiki ***</center></html>");
 		}
 		eC2EnviromentVO.setEC2CLIHome(ec2Home);
 
@@ -110,8 +112,8 @@ public class JMCloudComputeMain {
 			if (userProperties == null
 					|| "".equals(userProperties.get(AWS_ACCESS_KEY))
 					|| "".equals(userProperties.get(AWS_SECRET_KEY))) {
-				DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
-						"Set AWS KEYs properly!!!");
+				DialogsUtil.showErrorDialogAndConnetWikiAndExit(
+						computeManagerGUI, "Set AWS KEYs properly!!!");
 			}
 
 			// if (SystemEnviroment.getConsoleFilePath() != null) {
@@ -124,8 +126,8 @@ public class JMCloudComputeMain {
 							userProperties,
 							userEnvPath,
 							"########### If you change a value, you should restart ###########\nUser Enviroment Properties")) {
-				DialogsUtil.showErrorDialogAndConnetWikiAndExit(computeManagerGUI,
-						"Can't Save!!! : "
+				DialogsUtil.showErrorDialogAndConnetWikiAndExit(
+						computeManagerGUI, "Can't Save!!! : "
 								+ userEnvPath.toFile().getAbsolutePath());
 			}
 		}
