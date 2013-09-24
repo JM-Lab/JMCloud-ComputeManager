@@ -4,7 +4,7 @@ JMCloud-ComputeManager is a stand-alone GUI application for managing Amazon publ
 ### These functionalities are:
 * Managing Amazon EC2 Instances of all regions on one view
 * Managing a group unit consisting of Amazon EC2 Instances on a region
-* Administrating security goup for a group unit
+* Administrating security group for a group unit
 * Managing keypairs for a group unit
 * Operating group(s) or Amazon EC2 instance(s)
 * Getting existing instance information very easy (such as Public IP...)
