@@ -168,7 +168,6 @@ public class EC2GroupManager implements
 		ComputeVO computeVO = getCompute(computeGroupVO, computeID);
 		String oldComputeName = computeVO.getComputeName();
 		if (computeManager.changeComputeName(computeVO, newComputeName) == null
-				|| !removeCompute(computeGroupVO, oldComputeName)
 				|| !saveComputeGroup(computeGroupVO)) {
 			computeManager.changeComputeName(computeVO, oldComputeName);
 			return false;
