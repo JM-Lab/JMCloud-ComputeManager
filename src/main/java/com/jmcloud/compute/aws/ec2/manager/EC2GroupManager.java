@@ -350,6 +350,7 @@ public class EC2GroupManager implements
 			return false;
 		}
 		try {
+			keypairPath.toFile().setWritable(true);	
 			if(!Files.deleteIfExists(keypairPath)){
 				keypairPath.toFile().deleteOnExit();
 			}
