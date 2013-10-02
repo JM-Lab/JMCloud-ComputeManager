@@ -319,9 +319,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmDeleteGroup.setAction(deleteGroupAction);
 		mnGroup.add(mntmDeleteGroup);
 
-		JMenuItem mntmRenameGroup = new JMenuItem("Rename Group");
-		mntmRenameGroup.setAction(renameGroupAction);
-		mnGroup.add(mntmRenameGroup);
+//		JMenuItem mntmRenameGroup = new JMenuItem("Rename Group");
+//		mntmRenameGroup.setAction(renameGroupAction);
+//		mnGroup.add(mntmRenameGroup);
 
 		Separator separator = new JPopupMenu.Separator();
 		mnGroup.add(separator);
