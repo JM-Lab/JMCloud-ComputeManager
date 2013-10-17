@@ -4,7 +4,7 @@
 
 	<groupId>JMCloud</groupId>
 	<artifactId>JMCloud-ComputeManager</artifactId>
-	<version>dev-0.1.2</version>
+	<version>dev-0.2.0</version>
 	<packaging>jar</packaging>
 
 	<name>JMCloud-ComputeManager</name>
