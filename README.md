@@ -12,6 +12,7 @@ JMCloud-ComputeManager is a stand-alone GUI application for managing Amazon publ
 
 ### In next version, JMCloud-ComputeManager will offer some enhanced functionalities like:
 * Managing keypair of each instance
+* Cloud App Concept Development
 
 ## Requirements:
 * JAVA JDK 1.7
