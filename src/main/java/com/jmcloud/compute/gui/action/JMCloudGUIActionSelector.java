@@ -6,8 +6,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-@Service("computeActionSelector")
-public class ComputeActionSelector implements JMCloudGUIAction {
+@Service("jMCloudGUIActionSelector")
+public class JMCloudGUIActionSelector implements JMCloudGUIAction {
 
 	private static final String GUI_ACTION_LOG = "[GUI Action]\t";
 
@@ -25,6 +25,9 @@ public class ComputeActionSelector implements JMCloudGUIAction {
 
 	@Resource(name = "systemAndHelpAction")
 	JMCloudGUIAction systemAndHelpAction;
+	
+	@Resource(name = "luanchCloudAppAction")
+	JMCloudGUIAction luanchCloudAppAction;
 
 	@Override
 	public void doAction(ActionEvent e) {
@@ -37,6 +40,8 @@ public class ComputeActionSelector implements JMCloudGUIAction {
 			computeKeypairAction.doAction(e);
 		} else if (e.getActionCommand().matches(".* Rule.*")) {
 			securityGroupAction.doAction(e);
+		} else if (e.getActionCommand().matches(".*Luanch .*")) {
+			luanchCloudAppAction.doAction(e);
 		} else {
 			systemAndHelpAction.doAction(e);
 		}

@@ -42,7 +42,7 @@ public class ComputeManagerGUI extends JFrame {
 
 	private final Action createGroupAction = new CreateGroupAction();
 	private final Action deleteGroupAction = new DeleteGroupAction();
-	private final Action renameGroupAction = new RenameGroupAction();
+//	private final Action renameGroupAction = new RenameGroupAction();
 	private final Action provisionGroupAction = new ProvisioningGroupAction();
 	private final Action stopGroupAction = new StopGroupAction();
 	private final Action startGroupAction = new StartGroupAction();
@@ -62,9 +62,11 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action provisionComputesAction = new ProvisioningComputesAction();
 	private final Action stopComputesAction = new StopComputesAction();
 	private final Action startComputesAction = new StartComputesAction();
-	private final Action rebootComputesAction = new RebootComputesAction();
+//	private final Action rebootComputesAction = new RebootComputesAction();
 	private final Action terminateComputesAction = new TerminateComputesAction();
 	private final Action connectComputeAction = new ConnectComputeAction();
+	
+	private final Action launchRServer = new LuanchRServerAction();
 	
 	private final Action openUserInformationAction = new OpenUserInformationAction();
 	private final Action aboutJMCloudComputeManagerAction = new AboutJMCloudComputeManagerAction();
@@ -115,11 +117,11 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-	private class RenameGroupAction extends AbstractComputeManagerGUIAction {
-		public RenameGroupAction() {
-			putValue(NAME, "Rename Group");
-		}
-	}
+//	private class RenameGroupAction extends AbstractComputeManagerGUIAction {
+//		public RenameGroupAction() {
+//			putValue(NAME, "Rename Group");
+//		}
+//	}
 
 	private class ProvisioningGroupAction extends AbstractComputeManagerGUIAction {
 		public ProvisioningGroupAction() {
@@ -225,11 +227,11 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-	private class RebootComputesAction extends AbstractComputeManagerGUIAction {
-		public RebootComputesAction() {
-			putValue(NAME, "Reboot Computes");
-		}
-	}
+//	private class RebootComputesAction extends AbstractComputeManagerGUIAction {
+//		public RebootComputesAction() {
+//			putValue(NAME, "Reboot Computes");
+//		}
+//	}
 
 	private class TerminateComputesAction extends AbstractComputeManagerGUIAction {
 		public TerminateComputesAction() {
@@ -240,6 +242,12 @@ public class ComputeManagerGUI extends JFrame {
 	private class ConnectComputeAction extends AbstractComputeManagerGUIAction {
 		public ConnectComputeAction() {
 			putValue(NAME, "Connect Compute");
+		}
+	}
+	
+	private class LuanchRServerAction extends AbstractComputeManagerGUIAction {
+		public LuanchRServerAction() {
+			putValue(NAME, "Luanch R Server");
 		}
 	}
 	
@@ -259,7 +267,7 @@ public class ComputeManagerGUI extends JFrame {
 	@Resource(name = "computeManagerGUIModel")
 	private ComputeManagerGUIModel computeManagerGUIModel;
 
-	@Resource(name = "computeActionSelector")
+	@Resource(name = "jMCloudGUIActionSelector")
 	private JMCloudGUIAction action;
 
 	private JTree tree;
@@ -423,6 +431,14 @@ public class ComputeManagerGUI extends JFrame {
 		JMenuItem mntmConnectCompute = new JMenuItem("Connect Compute");
 		mntmConnectCompute.setAction(connectComputeAction);
 		mnCompute.add(mntmConnectCompute);
+		
+		JMenu mnCloudApps = new JMenu("Cloud Apps");
+		mainMenuBar.add(mnCloudApps);
+		
+		JMenuItem mntmLuanchRServer = new JMenuItem("Luanch R Server");
+		mntmLuanchRServer.setSelected(true);
+		mntmLuanchRServer.setAction(launchRServer);
+		mnCloudApps.add(mntmLuanchRServer);
 		
 		JMenu mnHelp = new JMenu("Help");
 		mainMenuBar.add(mnHelp);

@@ -42,9 +42,14 @@ public class SystemEnviroment {
 		return getString("IMAGES_DIR");
 	}
 
+
 	public static String getFlagImagesDir() {
 		return getString("FLAG_IMAGES_DIR");
 	}
+	
+	public static String getCloudAppDir() {
+		return getString("CLOUD_APP_DIR");
+	}	
 
 	public static String getSpringConfPath() {
 		return getString("SPRING_CONF_PATH");
