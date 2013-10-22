@@ -67,7 +67,8 @@ public class SysUtils {
 				saveFile.createNewFile();
 			}
 			BufferedWriter writer = Files.newBufferedWriter(saveFilePath,
-					Charset.forName("UTF-8"), StandardOpenOption.TRUNCATE_EXISTING);
+					Charset.forName("UTF-8"),
+					StandardOpenOption.TRUNCATE_EXISTING);
 			inProperties.store(writer, comment);
 			writer.close();
 			return true;
@@ -85,4 +86,16 @@ public class SysUtils {
 			e.printStackTrace();
 		}
 	}
+
+	private static final String CYGWIN_ROOT_PATH = "/cygdrive/";
+
+	public static String convertIntoCygwinPath(String windowsPath) {
+		String cygwinPath = windowsPath.replace("\\\\", "/").replace("\\", "/");
+		if(cygwinPath.contains(":")){
+			String[] tempStringArray = cygwinPath.split(":", 2);
+			cygwinPath = tempStringArray[0].toLowerCase()+tempStringArray[1];
+		}
+		return CYGWIN_ROOT_PATH + cygwinPath ;
+	}
+
 }

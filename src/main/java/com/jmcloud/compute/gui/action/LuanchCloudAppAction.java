@@ -53,9 +53,10 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 	@Override
 	protected String doAbstractAction(ActionEvent e) {
 		String result = checkEnv(e);
-		if (result.contains(FAILURE_SIGNATURE)) {
+		if (result.contains(FAILURE_SIGNATURE)){
 			return result;
 		}
+
 		// id 는 현재 ubuntu 만 지원
 		id = "ubuntu";
 		publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
@@ -71,6 +72,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		return result;
 	}
 
+
 	private String checkEnv(ActionEvent e) {
 		if (selectionRows.length != 1) {
 			return returnErrorMessage("Must Select Only One Compute On The Table View!!!");
@@ -79,12 +81,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 				selectionRow, STATUS_INDEX))) {
 			return returnErrorMessage("Only Running Status, Can Connet Compute!!!");
 		}
-		keypair = SystemEnviroment.getKeypairDir()
-				+ computeManagerGUIModel.getComputeInfo(selectionRow,
-						KEYPAIR_INDEX);
-		if (!new File(keypair).exists()) {
-			return returnErrorMessage("Keypair File Dosen't Exist!!!");
-		}
+
 		return SUCCESS_SIGNATURE;
 	}
 
@@ -120,15 +117,15 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		if (luanchApp(luanchPackName).contains(FAILURE_SIGNATURE)) {
 			return LUANCH_PROCESS_FAILURE;
 		}
-		
+
 		SysUtils.sleep(1);
-		
+
 		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
 				+ "Connect An App");
 		if (connectApp().contains(FAILURE_SIGNATURE)) {
 			return LUANCH_PROCESS_FAILURE;
 		}
-		
+
 		showNextSteps();
 
 		return SUCCESS_SIGNATURE;
@@ -137,9 +134,12 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 	private void showNextSteps() {
 		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
 				+ "Next Steps Are As Follows...");
-		computeManagerGUIModel.showResult("1. create a linux account, ex) sudo passwd ubuntu");
-		computeManagerGUIModel.showResult("2. login R server with the account, ex) account = ubuntu");
-		computeManagerGUIModel.showResult("3. run a following example on R Server.");
+		computeManagerGUIModel
+				.showResult("1. create a linux account, ex) sudo passwd ubuntu");
+		computeManagerGUIModel
+				.showResult("2. login R server with the account, ex) account = ubuntu");
+		computeManagerGUIModel
+				.showResult("3. run a following example on R Server.");
 		computeManagerGUIModel.showResult("x<-rnorm(10)");
 		computeManagerGUIModel.showResult("x");
 		computeManagerGUIModel.showResult("mean(x)");
@@ -147,7 +147,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 	}
 
 	private String connectApp() {
-		String AppURL = "http://"+publicIP+":8787";
+		String AppURL = "http://" + publicIP + ":8787";
 		logger.info("Connect An App : " + AppURL);
 		try {
 			Desktop.getDesktop().browse(new URI(AppURL));
@@ -171,14 +171,14 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 
 			BufferedReader stdErr = new BufferedReader(new InputStreamReader(
 					process.getErrorStream()));
-			
+
 			computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
 					+ "Progressing Are As Follows...");
 			Thread stdOutThread = getStdOutThread(stdOut);
 			Thread stdErrThread = getStdErrThread(stdErr);
 			stdOutThread.start();
 			stdErrThread.start();
-			
+
 			if (process.waitFor() != 0) {
 				return returnErrorMessage("Can't Luanch An App!!!");
 			}
@@ -275,6 +275,15 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 	}
 
 	private String mkdirWorkingDir() {
+		keypair = SystemEnviroment.getKeypairDir()
+				+ computeManagerGUIModel.getComputeInfo(selectionRow,
+						KEYPAIR_INDEX);
+		if (!new File(keypair).exists()) {
+			return returnErrorMessage("Keypair File Dosen't Exist!!!");
+		}
+		if (SystemEnviroment.getOS().contains("Windows")) {
+			keypair = SysUtils.convertIntoCygwinPath(keypair);
+		}
 		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair
 				+ " " + id + "@" + publicIP + " mkdir -p " + cloudAppRootDir;
 		logger.info("Command To Make Cloud App Directory : "
@@ -304,6 +313,9 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 			return returnErrorMessage(luanchPackName + " Doesn't Exist!!!");
 		}
 		String luanchPackFilePath = luanchPack.toFile().getAbsolutePath();
+		if (SystemEnviroment.getOS().contains("Windows")) {
+			luanchPackFilePath = SysUtils.convertIntoCygwinPath(luanchPackFilePath);
+		}
 		String commonCommand = "scp -o StrictHostKeyChecking=no -i " + keypair
 				+ " " + luanchPackFilePath + " " + id + "@" + publicIP + ":~/"
 				+ cloudAppRootDir;
