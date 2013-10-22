@@ -29,6 +29,7 @@ import org.springframework.stereotype.Service;
 import com.jmcloud.compute.aws.ec2.sys.EC2EnviromentVO;
 import com.jmcloud.compute.gui.component.DialogsUtil;
 import com.jmcloud.compute.sys.SystemEnviroment;
+import com.jmcloud.compute.util.SysUtils;
 import com.jmcloud.compute.vo.ComputeVO;
 
 @Service("computeAction")
@@ -79,6 +80,9 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 		if (!new File(keypair).exists()) {
 			return returnErrorMessage("Keypair File Dosen't Exist!!!");
 		}
+		if (SystemEnviroment.getOS().contains("Windows")) {
+			keypair = SysUtils.convertIntoCygwinPath(keypair);
+		}
 
 		String id = showInputDialog("Input "
 				+ computeManagerGUIModel.getComputeInfo(selectionRow,
@@ -91,10 +95,8 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 				PUBLIC_IP_INDEX);
 		
 		List<String> command = new ArrayList<>();
-		String commonCommand = "ssh -i " + keypair + " " + id + "@" + publicIP;
+		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair + " " + id + "@" + publicIP;
 		if (SystemEnviroment.getOS().contains("Windows")) {
-			commonCommand = commonCommand.replace("\\", "\\\\");
-			commonCommand = commonCommand.replace("/", "\\\\");
 			command.add("cmd");
 			command.add("/c");
 			command.add("start");
