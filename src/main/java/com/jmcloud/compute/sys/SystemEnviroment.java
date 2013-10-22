@@ -47,10 +47,6 @@ public class SystemEnviroment {
 		return getString("FLAG_IMAGES_DIR");
 	}
 	
-	public static String getCloudAppDir() {
-		return getString("CLOUD_APP_DIR");
-	}	
-
 	public static String getSpringConfPath() {
 		return getString("SPRING_CONF_PATH");
 	}
@@ -70,6 +66,10 @@ public class SystemEnviroment {
 	public static String getDefaultEC2EnvPath() {
 		return getString("DEFAULT_EC2_ENV_PATH");
 	}
+
+	public static String getCloudAppDir() {
+		return getInstallDirPlusString("CLOUD_APP_DIR");
+	}	
 
 	public static String getUserEnvPath() {
 		return getInstallDirPlusString("USER_ENV_PATH");
