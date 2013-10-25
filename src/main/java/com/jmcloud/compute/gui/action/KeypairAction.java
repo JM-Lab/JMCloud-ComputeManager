@@ -1,8 +1,10 @@
 package com.jmcloud.compute.gui.action;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,13 +13,16 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.sys.SystemEnviroment;
-import com.jmcloud.compute.sys.SystemString;
 
 @Service("keypairAction")
 public class KeypairAction extends AbstractJMCloudGUIAction {
@@ -44,25 +49,27 @@ public class KeypairAction extends AbstractJMCloudGUIAction {
 	private String downloadKeypairAction() {
 		String keypair = computeManagerGUIModel.getGroupKeypair(
 				regionOfselectionGroup, selectionGroup);
-		Path keypairFilePath = Paths.get(SystemEnviroment.getKeypairDir(), keypair);
+		Path keypairFilePath = Paths.get(SystemEnviroment.getKeypairDir(),
+				keypair);
 		if (keypairFilePath.toFile().isDirectory()
 				|| !keypairFilePath.toFile().exists()) {
 			return returnErrorMessage(keypair
 					+ " Never Created A Group Keypair By JMCloud Compute Manager!!!");
 		}
+
 		URI targetURI = getTargetFilePath();
 
 		if (targetURI == null) {
 			return returnErrorMessage(CANCEL_SIGNATURE);
 		}
-		startProgressSpinner();
 		try {
 			Path targetFilePath = Paths.get(targetURI);
 			Files.copy(keypairFilePath, targetFilePath);
-			Set<PosixFilePermission> perms = PosixFilePermissions.fromString("r--------");
+			Set<PosixFilePermission> perms = PosixFilePermissions
+					.fromString("r--------");
 			Files.setPosixFilePermissions(targetFilePath, perms);
-		} catch (UnsupportedOperationException ue){
-			keypairFilePath.toFile().setReadOnly();			
+		} catch (UnsupportedOperationException ue) {
+			keypairFilePath.toFile().setReadOnly();
 		} catch (IOException e) {
 			e.printStackTrace();
 			return returnErrorMessage(keypair + " Can't Download!!!");
@@ -71,18 +78,30 @@ public class KeypairAction extends AbstractJMCloudGUIAction {
 	}
 
 	private URI getTargetFilePath() {
+
 		if (jFileChooser == null) {
 			jFileChooser = new JFileChooser();
 		}
-
 		jFileChooser.setSelectedFile(new File(computeManagerGUIModel
 				.getGroupKeypair(regionOfselectionGroup, selectionGroup)
 				+ keypairExtention));
 
-		if (jFileChooser.showSaveDialog(mainFrame) == JFileChooser.APPROVE_OPTION) {
-			return jFileChooser.getSelectedFile().toURI();
+		try {
+			SwingUtilities.invokeAndWait(new Runnable() {
+				@Override
+				public void run() {
+
+					if (jFileChooser.showSaveDialog(mainFrame) != JFileChooser.APPROVE_OPTION) {
+						jFileChooser.setSelectedFile(null);
+					}
+				}
+			});
+		} catch (InvocationTargetException | InterruptedException e) {
+			e.printStackTrace();
+			logger.fatal(e);
 		}
-		return null;
+		return jFileChooser.getSelectedFile() != null ? jFileChooser
+				.getSelectedFile().toURI() : null;
 	}
 
 	private String createGroupKeypairAction(String command) {
