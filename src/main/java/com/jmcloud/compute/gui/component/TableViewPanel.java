@@ -56,9 +56,10 @@ public class TableViewPanel extends JPanel {
 		table.setCellSelectionEnabled(true);
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		table.setAutoCreateRowSorter(true);
+//		table.setAutoCreateRowSorter(true);
 		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(
 				table.getModel());
+		sorter.setSortsOnUpdates(false);
 		table.setRowSorter(sorter);
 		scrollPane.setViewportView(table);
 		JLabel lblNewLabel = new JLabel("Compute Infomation");

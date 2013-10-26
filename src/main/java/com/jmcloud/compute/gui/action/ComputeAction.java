@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -93,9 +94,10 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 
 		String publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
 				PUBLIC_IP_INDEX);
-		
+
 		List<String> command = new ArrayList<>();
-		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair + " " + id + "@" + publicIP;
+		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair
+				+ " " + id + "@" + publicIP;
 		if (SystemEnviroment.getOS().contains("Windows")) {
 			command.add("cmd");
 			command.add("/c");
@@ -230,37 +232,72 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 		ComputesAction computesAction = getComputesActionList().get(
 				actionCommand);
 		startProgressSpinner();
+
 		for (int row : selectionRows) {
-			String status = computeManagerGUIModel.getComputeInfo(row,
-					STATUS_INDEX);
-			String groupName = computeManagerGUIModel.getComputeInfo(row,
-					GROUP_INDEX);
-			String computeID = computeManagerGUIModel.getComputeInfo(row,
-					COMPUTE_ID_INDEX);
-			String region = computeManagerGUIModel.getComputeInfo(row,
-					REGION_INDEX);
+			ComputeVO tempComputeVO = new ComputeVO();
+			tempComputeVO.setStatus(computeManagerGUIModel.getComputeInfo(row,
+					STATUS_INDEX));
+			tempComputeVO.setComputeGroupName(computeManagerGUIModel
+					.getComputeInfo(row, GROUP_INDEX));
+			tempComputeVO.setComputeID(computeManagerGUIModel.getComputeInfo(
+					row, COMPUTE_ID_INDEX));
+			tempComputeVO.setRegion(computeManagerGUIModel.getComputeInfo(row,
+					REGION_INDEX));
+			tempComputeVOList.add(tempComputeVO);
+		}
+
+		int currentTableRowCount = computeManagerGUIModel.getTableRowCount();
+		
+		List<ComputeVO> updateComputeVOList = new ArrayList<ComputeVO>();
+		
+		for (ComputeVO computeVO : tempComputeVOList) {
+			String status = computeVO.getStatus();
+			String groupName = computeVO.getComputeGroupName();
+			String computeID = computeVO.getComputeID();
+			String region = computeVO.getRegion();
 			computeManagerGUIModel.showProgressResult("[" + actionCommand
 					+ "] " + computeID);
+
+			List<String> beforeComputeIDsList = getAllComputeIDsOnTable(currentTableRowCount);
+
 			if (!doProgressMethod(computesAction.checkStatus(status)
 					&& computesAction.doComputesAction(region, groupName,
 							computeID))) {
 				continue;
 			}
 
-			String newComputeID = computeManagerGUIModel.getComputeInfo(row,
-					COMPUTE_ID_INDEX);
+			List<String> afterComputeIDsList = getAllComputeIDsOnTable(currentTableRowCount);
+
+			String newComputeID = computeID;
+
+			for (String afterComputeID : afterComputeIDsList) {
+				if(!beforeComputeIDsList.contains(afterComputeID)){
+					newComputeID = afterComputeID;
+				}
+			}
+
+
 			if (!computeID.equals(newComputeID)) {
 				computeManagerGUIModel.showProgressResult("[" + actionCommand
 						+ "] " + computeID + " ComputeID has changed into "
 						+ newComputeID + " !!!\n");
 			}
-			tempComputeVOList.add(getTempComputeVO(region, groupName,
+			updateComputeVOList.add(getTempComputeVO(region, groupName,
 					newComputeID));
 			computeNames.append("\t");
 			computeNames.append(newComputeID);
 		}
-		computesAction.updateStatus(tempComputeVOList);
+		computesAction.updateStatus(updateComputeVOList);
 		return computeNames.toString();
+	}
+
+	private List<String> getAllComputeIDsOnTable(int currentTableRowCount) {
+		List<String> computeIDsList = new ArrayList<>();
+		for (int row = 0; row < currentTableRowCount; row++) {
+			computeIDsList.add(computeManagerGUIModel
+							.getComputeInfo(row, COMPUTE_ID_INDEX));
+		}
+		return computeIDsList;
 	}
 
 	private ComputeVO getTempComputeVO(String region, String groupName,

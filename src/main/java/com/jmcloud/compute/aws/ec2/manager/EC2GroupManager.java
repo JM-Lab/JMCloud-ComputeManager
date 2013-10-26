@@ -372,7 +372,7 @@ public class EC2GroupManager implements
 	}
 
 	@Override
-	public ComputeVO updateComputeStatus(ComputeVO computeVO) {
+	synchronized public ComputeVO updateComputeStatus(ComputeVO computeVO) {
 		String computeInfo = computeManager.getComputeInfo(computeVO);
 		if (EC2Util.isExistFalse(computeInfo)) {
 			return null;

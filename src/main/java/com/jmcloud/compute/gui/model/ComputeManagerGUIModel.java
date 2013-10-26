@@ -457,6 +457,10 @@ public class ComputeManagerGUIModel {
 		}
 		return groupNameList.toArray(new String[groupNameList.size()]);
 	}
+	
+	public int getTableRowCount(){
+		return table.getRowCount();
+	}
 
 	public boolean saveGroup(String region, String groupName) {
 		return jMCloudComputeManager.saveComputeGroup(region, groupName);
