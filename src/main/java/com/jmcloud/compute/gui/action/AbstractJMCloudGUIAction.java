@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -125,7 +126,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 
 	protected void startProgressSpinner() {
 		progressSpinnerRunnable = new ProgressSpinnerRunnable();
-		new Thread(progressSpinnerRunnable).start();
+		SwingUtilities.invokeLater(progressSpinnerRunnable);
 		while (!progressSpinnerRunnable.isShowing()) {
 			SysUtils.sleep(1);
 		}
