@@ -48,7 +48,7 @@ public class TableViewPanelModel extends AbstractTableModel {
 	}
 
 	public void clearTable() {
-		dataList.clear();
+		dataList = new ArrayList<String[]>();
 		fireTableDataChanged();
 	}
 
