@@ -122,10 +122,9 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 		return method;
 	}
 
-	private ProgressSpinnerRunnable progressSpinnerRunnable;
+	private ProgressSpinnerRunnable progressSpinnerRunnable = new ProgressSpinnerRunnable();
 
 	protected void startProgressSpinner() {
-		progressSpinnerRunnable = new ProgressSpinnerRunnable();
 		SwingUtilities.invokeLater(progressSpinnerRunnable);
 		while (!progressSpinnerRunnable.isShowing()) {
 			SysUtils.sleep(1);
@@ -135,7 +134,6 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 	protected void stopProgressSpinner() {
 		SysUtils.sleep(1);
 		progressSpinnerRunnable.stop();
-		progressSpinnerRunnable = null;
 	}
 
 	@Override
@@ -163,19 +161,17 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 	abstract protected String doAbstractAction(ActionEvent e);
 
 	class ProgressSpinnerRunnable implements Runnable {
-		private JDialog progressSpinnerJdialog;
+		private JDialog progressSpinnerJdialog = DialogsUtil
+				.getProgressSpinner(mainFrame);
 
 		@Override
 		public void run() {
-			progressSpinnerJdialog = DialogsUtil.getProgressSpinner(mainFrame);
 			progressSpinnerJdialog.setLocationRelativeTo(mainFrame);
 			progressSpinnerJdialog.setVisible(true);
 		}
 
 		public void stop() {
 			progressSpinnerJdialog.setVisible(false);
-			progressSpinnerJdialog.dispose();
-			progressSpinnerJdialog = null;
 		}
 
 		public boolean isShowing() {
