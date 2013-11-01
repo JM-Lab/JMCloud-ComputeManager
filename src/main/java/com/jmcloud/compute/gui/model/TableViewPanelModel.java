@@ -28,7 +28,7 @@ public class TableViewPanelModel extends AbstractTableModel {
 			"Private IP", "Security Group", "Keypair", "Region", "Compute ID",
 			"Image ID", "Compute Type", "Time" };
 
-	private List<String[]> dataList = new ArrayList<String[]>();
+	volatile private List<String[]> dataList = new ArrayList<String[]>();
 
 	public void addRows(ComputeGroupVO cgvo) {
 		Collection<ComputeVO> computes = cgvo.getComputesList().values();

@@ -152,7 +152,7 @@ public class DialogsUtil {
 		JComboBox<String> numOfComputeComboBox = createComputeInputPanel
 				.getNumOfComputeComboBox();
 
-		String message = "<html>Give A Compute Infomation!<br>Current Region : "
+		String message = "<html>Input A Compute Infomation!<br>Current Region : "
 				+ currentRegion + ", Group : " + groupName + "</html>";
 		messageLabel.setText(message);
 		if ("Create Compute".equals(title)) {
@@ -207,7 +207,7 @@ public class DialogsUtil {
 				.getPortRangeTextField();
 		JTextField ipRangeTextField = securityRuleInputJPanel
 				.getIpRangeTextField();
-		String message = "<html>Give Security Rule!<br>Current Region : "
+		String message = "<html>Input Security Rule!<br>Current Region : "
 				+ region + ", Group : " + groupName + "</html>";
 		messageLabel.setText(message);
 
@@ -252,7 +252,7 @@ public class DialogsUtil {
 				.getComputeNameTextField();
 		JCheckBox setDefaultSecurityChckbx = createComputeGroupInputJPanel
 				.getSetDefaultSecurityChckbx();
-		String message = "<html>Give A Group Name!<br>Selected Region : "
+		String message = "<html>Input A Group Name!<br>Selected Region : "
 				+ region + "</html>";
 		messageLabel.setText(message);
 
@@ -288,7 +288,7 @@ public class DialogsUtil {
 				.getAccessKeyTextField();
 		JTextField secretKeyTextField = userPropertiesInputJPanel
 				.getSecretKeyTextField();
-		String message = "<html>Give Your AWS EC2 Properties!<br>Save As : "
+		String message = "<html>Input Your AWS EC2 Properties!<br>Save As : "
 				+ SystemEnviroment.getUserEnvPath().replace("\\", "/")
 				+ "</html>";
 		messageLabel.setText(message);

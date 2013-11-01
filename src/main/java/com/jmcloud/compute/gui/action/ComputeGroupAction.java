@@ -108,7 +108,7 @@ public class ComputeGroupAction extends AbstractJMCloudGUIAction {
 		if (!isSelectedOnlyGroup()) {
 			return returnErrorMessage("Must Select Only One Group On The Tree View!!!");
 		}
-		String newGroupName = showInputDialog("Give A New Group Name!");
+		String newGroupName = showInputDialog("Input A New Group Name!");
 		if (newGroupName == null) {
 			return returnErrorMessage(CANCEL_SIGNATURE);
 		} else if ("".equals(newGroupName)) {
