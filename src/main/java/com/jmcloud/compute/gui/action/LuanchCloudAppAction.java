@@ -14,40 +14,50 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.jmcloud.compute.aws.ec2.util.EC2Util;
+import com.jmcloud.compute.gui.action.cloudapps.CloudApp;
 import com.jmcloud.compute.sys.SystemCloudApp;
 import com.jmcloud.compute.sys.SystemEnviroment;
 import com.jmcloud.compute.util.SysUtils;
 
 @Service("luanchCloudAppAction")
 public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
+	@Resource(name = "rServer")
+	private CloudApp rServer;
+	
+	private CloudApp hadoopPsudo;
 
 	private static final String LUANCH_CLOUD_APP_PROCESS = "[Luanch Cloud App Process]\t";
 
 	private static final String LUANCH_PROCESS_FAILURE = LUANCH_CLOUD_APP_PROCESS
 			+ "Luanch Process Failure!!!";
+	// id 는 현재 ubuntu 만 지원
+	private final String id = "ubuntu";
+
+	private final String cloudAppRootDir = "cloudapp/";
 
 	protected int selectionRow;
 	protected int[] selectionRows;
 
 	private String keypair;
 
-	private String id;
-
 	private String publicIP;
 
-	private String cloudAppRootDir = "cloudapp/";
 
 	@Override
 	protected void initAction(ActionEvent e) {
 		super.initAction(e);
 		this.selectionRow = computeManagerGUIModel.getSelectionRow();
 		this.selectionRows = computeManagerGUIModel.getSelectionRows();
+		publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
+				PUBLIC_IP_INDEX);
+		keypair = SystemEnviroment.getKeypairDir()
+				+ computeManagerGUIModel.getComputeInfo(selectionRow,
+						KEYPAIR_INDEX);
 	}
 
 	@Override
@@ -57,15 +67,10 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 			return result;
 		}
 
-		// id 는 현재 ubuntu 만 지원
-		id = "ubuntu";
-		publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
-				PUBLIC_IP_INDEX);
-
 		if ("Luanch R Server".equals(e.getActionCommand())) {
-			result = luanchRServer();
+			result = luanchApp(rServer);
 		} else if ("Luanch Hadoop Psudo".equals(e.getActionCommand())) {
-			result = luanchHadoopPsudo();
+			result = luanchApp(hadoopPsudo);
 		} else {
 			result = LUANCH_PROCESS_FAILURE;
 		}
@@ -85,12 +90,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		return SUCCESS_SIGNATURE;
 	}
 
-	private String luanchHadoopPsudo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private String luanchRServer() {
+	private String luanchApp(CloudApp cloudApp) {
 		startProgressSpinner();
 		// TODO 방화벽 여는 것 추가 필요
 		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
@@ -113,144 +113,148 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		}
 
 		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
-				+ "Luanch An App");
-		if (luanchApp(luanchPackName).contains(FAILURE_SIGNATURE)) {
-			return LUANCH_PROCESS_FAILURE;
-		}
-
-		SysUtils.sleep(1);
-
-		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
-				+ "Connect An App");
-		if (connectApp().contains(FAILURE_SIGNATURE)) {
-			return LUANCH_PROCESS_FAILURE;
-		}
-
-		showNextSteps();
+				+ "Start to Luanch An App");
+		cloudApp.luanchApp(mainFrame, cloudAppRootDir, publicIP, keypair, id, luanchPackName);
+		
+//		if (cloudApp.luanchApp().contains(FAILURE_SIGNATURE)) {
+//			return LUANCH_PROCESS_FAILURE;
+//		}
+//
+//		SysUtils.sleep(1);
+//
+//		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
+//				+ "Connect An App");
+//		if (cloudApp.connectApp().contains(FAILURE_SIGNATURE)) {
+//			return LUANCH_PROCESS_FAILURE;
+//		}
+//
+//		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
+//				+ "Next Steps Are As Follows...");
+//		cloudApp.showNextSteps();
 
 		return SUCCESS_SIGNATURE;
 	}
 
-	private void showNextSteps() {
-		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
-				+ "Next Steps Are As Follows...");
-		computeManagerGUIModel
-				.showResult("1. create a linux account, ex) sudo passwd ubuntu");
-		computeManagerGUIModel
-				.showResult("2. login R server with the account, ex) account = ubuntu");
-		computeManagerGUIModel
-				.showResult("3. run a following example on R Server.");
-		computeManagerGUIModel.showResult("x<-rnorm(10)");
-		computeManagerGUIModel.showResult("x");
-		computeManagerGUIModel.showResult("mean(x)");
-		computeManagerGUIModel.showResult("hist(x)");
-	}
-
-	private String connectApp() {
-		String AppURL = "http://" + publicIP + ":8787";
-		logger.info("Connect An App : " + AppURL);
-		try {
-			Desktop.getDesktop().browse(new URI(AppURL));
-		} catch (IOException | URISyntaxException e) {
-			e.printStackTrace();
-			return returnErrorMessage("Can't Connect An App : " + AppURL);
-		}
-		return returnSuccessMessage(AppURL);
-	}
-
-	private String luanchApp(String luanchPackName) {
-		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair
-				+ " " + id + "@" + publicIP + " sudo sh " + cloudAppRootDir
-				+ luanchPackName + "/" + luanchPackName + ".sh";
-		logger.info("Command To Luanch An App : " + printCommand(commonCommand));
-		Process process;
-		try {
-			process = new ProcessBuilder(commonCommand.split(" ")).start();
-			BufferedReader stdOut = new BufferedReader(new InputStreamReader(
-					process.getInputStream()));
-
-			BufferedReader stdErr = new BufferedReader(new InputStreamReader(
-					process.getErrorStream()));
-
-			computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
-					+ "Progressing Are As Follows...");
-			Thread stdOutThread = getStdOutThread(stdOut);
-			Thread stdErrThread = getStdErrThread(stdErr);
-			stdOutThread.start();
-			stdErrThread.start();
-
-			if (process.waitFor() != 0) {
-				return returnErrorMessage("Can't Luanch An App!!!");
-			}
-
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-			logger.fatal(e);
-			return returnErrorMessage("Can't Luanch An App!!!");
-		}
-
-		return returnSuccessMessage(publicIP);
-	}
-
-	protected Thread getStdOutThread(final BufferedReader stdOut) {
-		return new Thread(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				String resultLine;
-				try {
-					while ((resultLine = stdOut.readLine()) != null) {
-						writeSTDOut(resultLine);
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	protected Thread getStdErrThread(final BufferedReader stdErr) {
-		return new Thread(new Runnable() {
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				String resultLine;
-				try {
-					while ((resultLine = stdErr.readLine()) != null) {
-						System.err.println(resultLine);
-						writeErr(resultLine);
-					}
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	protected void stdOutAndErr(BufferedReader stdOut, BufferedReader stdErr)
-			throws IOException {
-		String resultLine;
-
-		while ((resultLine = stdOut.readLine()) != null) {
-			writeSTDOut(resultLine);
-		}
-
-		while ((resultLine = stdErr.readLine()) != null) {
-			writeErr(resultLine);
-		}
-	}
-
-	protected void writeSTDOut(String line) {
-		computeManagerGUIModel.showResult(line);
-		logger.info(line);
-	}
-
-	protected void writeErr(String line) {
-		computeManagerGUIModel.showResult(line);
-		logger.fatal(line);
-	}
+//	private void showNextSteps() {
+//		computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
+//				+ "Next Steps Are As Follows...");
+//		computeManagerGUIModel
+//				.showResult("1. create a linux account, ex) sudo passwd ubuntu");
+//		computeManagerGUIModel
+//				.showResult("2. login R server with the account, ex) account = ubuntu");
+//		computeManagerGUIModel
+//				.showResult("3. run a following example on R Server.");
+//		computeManagerGUIModel.showResult("x<-rnorm(10)");
+//		computeManagerGUIModel.showResult("x");
+//		computeManagerGUIModel.showResult("mean(x)");
+//		computeManagerGUIModel.showResult("hist(x)");
+//	}
+//
+//	private String connectApp() {
+//		String AppURL = "http://" + publicIP + ":8787";
+//		logger.info("Connect An App : " + AppURL);
+//		try {
+//			Desktop.getDesktop().browse(new URI(AppURL));
+//		} catch (IOException | URISyntaxException e) {
+//			e.printStackTrace();
+//			return returnErrorMessage("Can't Connect An App : " + AppURL);
+//		}
+//		return returnSuccessMessage(AppURL);
+//	}
+//
+//	private String luanchRServer(String luanchPackName) {
+//		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair
+//				+ " " + id + "@" + publicIP + " sudo sh " + cloudAppRootDir
+//				+ luanchPackName + "/" + luanchPackName + ".sh";
+//		logger.info("Command To Luanch An App : " + commonCommand);
+//		Process process;
+//		try {
+//			process = new ProcessBuilder(commonCommand.split(" ")).start();
+//			BufferedReader stdOut = new BufferedReader(new InputStreamReader(
+//					process.getInputStream()));
+//
+//			BufferedReader stdErr = new BufferedReader(new InputStreamReader(
+//					process.getErrorStream()));
+//
+//			computeManagerGUIModel.showResult(LUANCH_CLOUD_APP_PROCESS
+//					+ "Progressing Are As Follows...");
+//			Thread stdOutThread = getStdOutThread(stdOut);
+//			Thread stdErrThread = getStdErrThread(stdErr);
+//			stdOutThread.start();
+//			stdErrThread.start();
+//
+//			if (process.waitFor() != 0) {
+//				return returnErrorMessage("Can't Luanch An App!!!");
+//			}
+//
+//		} catch (IOException | InterruptedException e) {
+//			e.printStackTrace();
+//			logger.fatal(e);
+//			return returnErrorMessage("Can't Luanch An App!!!");
+//		}
+//
+//		return returnSuccessMessage(publicIP);
+//	}
+//
+//	protected Thread getStdOutThread(final BufferedReader stdOut) {
+//		return new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				String resultLine;
+//				try {
+//					while ((resultLine = stdOut.readLine()) != null) {
+//						writeSTDOut(resultLine);
+//					}
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+//
+//	protected Thread getStdErrThread(final BufferedReader stdErr) {
+//		return new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				// TODO Auto-generated method stub
+//				String resultLine;
+//				try {
+//					while ((resultLine = stdErr.readLine()) != null) {
+//						System.err.println(resultLine);
+//						writeErr(resultLine);
+//					}
+//				} catch (IOException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+//
+//	protected void stdOutAndErr(BufferedReader stdOut, BufferedReader stdErr)
+//			throws IOException {
+//		String resultLine;
+//
+//		while ((resultLine = stdOut.readLine()) != null) {
+//			writeSTDOut(resultLine);
+//		}
+//
+//		while ((resultLine = stdErr.readLine()) != null) {
+//			writeErr(resultLine);
+//		}
+//	}
+//
+//	protected void writeSTDOut(String line) {
+//		computeManagerGUIModel.showResult(line);
+//		logger.info(line);
+//	}
+//
+//	protected void writeErr(String line) {
+//		computeManagerGUIModel.showResult(line);
+//		logger.fatal(line);
+//	}
 
 	private String unpackRaunchPack(String luanchPackName) {
 		luanchPackName += ".tar.gz";
@@ -258,7 +262,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 				+ " " + id + "@" + publicIP + " tar xvzf " + cloudAppRootDir
 				+ luanchPackName + " -C " + cloudAppRootDir;
 		logger.info("Command To Unpack A Luanch Pack File : "
-				+ printCommand(commonCommand));
+				+ commonCommand);
 		Process process;
 		try {
 			process = new ProcessBuilder(commonCommand.split(" ")).start();
@@ -275,9 +279,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 	}
 
 	private String mkdirWorkingDir() {
-		keypair = SystemEnviroment.getKeypairDir()
-				+ computeManagerGUIModel.getComputeInfo(selectionRow,
-						KEYPAIR_INDEX);
+
 		if (!new File(keypair).exists()) {
 			return returnErrorMessage("Keypair File Dosen't Exist!!!");
 		}
@@ -287,7 +289,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair
 				+ " " + id + "@" + publicIP + " mkdir -p " + cloudAppRootDir;
 		logger.info("Command To Make Cloud App Directory : "
-				+ printCommand(commonCommand));
+				+ commonCommand);
 		Process process;
 		try {
 			process = new ProcessBuilder(commonCommand.split(" ")).start();
@@ -320,7 +322,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 				+ " " + luanchPackFilePath + " " + id + "@" + publicIP + ":~/"
 				+ cloudAppRootDir;
 		logger.info("Command To Send Luanch Pack File : "
-				+ printCommand(commonCommand));
+				+ commonCommand);
 		Process process;
 		try {
 			process = new ProcessBuilder(commonCommand.split(" ")).start();
@@ -337,13 +339,13 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 
 	}
 
-	private String printCommand(String command) {
-		StringBuilder sb = new StringBuilder();
-		for (String s : command.split(" ")) {
-			sb.append(s);
-			sb.append(" ");
-		}
-		return sb.toString();
-	}
+//	private String printCommand(String command) {
+//		StringBuilder sb = new StringBuilder();
+//		for (String s : command.split(" ")) {
+//			sb.append(s);
+//			sb.append(" ");
+//		}
+//		return sb.toString();
+//	}
 
 }
