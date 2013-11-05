@@ -13,9 +13,7 @@ import static com.jmcloud.compute.gui.model.TableViewPanelModel.STATUS_INDEX;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,6 +26,7 @@ import javax.swing.tree.TreePath;
 import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.aws.ec2.sys.EC2EnviromentVO;
+import com.jmcloud.compute.commons.UtilWithRunCLI;
 import com.jmcloud.compute.gui.component.DialogsUtil;
 import com.jmcloud.compute.sys.SystemEnviroment;
 import com.jmcloud.compute.util.SysUtils;
@@ -95,43 +94,9 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 		String publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
 				PUBLIC_IP_INDEX);
 
-		List<String> command = new ArrayList<>();
-		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypair
-				+ " " + id + "@" + publicIP;
-		if (SystemEnviroment.getOS().contains("Windows")) {
-			command.add("cmd");
-			command.add("/c");
-			command.add("start");
-			command.add("cmd");
-			command.add("/c");
-			command.add(commonCommand);
-		} else if (SystemEnviroment.getOS().contains("Mac")) {
-			command.add("osascript");
-			command.add("-e");
-			command.add("tell application \"Terminal\" to do script \""
-					+ commonCommand + "\"");
-		} else {
-			returnErrorMessage("Not Support On " + SystemEnviroment.getOS());
-		}
-		logger.info("Command To Connect Compute : " + printCommand(command));
-		try {
-			new ProcessBuilder(command).start();
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.fatal(e);
-			return returnErrorMessage("Can't Connect Compute");
-		}
-
-		return returnSuccessMessage(publicIP);
-	}
-
-	private String printCommand(List<String> command) {
-		StringBuilder sb = new StringBuilder();
-		for (String s : command) {
-			sb.append(s);
-			sb.append(" ");
-		}
-		return sb.toString();
+		return UtilWithRunCLI.connectServerWithSSH(keypair, id, publicIP,
+				logger) ? returnSuccessMessage(publicIP)
+				: returnErrorMessage("Can't Connect Compute");
 	}
 
 	private void saveTable() {
@@ -247,9 +212,9 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 		}
 
 		int currentTableRowCount = computeManagerGUIModel.getTableRowCount();
-		
+
 		List<ComputeVO> updateComputeVOList = new ArrayList<ComputeVO>();
-		
+
 		for (ComputeVO computeVO : tempComputeVOList) {
 			String status = computeVO.getStatus();
 			String groupName = computeVO.getComputeGroupName();
@@ -271,11 +236,10 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 			String newComputeID = computeID;
 
 			for (String afterComputeID : afterComputeIDsList) {
-				if(!beforeComputeIDsList.contains(afterComputeID)){
+				if (!beforeComputeIDsList.contains(afterComputeID)) {
 					newComputeID = afterComputeID;
 				}
 			}
-
 
 			if (!computeID.equals(newComputeID)) {
 				computeManagerGUIModel.showProgressResult("[" + actionCommand
@@ -294,8 +258,8 @@ public class ComputeAction extends AbstractJMCloudGUIAction {
 	private List<String> getAllComputeIDsOnTable(int currentTableRowCount) {
 		List<String> computeIDsList = new ArrayList<>();
 		for (int row = 0; row < currentTableRowCount; row++) {
-			computeIDsList.add(computeManagerGUIModel
-							.getComputeInfo(row, COMPUTE_ID_INDEX));
+			computeIDsList.add(computeManagerGUIModel.getComputeInfo(row,
+					COMPUTE_ID_INDEX));
 		}
 		return computeIDsList;
 	}

@@ -1,24 +1,20 @@
 package com.jmcloud.compute.gui.action.cloudapps.views;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-
-import java.awt.BorderLayout;
 import javax.swing.JToolBar;
-import javax.swing.JButton;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.text.DefaultCaret;
 
 public class CloudAppViewPanel extends JPanel {
 
 	private JTextArea textArea;
-	private JButton btnConnectApp;
-	private JButton btnConnectSsh;
+	private JToolBar appManagementButtonToolBar;
 
-	/**
-	 * Create the panel.
-	 */
 	public CloudAppViewPanel() {
 		setLayout(new BorderLayout(0, 0));
 		
@@ -34,14 +30,10 @@ public class CloudAppViewPanel extends JPanel {
 				.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scrollPane.setViewportView(textArea);
 		
-		JToolBar toolBar = new JToolBar();
-		add(toolBar, BorderLayout.SOUTH);
+		appManagementButtonToolBar = new JToolBar();
+		add(appManagementButtonToolBar, BorderLayout.SOUTH);
 		
-		btnConnectApp = new JButton("Connect App");
-		toolBar.add(btnConnectApp);
 		
-		btnConnectSsh = new JButton("Connect SSH");
-		toolBar.add(btnConnectSsh);
 
 	}
 	
@@ -49,10 +41,7 @@ public class CloudAppViewPanel extends JPanel {
 		return textArea;
 	}
 
-	public JButton getBtnConnectApp() {
-		return btnConnectApp;
-	}
-	public JButton getBtnConnectSsh() {
-		return btnConnectSsh;
+	public JToolBar getAppManagementButtonToolBar() {
+		return appManagementButtonToolBar;
 	}
 }
