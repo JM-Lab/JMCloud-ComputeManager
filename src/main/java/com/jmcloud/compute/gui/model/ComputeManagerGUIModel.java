@@ -129,7 +129,7 @@ public class ComputeManagerGUIModel {
 				.getText().length());
 	}
 
-	synchronized public void showResult(String result) {
+	synchronized public void showLineOnInfoView(String result) {
 		jMCloudComputeInfoTextArea.insert(result + "\n",
 				jMCloudComputeInfoTextArea.getText().length());
 		jMCloudComputeInfoTextArea.setCaretPosition(jMCloudComputeInfoTextArea

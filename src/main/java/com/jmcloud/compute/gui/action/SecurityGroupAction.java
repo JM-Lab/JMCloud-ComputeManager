@@ -41,7 +41,7 @@ public class SecurityGroupAction extends AbstractJMCloudGUIAction {
 				&& !"".equals(securityGroupInfo))) {
 			return returnErrorMessage("There Aren't Any Security Rules!!!");
 		}
-		computeManagerGUIModel.showResult(securityGroupInfo);
+		computeManagerGUIModel.showLineOnInfoView(securityGroupInfo);
 		return securityGroup;
 	}
 

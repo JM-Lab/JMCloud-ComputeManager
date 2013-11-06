@@ -14,8 +14,8 @@ public class CloudAppViewJDialog extends JDialog {
 		setTitle(title);
 		getContentPane().setLayout(new BorderLayout());
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		setAlwaysOnTop(true);
 		setModal(false);
+		setVisible(true);
 	}
 
 }

@@ -32,9 +32,6 @@ public class CloudAppViewPanel extends JPanel {
 		
 		appManagementButtonToolBar = new JToolBar();
 		add(appManagementButtonToolBar, BorderLayout.SOUTH);
-		
-		
-
 	}
 	
 	public JTextArea getTextArea() {

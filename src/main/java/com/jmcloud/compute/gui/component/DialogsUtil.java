@@ -240,10 +240,6 @@ public class DialogsUtil {
 		return new String[0];
 	}
 
-	public static ProgressSpinnerJDialog getProgressSpinner(JFrame frame) {
-		return new ProgressSpinnerJDialog(frame);
-	}
-
 	public static String[] showCreateComputeGroupInputDialog(JFrame mainFrame,
 			String title, String region) {
 		CreateComputeGroupInputJPanel createComputeGroupInputJPanel = new CreateComputeGroupInputJPanel();

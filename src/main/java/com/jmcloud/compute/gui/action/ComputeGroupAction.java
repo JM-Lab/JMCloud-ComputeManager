@@ -192,7 +192,7 @@ public class ComputeGroupAction extends AbstractJMCloudGUIAction {
 	private boolean deleteGroup(String region, String groupName) {
 		if (!computeManagerGUIModel.isGroupTerminated(region, groupName)) {
 			computeManagerGUIModel
-					.showResult(returnErrorMessage(groupName
+					.showLineOnInfoView(returnErrorMessage(groupName
 							+ "Can't Be Deleted!!!, You Should Terminate Group First!"));
 			return false;
 		}

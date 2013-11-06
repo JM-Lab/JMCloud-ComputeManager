@@ -12,11 +12,17 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import com.jmcloud.compute.gui.component.DialogsUtil;
+import com.jmcloud.compute.gui.component.ProgressSpinnerJDialog;
 import com.jmcloud.compute.gui.model.ComputeManagerGUIModel;
 import com.jmcloud.compute.util.SysUtils;
 
 public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
+	@Resource(name = "computeManagerGUIModel")
+	protected ComputeManagerGUIModel computeManagerGUIModel;
 
+	@Resource(name = "computeManagerGUI")
+	protected JFrame mainFrame;
+	
 	protected final String START_SIGNATURE = "\t[START]";
 	protected final String FAILURE_SIGNATURE = "\t[FAILURE]";
 	protected final String SUCCESS_SIGNATURE = "\t[SUCCESS]";
@@ -26,12 +32,6 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 	protected final String PROGRESS_SUCCESS_SIGNATURE = " Success\n";
 	protected final String CANCEL_SIGNATURE = "Cancel!!!";
 	protected final String NO_INPUT_SIGNATURE = "No Group Name!!!";
-
-	@Resource(name = "computeManagerGUIModel")
-	protected ComputeManagerGUIModel computeManagerGUIModel;
-
-	@Resource(name = "computeManagerGUI")
-	protected JFrame mainFrame;
 
 	protected String selectionGroup;
 	protected String regionOfselectionGroup;
@@ -65,6 +65,10 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 			this.regionOfselectionGroup = getTreeNodeName(selectionGroupTreePath
 					.getParentPath());
 		}
+	}
+	
+	protected void showLineOnInfoView(String resultString) {
+		computeManagerGUIModel.showLineOnInfoView(resultString);
 	}
 
 	protected String showInputDialog(String message) {
@@ -142,11 +146,11 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 			@Override
 			public void run() {
 				initAction(e);
-				computeManagerGUIModel.showResult(resultHeader
+				computeManagerGUIModel.showLineOnInfoView(resultHeader
 						+ START_SIGNATURE);
 				try {
 					computeManagerGUIModel
-							.showResult(returnEndMessage(doAbstractAction(e)));
+							.showLineOnInfoView(returnEndMessage(doAbstractAction(e)));
 				} finally {
 					if (progressSpinnerRunnable != null
 							&& progressSpinnerRunnable.isShowing()) {
@@ -161,8 +165,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 	abstract protected String doAbstractAction(ActionEvent e);
 
 	class ProgressSpinnerRunnable implements Runnable {
-		private JDialog progressSpinnerJdialog = DialogsUtil
-				.getProgressSpinner(mainFrame);
+		private JDialog progressSpinnerJdialog = new ProgressSpinnerJDialog(mainFrame);
 
 		@Override
 		public void run() {
@@ -175,8 +178,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 		}
 
 		public boolean isShowing() {
-			return progressSpinnerJdialog == null ? false
-					: progressSpinnerJdialog.isShowing();
+			return progressSpinnerJdialog.isShowing();
 		}
 	}
 
