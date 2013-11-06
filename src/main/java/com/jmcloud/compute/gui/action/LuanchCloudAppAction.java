@@ -22,7 +22,7 @@ import com.jmcloud.compute.util.SysUtils;
 
 @Service("luanchCloudAppAction")
 public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
-	@Resource(name = "rServer")
+	@Resource(name = "rServer2")
 	private CloudApp rServer;
 
 	private CloudApp hadoopPsudo;
@@ -97,13 +97,13 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		if (result == JOptionPane.OK_OPTION) {
 			setSecurityRuleForApp(cloudApp.getPortRange());
 		}
-		cloudApp.initAppManager(mainFrame, region, group, cloudAppRootDir,
+		cloudApp.initCloudApp(mainFrame, region, group, cloudAppRootDir,
 				publicIP, keypair, id);
-		cloudApp.showCloudAppManagerView();
+		showLineOnInfoView(resultHeader + "\tStart Cloud App");
 		new Thread(new Runnable() {			
 			@Override
 			public void run() {
-				cloudApp.luanchApp();
+				cloudApp.startCloudApp();
 			}
 		}).start();		
 		
@@ -113,10 +113,10 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 	private void setSecurityRuleForApp(String portRange) {
 		if (computeManagerGUIModel.addSecurityRule(regionOfselectionGroup,
 				selectionGroup, "tcp", portRange, "0.0.0.0/0")) {
-			showLineOnInfoView(resultHeader + "Create a Security Rule");
+			showLineOnInfoView(resultHeader + "\tCreate A Security Rule For Cloud App");
 		} else {
 			showLineOnInfoView(resultHeader
-					+ "\tCan't Create a Security Rule !!!");
+					+ "\tCan't Create A Security Rule !!!");
 		}
 	}
 

@@ -51,7 +51,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 	abstract protected boolean setSecurityRules();
 
 	@Override
-	public void initAppManager(JFrame mainFrame, String region, String group,
+	public void initCloudApp(JFrame mainFrame, String region, String group,
 			String cloudAppRootDir, String publicIP, String keypair, String id) {
 		this.mainFrame = mainFrame;
 		this.cloudAppRootDir = cloudAppRootDir;
@@ -64,8 +64,8 @@ public abstract class AbstractCloudApp implements CloudApp {
 				+ getLuanchPackName() + "/" + getLuanchPackName() + ".sh";
 	}
 
-	@Override
-	public void luanchApp() {
+	
+	public void luanchCloudApp() {
 
 				setLuanchPackEnvOnVM();
 

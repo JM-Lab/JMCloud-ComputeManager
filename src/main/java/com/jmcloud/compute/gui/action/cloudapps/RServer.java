@@ -17,7 +17,7 @@ public class RServer extends AbstractCloudApp {
 	private String portRange = "8787";
 
 	@Override
-	public void showCloudAppManagerView() {
+	public void startCloudApp() {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
