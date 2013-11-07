@@ -28,9 +28,9 @@ public class TableViewPanelModel extends AbstractTableModel {
 			"Private IP", "Security Group", "Keypair", "Region", "Compute ID",
 			"Image ID", "Compute Type", "Time" };
 
-	volatile private List<String[]> dataList = new ArrayList<String[]>();
+	private List<String[]> dataList = new ArrayList<String[]>();
 
-	public void addRows(ComputeGroupVO cgvo) {
+	synchronized public void addRows(ComputeGroupVO cgvo) {
 		Collection<ComputeVO> computes = cgvo.getComputesList().values();
 		if (computes == null || computes.size() == 0) {
 			return;
@@ -47,7 +47,7 @@ public class TableViewPanelModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	public void clearTable() {
+	synchronized public void clearTable() {
 		dataList = new ArrayList<String[]>();
 		fireTableDataChanged();
 	}

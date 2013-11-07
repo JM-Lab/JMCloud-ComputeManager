@@ -48,6 +48,15 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		super.initAction(e);
 		this.selectionRow = computeManagerGUIModel.getSelectionRow();
 		this.selectionRows = computeManagerGUIModel.getSelectionRows();
+	}
+
+	@Override
+	protected String doAbstractAction(ActionEvent e) {
+		String result = checkEnv(e);
+		if (result.contains(FAILURE_SIGNATURE)) {
+			return result;
+		}
+		
 		publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
 				PUBLIC_IP_INDEX);
 		keypair = SystemEnviroment.getKeypairDir()
@@ -57,14 +66,6 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 				REGION_INDEX);
 		group = computeManagerGUIModel
 				.getComputeInfo(selectionRow, GROUP_INDEX);
-	}
-
-	@Override
-	protected String doAbstractAction(ActionEvent e) {
-		String result = checkEnv(e);
-		if (result.contains(FAILURE_SIGNATURE)) {
-			return result;
-		}
 
 		if ("Luanch R Server".equals(e.getActionCommand())) {
 			result = luanchApp(rServer);
@@ -100,12 +101,9 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		cloudApp.initCloudApp(mainFrame, region, group, cloudAppRootDir,
 				publicIP, keypair, id);
 		showLineOnInfoView(resultHeader + "\tStart Cloud App");
-		new Thread(new Runnable() {			
-			@Override
-			public void run() {
-				cloudApp.startCloudApp();
-			}
-		}).start();		
+		stopProgressSpinner();
+		cloudApp.startCloudApp();
+		cloudApp.luanchCloudApp();
 		
 		return SUCCESS_SIGNATURE;
 	}

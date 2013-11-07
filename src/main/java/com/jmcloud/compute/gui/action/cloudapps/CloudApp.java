@@ -15,4 +15,6 @@ public interface CloudApp {
 	
 	public String getPortRange();
 
+	public void luanchCloudApp();
+
 }
