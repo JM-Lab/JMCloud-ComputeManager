@@ -23,8 +23,7 @@ public class SystemInfoViewPanel extends JPanel {
 		textArea.setRows(5);
 		textArea.setEditable(false);
 		textArea.setTabSize(4);
-//		((DefaultCaret) textArea.getCaret())
-//				.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+//		((DefaultCaret) textArea.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scrollPane.setViewportView(textArea);
 	}
 

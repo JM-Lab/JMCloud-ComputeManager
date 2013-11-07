@@ -26,8 +26,7 @@ public class CloudAppJDialog extends JDialog {
 
 		cloudAppLogView = new JTextArea();
 		cloudAppLogView.setEditable(false);
-//		((DefaultCaret) cloudAppLogView.getCaret())
-//				.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
+//		((DefaultCaret) cloudAppLogView.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		scrollPane.setViewportView(cloudAppLogView);
 
 		cloudAppActiontoolBar = new JToolBar();

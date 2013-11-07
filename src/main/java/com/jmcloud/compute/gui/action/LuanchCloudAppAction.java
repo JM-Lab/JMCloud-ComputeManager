@@ -101,7 +101,6 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		cloudApp.initCloudApp(mainFrame, region, group, cloudAppRootDir,
 				publicIP, keypair, id);
 		showLineOnInfoView(resultHeader + "\tStart Cloud App");
-		stopProgressSpinner();
 		cloudApp.startCloudApp();
 		cloudApp.luanchCloudApp();
 		

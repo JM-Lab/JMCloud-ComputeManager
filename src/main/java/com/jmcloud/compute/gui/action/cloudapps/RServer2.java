@@ -1,5 +1,9 @@
 package com.jmcloud.compute.gui.action.cloudapps;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JToolBar;
 
 import org.springframework.stereotype.Service;
@@ -22,8 +26,13 @@ public class RServer2 extends AbstractCloudApp2 {
 
 	@Override
 	protected void addCloudAppActions(JToolBar cloudAppActiontoolBar) {
-		// TODO Auto-generated method stub
-		
+		Action connetRServerAction = new AbstractAction("Connect R Server") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				connectAppWithBrowser("http://" + publicIP + ":8787");
+			}
+		};
+		cloudAppActiontoolBar.add(connetRServerAction);
 	}
 
 	@Override

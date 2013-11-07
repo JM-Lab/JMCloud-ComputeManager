@@ -1,10 +1,13 @@
 package com.jmcloud.compute.gui.action.cloudapps;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Path;
 
 import javax.swing.AbstractAction;
@@ -256,27 +259,12 @@ public abstract class AbstractCloudApp2 implements CloudApp {
 				cloudAppJDialog.setVisible(true);
 			}
 		});
-
-		// new Thread(new Runnable() {
-		// @Override
-		// public void run() {
-		// cloudAppJDialog.setVisible(true);
-		// }
-		// }).start();
-		// luanchCloudApp();
 	}
 
 	public void luanchCloudApp() {
 		InstallCloudApp runnable = new InstallCloudApp();
-		// runnable.run();
-
 		Thread thread = new Thread(runnable);
 		thread.start();
-		// try {
-		// thread.join();
-		// } catch (InterruptedException e) {
-		// e.printStackTrace();
-		// }
 	}
 
 	private void addActions(JToolBar cloudAppActiontoolBar) {
@@ -297,6 +285,16 @@ public abstract class AbstractCloudApp2 implements CloudApp {
 			}
 		};
 	}
+	
+	protected void connectAppWithBrowser(String appURL) {
+		writeOutLog("Connect An App With Browser : " + appURL);
+		try {
+			Desktop.getDesktop().browse(new URI(appURL));
+		} catch (IOException | URISyntaxException e) {
+			e.printStackTrace();
+			writeErrLog("Can't Connect An App With Browser : " + appURL);
+		}
+	}
 
 	protected void writeErrLog(String line) {
 		writeErr(LUANCH_PROGRESS_INFO + "[ERROR]\t" + line);
@@ -306,16 +304,20 @@ public abstract class AbstractCloudApp2 implements CloudApp {
 		writeOut(LUANCH_PROGRESS_INFO + line);
 	}
 
-	synchronized protected void writeOut(String line) {
-		line += "\n";
-		cloudAppLogView.append(line);
+	protected void writeOut(String line) {
 		logger.info(line);
+		writeCloudAppLogView(line);
+	}
+	
+	protected void writeErr(String line) {
+		logger.fatal(line);
+		writeCloudAppLogView(line);
 	}
 
-	synchronized protected void writeErr(String line) {
+	synchronized private void writeCloudAppLogView(String line) {
 		line += "\n";
 		cloudAppLogView.append(line);
-		logger.fatal(line);
+		cloudAppLogView.setCaretPosition(cloudAppLogView.getText().length());
 	}
 
 }
