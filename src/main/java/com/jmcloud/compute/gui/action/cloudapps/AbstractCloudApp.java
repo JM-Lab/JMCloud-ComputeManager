@@ -112,38 +112,6 @@ public abstract class AbstractCloudApp implements CloudApp {
 			});
 		}
 
-		private boolean runProcess(String command) {
-			writeOutLog("Command To Run Process: " + command);
-			Process process;
-			try {
-				process = new ProcessBuilder(command.split(" ")).start();
-				BufferedReader stdOut = new BufferedReader(
-						new InputStreamReader(process.getInputStream()));
-
-				BufferedReader stdErr = new BufferedReader(
-						new InputStreamReader(process.getErrorStream()));
-				stdOutAndErr(stdOut, stdErr);
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.fatal(e);
-				return false;
-			}
-			return true;
-		}
-
-		protected void stdOutAndErr(BufferedReader stdOut, BufferedReader stdErr)
-				throws IOException {
-			String resultLine;
-
-			while ((resultLine = stdOut.readLine()) != null) {
-				writeOut(resultLine);
-			}
-
-			while ((resultLine = stdErr.readLine()) != null) {
-				writeErr(resultLine);
-			}
-		}
-
 		private boolean mkdirWorkingDir() {
 			writeOutLog("Make A Working Directory");
 			if (!new File(keypair).exists()) {
@@ -202,11 +170,44 @@ public abstract class AbstractCloudApp implements CloudApp {
 			writeOutLog("Elapsed Time (sec) : " + elapsedTime);
 		}
 
-		private String getKeypairPath() {
-			if (SystemEnviroment.getOS().contains("Windows")) {
-				return SysUtils.convertIntoCygwinPath(keypair);
-			}
-			return keypair;
+	}
+	
+	private String getKeypairPath() {
+		if (SystemEnviroment.getOS().contains("Windows")) {
+			return SysUtils.convertIntoCygwinPath(keypair);
+		}
+		return keypair;
+	}
+
+	private boolean runProcess(String command) {
+		writeOutLog("Command To Run Process: " + command);
+		Process process;
+		try {
+			process = new ProcessBuilder(command.split(" ")).start();
+			BufferedReader stdOut = new BufferedReader(
+					new InputStreamReader(process.getInputStream()));
+
+			BufferedReader stdErr = new BufferedReader(
+					new InputStreamReader(process.getErrorStream()));
+			stdOutAndErr(stdOut, stdErr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.fatal(e);
+			return false;
+		}
+		return true;
+	}
+
+	private void stdOutAndErr(BufferedReader stdOut, BufferedReader stdErr)
+			throws IOException {
+		String resultLine;
+
+		while ((resultLine = stdOut.readLine()) != null) {
+			writeOut(resultLine);
+		}
+
+		while ((resultLine = stdErr.readLine()) != null) {
+			writeErr(resultLine);
 		}
 	}
 
@@ -293,6 +294,16 @@ public abstract class AbstractCloudApp implements CloudApp {
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
 			writeErrLog("Can't Connect An App With Browser : " + appURL);
+		}
+	}
+	
+	protected void createAccount(){
+		writeOutLog("Create An Account");
+		String keypairPath = getKeypairPath();
+		String command = "ssh -o StrictHostKeyChecking=no -i "
+				+ keypairPath + " " + id + "@" + publicIP + " \"echo ubuntu | passwd ubuntu --stdin\"";
+		if(!runProcess(command)){
+			writeErrLog("Can't Create An Account!!!");
 		}
 	}
 

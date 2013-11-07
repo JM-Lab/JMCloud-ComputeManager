@@ -33,6 +33,14 @@ public class RServer extends AbstractCloudApp {
 			}
 		};
 		cloudAppActiontoolBar.add(connetRServerAction);
+		Action createAccountOnRServerAction = new AbstractAction("Create Account") {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				createAccount();
+			}
+		};
+		cloudAppActiontoolBar.add(createAccountOnRServerAction);
+		
 	}
 
 	@Override
