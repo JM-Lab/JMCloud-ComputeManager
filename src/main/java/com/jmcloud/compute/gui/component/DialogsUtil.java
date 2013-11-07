@@ -16,7 +16,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -24,6 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import javax.swing.SwingConstants;
@@ -33,6 +33,61 @@ import com.jmcloud.compute.util.SysUtils;
 
 public class DialogsUtil {
 
+	public static String[] showAccountInputDialog(Component component,
+			String title, int optionType, int messageOption) {
+
+		JPanel accountInputDialogPanel = new JPanel();
+		accountInputDialogPanel.setLayout(new BorderLayout());
+
+		JPanel multiInputPanel = new JPanel();
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		// gridBagLayout.columnWidths = new int[] { 100, 200 };
+		multiInputPanel.setLayout(gridBagLayout);
+
+		JLabel iDLabel = new JLabel("ID : ");
+		iDLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbcl00 = new GridBagConstraints();
+		gbcl00.fill = GridBagConstraints.HORIZONTAL;
+		gbcl00.gridx = 0;
+		gbcl00.gridy = 0;
+		multiInputPanel.add(iDLabel, gbcl00);
+
+		JTextField iDJTextField = new JTextField();
+		iDJTextField.setColumns(14);
+		GridBagConstraints gbct10 = new GridBagConstraints();
+		gbct10.fill = GridBagConstraints.HORIZONTAL;
+		gbct10.gridx = 1;
+		gbct10.gridy = 0;
+		multiInputPanel.add(iDJTextField, gbct10);
+
+		JLabel passwordLabel = new JLabel("Password : ");
+		passwordLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbcl01 = new GridBagConstraints();
+		gbcl01.fill = GridBagConstraints.HORIZONTAL;
+		gbcl01.gridx = 0;
+		gbcl01.gridy = 1;
+		multiInputPanel.add(passwordLabel, gbcl01);
+
+		JPasswordField passwordField = new JPasswordField();
+		passwordField.setColumns(14);
+		GridBagConstraints gbct11 = new GridBagConstraints();
+		gbct11.fill = GridBagConstraints.HORIZONTAL;
+		gbct11.gridx = 1;
+		gbct11.gridy = 1;
+		multiInputPanel.add(passwordField, gbct11);
+
+		accountInputDialogPanel.add(multiInputPanel, BorderLayout.CENTER);
+		String[] inputTexts = new String[2];
+		int result = JOptionPane.showConfirmDialog(component,
+				accountInputDialogPanel, title, optionType, messageOption);
+		if (result == JOptionPane.OK_OPTION) {
+			inputTexts[0] = iDJTextField.getText();
+			inputTexts[1] = new String(passwordField.getPassword());
+			return inputTexts;
+		}
+		return null;
+	}
+
 	public static String[] showMultiInputDialog(Component component,
 			String title, String message, String[] inputLabels,
 			JTextField[] inputJComponents, int optionType, int messageOption) {
@@ -40,7 +95,7 @@ public class DialogsUtil {
 		JPanel multiInputDialogMainPanel = new JPanel();
 		message = "<html>" + message.replace("\n", "<br>") + "</html>";
 		JLabel messageLabel = new JLabel(message);
-		messageLabel.setHorizontalAlignment(SwingConstants.TRAILING);
+		messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
 		JPanel multiInputPanel = new JPanel();
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -75,7 +130,7 @@ public class DialogsUtil {
 			}
 			return inputTexts;
 		}
-		return new String[0];
+		return null;
 	}
 
 	public static Properties showChangePropertiesDialog(Properties properties,
@@ -311,7 +366,8 @@ public class DialogsUtil {
 		return null;
 	}
 
-	public static void showErrorDialogAndConnetWikiAndExit(Frame mainFrame, String message) {
+	public static void showErrorDialogAndConnetWikiAndExit(Frame mainFrame,
+			String message) {
 		JOptionPane.showMessageDialog(mainFrame, message, mainFrame.getTitle(),
 				JOptionPane.ERROR_MESSAGE);
 		String wikiPage = "https://github.com/JM-Lab/JMCloud-ComputeManager/wiki#requirements";

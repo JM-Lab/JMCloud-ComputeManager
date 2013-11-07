@@ -457,8 +457,8 @@ public class ComputeManagerGUIModel {
 		}
 		return groupNameList.toArray(new String[groupNameList.size()]);
 	}
-	
-	public int getTableRowCount(){
+
+	public int getTableRowCount() {
 		return table.getRowCount();
 	}
 

@@ -37,16 +37,16 @@ public class ComputeManagerGUI extends JFrame {
 
 	private final Action saveRegionAction = new SaveAction();
 	private final Action loadRegionAction = new LoadAction();
-//	private final Action setConsoleAction = new SetConsoleAction();
+	// private final Action setConsoleAction = new SetConsoleAction();
 	private final Action exitAction = new ExitAction();
 
 	private final Action createGroupAction = new CreateGroupAction();
 	private final Action deleteGroupAction = new DeleteGroupAction();
-//	private final Action renameGroupAction = new RenameGroupAction();
+	// private final Action renameGroupAction = new RenameGroupAction();
 	private final Action provisionGroupAction = new ProvisioningGroupAction();
 	private final Action stopGroupAction = new StopGroupAction();
 	private final Action startGroupAction = new StartGroupAction();
-//	private final Action rebootGroupAction = new RebootGroupAction();
+	// private final Action rebootGroupAction = new RebootGroupAction();
 	private final Action terminateGroupAction = new TerminateGroupAction();
 	private final Action downloadKeypairAction = new DownloadKeypairAction();
 	private final Action createKeypairAction = new CreateGroupKeypairAction();
@@ -62,15 +62,15 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action provisionComputesAction = new ProvisioningComputesAction();
 	private final Action stopComputesAction = new StopComputesAction();
 	private final Action startComputesAction = new StartComputesAction();
-//	private final Action rebootComputesAction = new RebootComputesAction();
+	// private final Action rebootComputesAction = new RebootComputesAction();
 	private final Action terminateComputesAction = new TerminateComputesAction();
 	private final Action connectComputeAction = new ConnectComputeAction();
-	
+
 	private final Action launchRServer = new LuanchRServerAction();
-	
+
 	private final Action openUserInformationAction = new OpenUserInformationAction();
 	private final Action aboutJMCloudComputeManagerAction = new AboutJMCloudComputeManagerAction();
-	
+
 	private class AbstractComputeManagerGUIAction extends AbstractAction {
 
 		@Override
@@ -117,13 +117,14 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-//	private class RenameGroupAction extends AbstractComputeManagerGUIAction {
-//		public RenameGroupAction() {
-//			putValue(NAME, "Rename Group");
-//		}
-//	}
+	// private class RenameGroupAction extends AbstractComputeManagerGUIAction {
+	// public RenameGroupAction() {
+	// putValue(NAME, "Rename Group");
+	// }
+	// }
 
-	private class ProvisioningGroupAction extends AbstractComputeManagerGUIAction {
+	private class ProvisioningGroupAction extends
+			AbstractComputeManagerGUIAction {
 		public ProvisioningGroupAction() {
 			putValue(NAME, "Provision Group");
 		}
@@ -227,42 +228,45 @@ public class ComputeManagerGUI extends JFrame {
 		}
 	}
 
-//	private class RebootComputesAction extends AbstractComputeManagerGUIAction {
-//		public RebootComputesAction() {
-//			putValue(NAME, "Reboot Computes");
-//		}
-//	}
+	// private class RebootComputesAction extends
+	// AbstractComputeManagerGUIAction {
+	// public RebootComputesAction() {
+	// putValue(NAME, "Reboot Computes");
+	// }
+	// }
 
-	private class TerminateComputesAction extends AbstractComputeManagerGUIAction {
+	private class TerminateComputesAction extends
+			AbstractComputeManagerGUIAction {
 		public TerminateComputesAction() {
 			putValue(NAME, "Terminate Computes");
 		}
 	}
-	
+
 	private class ConnectComputeAction extends AbstractComputeManagerGUIAction {
 		public ConnectComputeAction() {
 			putValue(NAME, "Connect Compute");
 		}
 	}
-	
+
 	private class LuanchRServerAction extends AbstractComputeManagerGUIAction {
 		public LuanchRServerAction() {
 			putValue(NAME, "Luanch R Server");
 		}
 	}
-	
-	private class OpenUserInformationAction extends AbstractComputeManagerGUIAction {
+
+	private class OpenUserInformationAction extends
+			AbstractComputeManagerGUIAction {
 		public OpenUserInformationAction() {
 			putValue(NAME, "Open User Information");
 		}
 	}
-	
-	private class AboutJMCloudComputeManagerAction extends AbstractComputeManagerGUIAction {
+
+	private class AboutJMCloudComputeManagerAction extends
+			AbstractComputeManagerGUIAction {
 		public AboutJMCloudComputeManagerAction() {
 			putValue(NAME, "About JMCloud-ComputeManager");
 		}
 	}
-		
 
 	@Resource(name = "computeManagerGUIModel")
 	private ComputeManagerGUIModel computeManagerGUIModel;
@@ -305,12 +309,12 @@ public class ComputeManagerGUI extends JFrame {
 		Separator separator_2 = new Separator();
 		mnFile.add(separator_2);
 
-//		JMenuItem mntmSetConsole = new JMenuItem("Set Console");
-//		mntmSetConsole.setAction(setConsoleAction);
-//		mnFile.add(mntmSetConsole);
-//
-//		Separator separator_3 = new Separator();
-//		mnFile.add(separator_3);
+		// JMenuItem mntmSetConsole = new JMenuItem("Set Console");
+		// mntmSetConsole.setAction(setConsoleAction);
+		// mnFile.add(mntmSetConsole);
+		//
+		// Separator separator_3 = new Separator();
+		// mnFile.add(separator_3);
 
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mntmExit.setAction(exitAction);
@@ -327,9 +331,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmDeleteGroup.setAction(deleteGroupAction);
 		mnGroup.add(mntmDeleteGroup);
 
-//		JMenuItem mntmRenameGroup = new JMenuItem("Rename Group");
-//		mntmRenameGroup.setAction(renameGroupAction);
-//		mnGroup.add(mntmRenameGroup);
+		// JMenuItem mntmRenameGroup = new JMenuItem("Rename Group");
+		// mntmRenameGroup.setAction(renameGroupAction);
+		// mnGroup.add(mntmRenameGroup);
 
 		Separator separator = new JPopupMenu.Separator();
 		mnGroup.add(separator);
@@ -346,9 +350,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartGroup.setAction(startGroupAction);
 		mnGroup.add(mntmStartGroup);
 
-//		JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
-//		mntmRebootGroup.setAction(rebootGroupAction);
-//		mnGroup.add(mntmRebootGroup);
+		// JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
+		// mntmRebootGroup.setAction(rebootGroupAction);
+		// mnGroup.add(mntmRebootGroup);
 
 		JMenuItem mntmTerminateGroup = new JMenuItem("Terminate Group");
 		mntmTerminateGroup.setAction(terminateGroupAction);
@@ -417,41 +421,44 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartComputes.setAction(startComputesAction);
 		mnCompute.add(mntmStartComputes);
 
-//		JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
-//		mntmRebootComputes.setAction(rebootComputesAction);
-//		mnCompute.add(mntmRebootComputes);
+		// JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
+		// mntmRebootComputes.setAction(rebootComputesAction);
+		// mnCompute.add(mntmRebootComputes);
 
 		JMenuItem mntmTerminateComputes = new JMenuItem("Terminate Computes");
 		mntmTerminateComputes.setAction(terminateComputesAction);
 		mnCompute.add(mntmTerminateComputes);
-		
+
 		Separator separator_5 = new Separator();
 		mnCompute.add(separator_5);
-		
+
 		JMenuItem mntmConnectCompute = new JMenuItem("Connect Compute");
 		mntmConnectCompute.setAction(connectComputeAction);
 		mnCompute.add(mntmConnectCompute);
-		
+
 		JMenu mnCloudApps = new JMenu("Cloud Apps");
 		mainMenuBar.add(mnCloudApps);
-		
+
 		JMenuItem mntmLuanchRServer = new JMenuItem("Luanch R Server");
 		mntmLuanchRServer.setSelected(true);
 		mntmLuanchRServer.setAction(launchRServer);
 		mnCloudApps.add(mntmLuanchRServer);
-		
+
 		JMenu mnHelp = new JMenu("Help");
 		mainMenuBar.add(mnHelp);
-		
-		JMenuItem mntmOpenUserInformation = new JMenuItem("Open User Information");
+
+		JMenuItem mntmOpenUserInformation = new JMenuItem(
+				"Open User Information");
 		mntmOpenUserInformation.setAction(openUserInformationAction);
 		mnHelp.add(mntmOpenUserInformation);
-		
+
 		Separator separator_6 = new Separator();
 		mnHelp.add(separator_6);
-		
-		JMenuItem mntmAboutJmcloudcomputemanager = new JMenuItem("About JMCloud-ComputeManager");
-		mntmAboutJmcloudcomputemanager.setAction(aboutJMCloudComputeManagerAction);
+
+		JMenuItem mntmAboutJmcloudcomputemanager = new JMenuItem(
+				"About JMCloud-ComputeManager");
+		mntmAboutJmcloudcomputemanager
+				.setAction(aboutJMCloudComputeManagerAction);
 		mnHelp.add(mntmAboutJmcloudcomputemanager);
 
 	}
@@ -531,17 +538,17 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartComputes.setAction(startComputesAction);
 		tablePopupMenu.add(mntmStartComputes);
 
-//		JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
-//		mntmRebootComputes.setAction(rebootComputesAction);
-//		tablePopupMenu.add(mntmRebootComputes);
+		// JMenuItem mntmRebootComputes = new JMenuItem("Reboot Computes");
+		// mntmRebootComputes.setAction(rebootComputesAction);
+		// tablePopupMenu.add(mntmRebootComputes);
 
 		JMenuItem mntmTerminateComputes = new JMenuItem("Terminate Computes");
 		mntmTerminateComputes.setAction(terminateComputesAction);
 		tablePopupMenu.add(mntmTerminateComputes);
-		
+
 		Separator separator = new Separator();
 		tablePopupMenu.add(separator);
-		
+
 		JMenuItem mntmConnectCompute_1 = new JMenuItem("Connect Compute");
 		mntmConnectCompute_1.setAction(connectComputeAction);
 		tablePopupMenu.add(mntmConnectCompute_1);
@@ -559,9 +566,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmDeleteGroup.setAction(deleteGroupAction);
 		treePopupMenu.add(mntmDeleteGroup);
 
-//		JMenuItem mntmRenameGroup = new JMenuItem("Rename Group");
-//		mntmRenameGroup.setAction(renameGroupAction);
-//		treePopupMenu.add(mntmRenameGroup);
+		// JMenuItem mntmRenameGroup = new JMenuItem("Rename Group");
+		// mntmRenameGroup.setAction(renameGroupAction);
+		// treePopupMenu.add(mntmRenameGroup);
 
 		Separator separator = new JPopupMenu.Separator();
 		treePopupMenu.add(separator);
@@ -578,9 +585,9 @@ public class ComputeManagerGUI extends JFrame {
 		mntmStartGroup.setAction(startGroupAction);
 		treePopupMenu.add(mntmStartGroup);
 
-//		JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
-//		mntmRebootGroup.setAction(rebootGroupAction);
-//		treePopupMenu.add(mntmRebootGroup);
+		// JMenuItem mntmRebootGroup = new JMenuItem("Reboot Group");
+		// mntmRebootGroup.setAction(rebootGroupAction);
+		// treePopupMenu.add(mntmRebootGroup);
 
 		JMenuItem mntmTerminateGroup = new JMenuItem("Terminate Group");
 		mntmTerminateGroup.setAction(terminateGroupAction);

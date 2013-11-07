@@ -111,16 +111,17 @@ public class EC2Manager implements ComputeManager<ComputeVO, String> {
 		String privateIP = EC2Util.extractPrivateIP(computeInfo);
 		String computeLaunchTime = EC2Util
 				.extractComputeLaunchTime(computeInfo);
-		if (status != null	&& !status.equals(computeVO.getStatus())){
+		if (status != null && !status.equals(computeVO.getStatus())) {
 			computeVO.setStatus(status);
 		}
-		if (publicIP != null && !publicIP.equals(computeVO.getPublicIP())){
-			computeVO.setPublicIP(publicIP);			
+		if (publicIP != null && !publicIP.equals(computeVO.getPublicIP())) {
+			computeVO.setPublicIP(publicIP);
 		}
-		if(privateIP != null && !privateIP.equals(computeVO.getPrivateIP())){
+		if (privateIP != null && !privateIP.equals(computeVO.getPrivateIP())) {
 			computeVO.setPrivateIP(privateIP);
 		}
-		if(computeLaunchTime != null && !computeLaunchTime.equals(computeVO.getComputeLaunchTime())) {
+		if (computeLaunchTime != null
+				&& !computeLaunchTime.equals(computeVO.getComputeLaunchTime())) {
 			computeVO.setComputeLaunchTime(computeLaunchTime);
 		}
 		return computeVO;

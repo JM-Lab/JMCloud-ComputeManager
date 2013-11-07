@@ -25,7 +25,7 @@ public class JMCloudGUIActionSelector implements JMCloudGUIAction {
 
 	@Resource(name = "systemAndHelpAction")
 	JMCloudGUIAction systemAndHelpAction;
-	
+
 	@Resource(name = "luanchCloudAppAction")
 	JMCloudGUIAction luanchCloudAppAction;
 

@@ -91,11 +91,11 @@ public class SysUtils {
 
 	public static String convertIntoCygwinPath(String windowsPath) {
 		String cygwinPath = windowsPath.replace("\\\\", "/").replace("\\", "/");
-		if(cygwinPath.contains(":")){
+		if (cygwinPath.contains(":")) {
 			String[] tempStringArray = cygwinPath.split(":", 2);
-			cygwinPath = tempStringArray[0].toLowerCase()+tempStringArray[1];
+			cygwinPath = tempStringArray[0].toLowerCase() + tempStringArray[1];
 		}
-		return CYGWIN_ROOT_PATH + cygwinPath ;
+		return CYGWIN_ROOT_PATH + cygwinPath;
 	}
 
 }

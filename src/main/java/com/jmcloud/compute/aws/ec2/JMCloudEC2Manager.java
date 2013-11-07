@@ -93,7 +93,7 @@ public class JMCloudEC2Manager implements JMCloudComputeManager {
 		List<ComputeVO> computeList = new ArrayList<ComputeVO>();
 		for (String groupInfo : groupsInfo) {
 			String securityGroup = EC2Util.extractSecurityGroup(groupInfo);
-			if(SystemString.FALSE.equals(securityGroup)){
+			if (SystemString.FALSE.equals(securityGroup)) {
 				continue;
 			}
 			String[] computesInfo = EC2Util.extractInstancesInfo(groupInfo);

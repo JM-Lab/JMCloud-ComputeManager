@@ -13,7 +13,7 @@ public class RServer extends AbstractCloudApp {
 	private final String portRange = "8787";
 	private final String title = "R Server";
 	private final String luanchPackName = "RServer";
-	
+
 	@Override
 	public String getPortRange() {
 		return portRange;
@@ -33,14 +33,15 @@ public class RServer extends AbstractCloudApp {
 			}
 		};
 		cloudAppActiontoolBar.add(connetRServerAction);
-		Action createAccountOnRServerAction = new AbstractAction("Create Account") {
+		Action createAccountOnRServerAction = new AbstractAction(
+				"Create Account") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				createAccount();
 			}
 		};
 		cloudAppActiontoolBar.add(createAccountOnRServerAction);
-		
+
 	}
 
 	@Override
@@ -60,6 +61,5 @@ public class RServer extends AbstractCloudApp {
 		writeOut("mean(x)");
 		writeOut("hist(x)");
 	}
-
 
 }

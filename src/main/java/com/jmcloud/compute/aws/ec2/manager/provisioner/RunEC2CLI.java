@@ -19,8 +19,7 @@ public class RunEC2CLI implements RunCLI {
 	@Resource(name = "runCLISimple")
 	private RunCLI runCLI;
 
-	private boolean isWindows = SystemEnviroment.getOS().contains(
-			"Windows");
+	private boolean isWindows = SystemEnviroment.getOS().contains("Windows");
 
 	private String getFinalCammand(String command) {
 		if (isWindows) {

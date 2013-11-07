@@ -9,10 +9,11 @@ import org.apache.log4j.Logger;
 import com.jmcloud.compute.sys.SystemEnviroment;
 
 public class UtilWithRunCLI {
-	public static boolean connectServerWithSSH(String keypairPath, String id, String publicIP, Logger logger) {
+	public static boolean connectServerWithSSH(String keypairPath, String id,
+			String publicIP, Logger logger) {
 		List<String> command = new ArrayList<>();
-		String commonCommand = "ssh -o StrictHostKeyChecking=no -i " + keypairPath
-				+ " " + id + "@" + publicIP;
+		String commonCommand = "ssh -o StrictHostKeyChecking=no -i "
+				+ keypairPath + " " + id + "@" + publicIP;
 		if (SystemEnviroment.getOS().contains("Windows")) {
 			command.add("cmd");
 			command.add("/c");
@@ -39,7 +40,7 @@ public class UtilWithRunCLI {
 		}
 		return true;
 	}
-	
+
 	private static String printCommand(List<String> command) {
 		StringBuilder sb = new StringBuilder();
 		for (String s : command) {
@@ -48,6 +49,5 @@ public class UtilWithRunCLI {
 		}
 		return sb.toString();
 	}
-
 
 }

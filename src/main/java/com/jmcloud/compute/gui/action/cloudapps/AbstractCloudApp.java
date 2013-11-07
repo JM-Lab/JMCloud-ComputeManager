@@ -13,12 +13,14 @@ import java.nio.file.Path;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
 import com.jmcloud.compute.commons.UtilWithRunCLI;
 import com.jmcloud.compute.gui.action.cloudapps.views.CloudAppJDialog;
+import com.jmcloud.compute.gui.component.DialogsUtil;
 import com.jmcloud.compute.sys.SystemCloudApp;
 import com.jmcloud.compute.sys.SystemEnviroment;
 import com.jmcloud.compute.util.SysUtils;
@@ -39,9 +41,10 @@ public abstract class AbstractCloudApp implements CloudApp {
 
 		private void runLuanchPack() {
 			writeOutLog("Start To Install A Cloud App");
-			String command = "ssh -o StrictHostKeyChecking=no -i " + keypair
-					+ " " + id + "@" + publicIP + " sudo sh " + cloudAppRootDir
-					+ getLuanchPackName() + "/" + getLuanchPackName() + ".sh";
+			String command = "ssh -o StrictHostKeyChecking=no -i "
+					+ keypairPath + " " + id + "@" + publicIP + " sudo sh "
+					+ cloudAppRootDir + getLuanchPackName() + "/"
+					+ getLuanchPackName() + ".sh";
 			writeOutLog("Command To Run Process: " + command);
 			writeOutLog("Install Logs Are As Follows...");
 			startTime = System.currentTimeMillis();
@@ -53,7 +56,6 @@ public abstract class AbstractCloudApp implements CloudApp {
 
 				BufferedReader stdErr = new BufferedReader(
 						new InputStreamReader(process.getErrorStream()));
-				writeOut(LUANCH_PROGRESS_INFO + "Start To Install");
 				Thread stdOutThread = getStdOutThread(stdOut);
 				Thread stdErrThread = getStdErrThread(stdErr);
 				stdOutThread.start();
@@ -66,8 +68,8 @@ public abstract class AbstractCloudApp implements CloudApp {
 						writeErrLog("Can't Luanch A Cloud App!!!");
 					}
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
+					writeErrLog("Can't Luanch A Cloud App!!!");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -118,7 +120,6 @@ public abstract class AbstractCloudApp implements CloudApp {
 				writeErrLog(keypair + " File Dosen't Exist!!!");
 				return false;
 			}
-			String keypairPath = getKeypairPath();
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " mkdir -p "
 					+ cloudAppRootDir;
@@ -127,7 +128,6 @@ public abstract class AbstractCloudApp implements CloudApp {
 
 		private boolean unpackLaunchPack() {
 			writeOutLog("Unpack A Luanch Pack File");
-			String keypairPath = getKeypairPath();
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " tar xvzf "
 					+ cloudAppRootDir + luanchPackFile + " -C "
@@ -147,7 +147,6 @@ public abstract class AbstractCloudApp implements CloudApp {
 				luanchPackFilePath = SysUtils
 						.convertIntoCygwinPath(luanchPackFilePath);
 			}
-			String keypairPath = getKeypairPath();
 			String command = "scp -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + luanchPackFilePath + " " + id + "@"
 					+ publicIP + ":" + cloudAppRootDir;
@@ -157,7 +156,6 @@ public abstract class AbstractCloudApp implements CloudApp {
 
 		private void cleanUpLuanchPack() {
 			writeOutLog("Clean Up Luanch Pack Directory");
-			String keypairPath = getKeypairPath();
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " rm -rf "
 					+ cloudAppRootDir;
@@ -171,7 +169,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 		}
 
 	}
-	
+
 	private String getKeypairPath() {
 		if (SystemEnviroment.getOS().contains("Windows")) {
 			return SysUtils.convertIntoCygwinPath(keypair);
@@ -184,12 +182,15 @@ public abstract class AbstractCloudApp implements CloudApp {
 		Process process;
 		try {
 			process = new ProcessBuilder(command.split(" ")).start();
-			BufferedReader stdOut = new BufferedReader(
-					new InputStreamReader(process.getInputStream()));
+			BufferedReader stdOut = new BufferedReader(new InputStreamReader(
+					process.getInputStream()));
 
-			BufferedReader stdErr = new BufferedReader(
-					new InputStreamReader(process.getErrorStream()));
+			BufferedReader stdErr = new BufferedReader(new InputStreamReader(
+					process.getErrorStream()));
 			stdOutAndErr(stdOut, stdErr);
+			if (process.waitFor() != 0) {
+				return false;
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.fatal(e);
@@ -221,7 +222,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 	protected String id;
 
 	private JTextArea cloudAppLogView;
-
+	private String keypairPath;
 	private String luanchPackFile;
 	private long startTime;
 	private CloudAppJDialog cloudAppJDialog;
@@ -244,12 +245,19 @@ public abstract class AbstractCloudApp implements CloudApp {
 		this.publicIP = publicIP;
 		this.keypair = keypair;
 		this.id = id;
+		this.keypairPath = getKeypairPath();
 		this.luanchPackFile = getLuanchPackName() + ".tar.gz";
 
 		cloudAppJDialog = new CloudAppJDialog(mainFrame);
 		cloudAppJDialog.setTitle(getTitle() + " - " + publicIP);
 		cloudAppLogView = cloudAppJDialog.getCloudAppLogView();
 		addActions(cloudAppJDialog.getCloudAppActiontoolBar());
+		// for (Component c :
+		// cloudAppJDialog.getCloudAppActiontoolBar().getComponents()) {
+		// if (c instanceof JComponent) {
+		// ((JComponent) c).setBorder(new BevelBorder(BevelBorder.RAISED));
+		// }
+		// }
 	}
 
 	@Override
@@ -277,8 +285,8 @@ public abstract class AbstractCloudApp implements CloudApp {
 		return new AbstractAction("Run SSH Console") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (UtilWithRunCLI.connectServerWithSSH(keypair, id, publicIP,
-						logger)) {
+				if (UtilWithRunCLI.connectServerWithSSH(getKeypairPath(), id,
+						publicIP, logger)) {
 					writeOutLog("Connect Compute With SSH Console");
 				} else {
 					writeErrLog("Can't Connect Compute With SSH Console!!!");
@@ -286,7 +294,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 			}
 		};
 	}
-	
+
 	protected void connectAppWithBrowser(String appURL) {
 		writeOutLog("Connect An App With Browser : " + appURL);
 		try {
@@ -296,14 +304,27 @@ public abstract class AbstractCloudApp implements CloudApp {
 			writeErrLog("Can't Connect An App With Browser : " + appURL);
 		}
 	}
-	
-	protected void createAccount(){
-		writeOutLog("Create An Account");
-		String keypairPath = getKeypairPath();
-		String command = "ssh -o StrictHostKeyChecking=no -i "
-				+ keypairPath + " " + id + "@" + publicIP + " \"echo ubuntu | passwd ubuntu --stdin\"";
-		if(!runProcess(command)){
-			writeErrLog("Can't Create An Account!!!");
+
+	protected void createAccount() {
+		writeOutLog("Create A New Account");
+		String[] accountInfo = DialogsUtil.showAccountInputDialog(mainFrame,
+				"Create A New Account", JOptionPane.OK_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE);
+		if (accountInfo == null) {
+			writeErrLog("Can't Create A New Account");
+			return;
+		}
+
+		String newId = accountInfo[0];
+		String password = accountInfo[1];
+
+		String command = "ssh -o StrictHostKeyChecking=no -i " + keypairPath
+				+ " " + id + "@" + publicIP + " \"sudo useradd -m " + newId
+				+ " && echo " + newId + ":" + password + " | sudo chpasswd\"";
+		if (runProcess(command)) {
+			writeOutLog("Create A New Account : " + newId);
+		} else {
+			writeErrLog("Can't Create A New Account!!!");
 		}
 	}
 
@@ -319,7 +340,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 		logger.info(line);
 		writeCloudAppLogView(line);
 	}
-	
+
 	protected void writeErr(String line) {
 		logger.fatal(line);
 		writeCloudAppLogView(line);

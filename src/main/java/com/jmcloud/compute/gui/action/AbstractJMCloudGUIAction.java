@@ -11,7 +11,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
-import com.jmcloud.compute.gui.component.DialogsUtil;
 import com.jmcloud.compute.gui.component.ProgressSpinnerJDialog;
 import com.jmcloud.compute.gui.model.ComputeManagerGUIModel;
 import com.jmcloud.compute.util.SysUtils;
@@ -22,7 +21,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 
 	@Resource(name = "computeManagerGUI")
 	protected JFrame mainFrame;
-	
+
 	protected final String START_SIGNATURE = "\t[START]";
 	protected final String FAILURE_SIGNATURE = "\t[FAILURE]";
 	protected final String SUCCESS_SIGNATURE = "\t[SUCCESS]";
@@ -66,7 +65,7 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 					.getParentPath());
 		}
 	}
-	
+
 	protected void showLineOnInfoView(String resultString) {
 		computeManagerGUIModel.showLineOnInfoView(resultString);
 	}
@@ -165,7 +164,8 @@ public abstract class AbstractJMCloudGUIAction implements JMCloudGUIAction {
 	abstract protected String doAbstractAction(ActionEvent e);
 
 	class ProgressSpinnerRunnable implements Runnable {
-		private JDialog progressSpinnerJdialog = new ProgressSpinnerJDialog(mainFrame);
+		private JDialog progressSpinnerJdialog = new ProgressSpinnerJDialog(
+				mainFrame);
 
 		@Override
 		public void run() {

@@ -43,17 +43,16 @@ public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 			break;
 		case "About JMCloud-ComputeManager":
 			result = aboutJMCloudComputeManagerAction();
-			break;			
+			break;
 		default:
 			return returnErrorMessage(FAILURE_SIGNATURE);
 		}
 		computeManagerGUIModel.updateTree();
 		return result;
 	}
-	
-	
+
 	private String wikiPage = "https://github.com/JM-Lab/JMCloud-ComputeManager/wiki";
-	
+
 	private String aboutJMCloudComputeManagerAction() {
 		try {
 			Desktop.getDesktop().browse(new URI(wikiPage));
@@ -65,7 +64,8 @@ public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 	}
 
 	private String openUserInformationAction() {
-		File userEnvFile = Paths.get(SystemEnviroment.getUserEnvPath()).toFile();
+		File userEnvFile = Paths.get(SystemEnviroment.getUserEnvPath())
+				.toFile();
 		try {
 			Desktop.getDesktop().open(userEnvFile);
 		} catch (IOException e) {
@@ -110,7 +110,7 @@ public class SystemAndHelpAction extends AbstractJMCloudGUIAction {
 					"User Enviroment Properties")) {
 				return returnSuccessMessage("Set Console Execution File : "
 						+ consoleExecutableFile.getAbsolutePath());
-			}else{
+			} else {
 				return returnErrorMessage("Set Console Execution File : "
 						+ consoleExecutableFile.getAbsolutePath());
 			}

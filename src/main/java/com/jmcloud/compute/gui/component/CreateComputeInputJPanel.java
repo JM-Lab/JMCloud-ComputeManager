@@ -22,12 +22,12 @@ public class CreateComputeInputJPanel extends JPanel {
 	 * Create the panel.
 	 */
 	public CreateComputeInputJPanel() {
-			
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 150, 150 };
 		this.setLayout(gridBagLayout);
 		// multiInputDialogPanel.setSize(300, 300);
-	
+
 		messageLabel = new JLabel("");
 		GridBagConstraints gbc_messageLabel = new GridBagConstraints();
 		gbc_messageLabel.anchor = GridBagConstraints.WEST;
@@ -36,7 +36,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbc_messageLabel.gridx = 0;
 		gbc_messageLabel.gridy = 0;
 		add(messageLabel, gbc_messageLabel);
-	
+
 		JLabel computeNameLabel = new JLabel("Compute Name");
 		computeNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbcl1 = new GridBagConstraints();
@@ -44,7 +44,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbcl1.gridx = 0;
 		gbcl1.gridy = 1;
 		this.add(computeNameLabel, gbcl1);
-	
+
 		computeNameTextField = new JTextField();
 		GridBagConstraints gbc_computeNameTextField = new GridBagConstraints();
 		gbc_computeNameTextField.insets = new Insets(0, 0, 5, 0);
@@ -52,7 +52,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbc_computeNameTextField.gridx = 1;
 		gbc_computeNameTextField.gridy = 1;
 		this.add(computeNameTextField, gbc_computeNameTextField);
-	
+
 		JLabel imageIDLabel = new JLabel("Image ID");
 		imageIDLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbcl2 = new GridBagConstraints();
@@ -60,7 +60,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbcl2.gridx = 0;
 		gbcl2.gridy = 2;
 		this.add(imageIDLabel, gbcl2);
-	
+
 		imageIDComboBox = new JComboBox<String>();
 		imageIDComboBox.setEditable(true);
 		GridBagConstraints gbc_imageIDTextField = new GridBagConstraints();
@@ -69,7 +69,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbc_imageIDTextField.gridx = 1;
 		gbc_imageIDTextField.gridy = 2;
 		this.add(imageIDComboBox, gbc_imageIDTextField);
-	
+
 		JLabel computeTypeLabel = new JLabel("Compute Type");
 		computeTypeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbcl3 = new GridBagConstraints();
@@ -77,7 +77,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbcl3.gridx = 0;
 		gbcl3.gridy = 3;
 		this.add(computeTypeLabel, gbcl3);
-	
+
 		computeTypesComboBox = new JComboBox<String>();
 		computeTypesComboBox.setEditable(true);
 		GridBagConstraints gbc_computeTypesComboBox = new GridBagConstraints();
@@ -86,7 +86,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbc_computeTypesComboBox.gridx = 1;
 		gbc_computeTypesComboBox.gridy = 3;
 		this.add(computeTypesComboBox, gbc_computeTypesComboBox);
-	
+
 		JLabel createNumOfComputeLabel = new JLabel("Number Of Computes");
 		computeTypeLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		GridBagConstraints gbcl4 = new GridBagConstraints();
@@ -94,7 +94,7 @@ public class CreateComputeInputJPanel extends JPanel {
 		gbcl4.gridx = 0;
 		gbcl4.gridy = 4;
 		this.add(createNumOfComputeLabel, gbcl4);
-	
+
 		numOfComputeComboBox = new JComboBox<String>();
 		numOfComputeComboBox.setEditable(true);
 		numOfComputeComboBox.setModel(new DefaultComboBoxModel<String>(

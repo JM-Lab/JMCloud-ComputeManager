@@ -17,15 +17,13 @@ public class SystemEnviroment {
 	private static final String OS = System.getProperty("os.name");
 
 	private static String consoleFilePath = setDefaultConsoleFilePath();
-	
-	private static String setDefaultConsoleFilePath(){
+
+	private static String setDefaultConsoleFilePath() {
 		if (OS.contains("Windows")) {
-			return new File("C:\\cygwin\\Cygwin.bat")
-					.getAbsolutePath();
+			return new File("C:\\cygwin\\Cygwin.bat").getAbsolutePath();
 		}
 		if (OS.contains("Mac")) {
-			return new File("~/Applications/console.app")
-					.getAbsolutePath();
+			return new File("~/Applications/console.app").getAbsolutePath();
 		}
 		return null;
 	}
@@ -42,11 +40,10 @@ public class SystemEnviroment {
 		return getString("IMAGES_DIR");
 	}
 
-
 	public static String getFlagImagesDir() {
 		return getString("FLAG_IMAGES_DIR");
 	}
-	
+
 	public static String getSpringConfPath() {
 		return getString("SPRING_CONF_PATH");
 	}
@@ -69,7 +66,7 @@ public class SystemEnviroment {
 
 	public static String getCloudAppDir() {
 		return getInstallDirPlusString("CLOUD_APP_DIR");
-	}	
+	}
 
 	public static String getUserEnvPath() {
 		return getInstallDirPlusString("USER_ENV_PATH");
@@ -95,7 +92,7 @@ public class SystemEnviroment {
 		return consoleFilePath;
 	}
 
-	public static void setConsoleFilePath(String path){
+	public static void setConsoleFilePath(String path) {
 		consoleFilePath = path;
 	}
 

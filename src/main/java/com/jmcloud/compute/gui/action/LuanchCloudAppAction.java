@@ -8,17 +8,14 @@ import static com.jmcloud.compute.gui.model.TableViewPanelModel.REGION_INDEX;
 import static com.jmcloud.compute.gui.model.TableViewPanelModel.STATUS_INDEX;
 
 import java.awt.event.ActionEvent;
-import java.io.IOException;
 
 import javax.annotation.Resource;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import org.springframework.stereotype.Service;
 
 import com.jmcloud.compute.gui.action.cloudapps.CloudApp;
 import com.jmcloud.compute.sys.SystemEnviroment;
-import com.jmcloud.compute.util.SysUtils;
 
 @Service("luanchCloudAppAction")
 public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
@@ -56,7 +53,7 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		if (result.contains(FAILURE_SIGNATURE)) {
 			return result;
 		}
-		
+
 		publicIP = computeManagerGUIModel.getComputeInfo(selectionRow,
 				PUBLIC_IP_INDEX);
 		keypair = SystemEnviroment.getKeypairDir()
@@ -103,14 +100,15 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		showLineOnInfoView(resultHeader + "\tStart Cloud App");
 		cloudApp.startCloudApp();
 		cloudApp.luanchCloudApp();
-		
+
 		return SUCCESS_SIGNATURE;
 	}
 
 	private void setSecurityRuleForApp(String portRange) {
 		if (computeManagerGUIModel.addSecurityRule(regionOfselectionGroup,
 				selectionGroup, "tcp", portRange, "0.0.0.0/0")) {
-			showLineOnInfoView(resultHeader + "\tCreate A Security Rule For Cloud App");
+			showLineOnInfoView(resultHeader
+					+ "\tCreate A Security Rule For Cloud App");
 		} else {
 			showLineOnInfoView(resultHeader
 					+ "\tCan't Create A Security Rule !!!");

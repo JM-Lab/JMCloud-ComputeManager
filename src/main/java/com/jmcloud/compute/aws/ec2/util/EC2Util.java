@@ -5,7 +5,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -120,12 +119,12 @@ public class EC2Util {
 		for (String s : instanceInfo.split("\n")) {
 			if (s.startsWith("RESERVATION\t")) {
 				String[] tempStrings = s.split("\t");
-				if(tempStrings != null && tempStrings.length >= 4){
+				if (tempStrings != null && tempStrings.length >= 4) {
 					return s.split("\t")[3];
 				}
-			}else if(s.startsWith("GROUP\t")){
+			} else if (s.startsWith("GROUP\t")) {
 				String[] tempStrings = s.split("\t");
-				if(tempStrings != null && tempStrings.length >= 3){
+				if (tempStrings != null && tempStrings.length >= 3) {
 					return s.split("\t")[2];
 				}
 			}
