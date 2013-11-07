@@ -22,7 +22,7 @@ import com.jmcloud.compute.util.SysUtils;
 
 @Service("luanchCloudAppAction")
 public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
-	@Resource(name = "rServer2")
+	@Resource(name = "rServer")
 	private CloudApp rServer;
 
 	private CloudApp hadoopPsudo;

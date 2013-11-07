@@ -4,33 +4,45 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.JToolBar;
 
 import org.springframework.stereotype.Service;
 
-import com.jmcloud.compute.gui.action.cloudapps.views.CloudAppViewJDialog;
-import com.jmcloud.compute.gui.action.cloudapps.views.CloudAppViewPanel;
-
 @Service("rServer")
 public class RServer extends AbstractCloudApp {
-
-	private String luanchPackName = "RServer";
-	private String portRange = "8787";
+	private final String portRange = "8787";
+	private final String title = "R Server";
+	private final String luanchPackName = "RServer";
+	
+	@Override
+	public String getPortRange() {
+		return portRange;
+	}
 
 	@Override
-	public void startCloudApp() {
-		new Thread(new Runnable() {
+	protected String getTitle() {
+		return title;
+	}
+
+	@Override
+	protected void addCloudAppActions(JToolBar cloudAppActiontoolBar) {
+		Action connetRServerAction = new AbstractAction("Connect R Server") {
 			@Override
-			public void run() {
-				viewPanel = new CloudAppViewPanel();
-				new CloudAppViewJDialog(mainFrame,
-						viewPanel, "R Server : " + publicIP);
+			public void actionPerformed(ActionEvent e) {
+				connectAppWithBrowser("http://" + publicIP + ":8787");
 			}
-		}).start();		
+		};
+		cloudAppActiontoolBar.add(connetRServerAction);
+	}
+
+	@Override
+	protected String getLuanchPackName() {
+		return luanchPackName;
 	}
 
 	@Override
 	protected void showNextSteps() {
-		writeOutInfo("Next Steps Are As Follows...");
+		writeOutLog("Next Steps Are As Follows...");
 		writeOut("1. confirm security rules of the Compute Group (Port 8787 from any IP)");
 		writeOut("2. create a linux account, ex) sudo passwd ubuntu");
 		writeOut("3. login R server with the account, ex) account = ubuntu");
@@ -41,30 +53,5 @@ public class RServer extends AbstractCloudApp {
 		writeOut("hist(x)");
 	}
 
-	@Override
-	protected void addAppActions() {
-		Action connetRServerAction = new AbstractAction("Connect R Server") {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				connectAppWithBrowser("http://" + publicIP + ":8787");
-			}
-		};
-		appManagementButtonToolBar.add(connetRServerAction);
-	}
-
-	@Override
-	protected String getLuanchPackName() {
-		return luanchPackName;
-	}
-
-	@Override
-	protected boolean setSecurityRules() {
-	return false;
-	}
-
-	@Override
-	public String getPortRange() {
-		return portRange;
-	}
 
 }
