@@ -8,11 +8,11 @@ import javax.swing.JToolBar;
 
 import org.springframework.stereotype.Service;
 
-@Service("rServer")
+@Service("rStudioServer")
 public class RServer extends AbstractCloudApp {
 	private final String portRange = "8787";
 	private final String title = "R Server";
-	private final String luanchPackName = "RServer";
+	private final String luanchPackName = "RStudioServer";
 
 	@Override
 	public String getPortRange() {
@@ -26,7 +26,8 @@ public class RServer extends AbstractCloudApp {
 
 	@Override
 	protected void addCloudAppActions(JToolBar cloudAppActiontoolBar) {
-		Action connetRServerAction = new AbstractAction("Connect R Server") {
+		Action connetRServerAction = new AbstractAction(
+				"Connect RStudio Server") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				connectAppWithBrowser("http://" + publicIP + ":8787");
@@ -51,15 +52,15 @@ public class RServer extends AbstractCloudApp {
 
 	@Override
 	protected void showNextSteps() {
-		writeOutLog("Next Steps Are As Follows...");
-		writeOut("1. confirm security rules of the Compute Group (Port 8787 from any IP)");
-		writeOut("2. create a linux account, ex) sudo passwd ubuntu");
-		writeOut("3. login R server with the account, ex) account = ubuntu");
-		writeOut("4. run the following example on R Server.");
-		writeOut("x<-rnorm(10)");
-		writeOut("x");
-		writeOut("mean(x)");
-		writeOut("hist(x)");
+		writeOutOnView("Next Steps Are As Follows...");
+		writeStdOutLog("1. confirm security rules of the Compute Group (Port 8787 from any IP)");
+		writeStdOutLog("2. create a linux account, ex) sudo passwd ubuntu");
+		writeStdOutLog("3. login R server with the account, ex) account = ubuntu");
+		writeStdOutLog("4. run the following example on R Server.");
+		writeStdOutLog("x<-rnorm(10)");
+		writeStdOutLog("x");
+		writeStdOutLog("mean(x)");
+		writeStdOutLog("hist(x)");
 	}
 
 }

@@ -66,7 +66,7 @@ public class ComputeManagerGUI extends JFrame {
 	private final Action terminateComputesAction = new TerminateComputesAction();
 	private final Action connectComputeAction = new ConnectComputeAction();
 
-	private final Action launchRServer = new LuanchRServerAction();
+	private final Action launchRStudioServer = new LuanchRServerAction();
 
 	private final Action openUserInformationAction = new OpenUserInformationAction();
 	private final Action aboutJMCloudComputeManagerAction = new AboutJMCloudComputeManagerAction();
@@ -250,7 +250,7 @@ public class ComputeManagerGUI extends JFrame {
 
 	private class LuanchRServerAction extends AbstractComputeManagerGUIAction {
 		public LuanchRServerAction() {
-			putValue(NAME, "Luanch R Server");
+			putValue(NAME, "Luanch RStudio Server");
 		}
 	}
 
@@ -439,10 +439,11 @@ public class ComputeManagerGUI extends JFrame {
 		JMenu mnCloudApps = new JMenu("Cloud Apps");
 		mainMenuBar.add(mnCloudApps);
 
-		JMenuItem mntmLuanchRServer = new JMenuItem("Luanch R Server");
-		mntmLuanchRServer.setSelected(true);
-		mntmLuanchRServer.setAction(launchRServer);
-		mnCloudApps.add(mntmLuanchRServer);
+		JMenuItem mntmLuanchRStudioServer = new JMenuItem(
+				"Luanch RStudio Server");
+		mntmLuanchRStudioServer.setSelected(true);
+		mntmLuanchRStudioServer.setAction(launchRStudioServer);
+		mnCloudApps.add(mntmLuanchRStudioServer);
 
 		JMenu mnHelp = new JMenu("Help");
 		mainMenuBar.add(mnHelp);

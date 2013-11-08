@@ -19,8 +19,8 @@ import com.jmcloud.compute.sys.SystemEnviroment;
 
 @Service("luanchCloudAppAction")
 public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
-	@Resource(name = "rServer")
-	private CloudApp rServer;
+	@Resource(name = "rStudioServer")
+	private CloudApp rStudioServer;
 
 	private CloudApp hadoopPsudo;
 
@@ -64,8 +64,8 @@ public class LuanchCloudAppAction extends AbstractJMCloudGUIAction {
 		group = computeManagerGUIModel
 				.getComputeInfo(selectionRow, GROUP_INDEX);
 
-		if ("Luanch R Server".equals(e.getActionCommand())) {
-			result = luanchApp(rServer);
+		if ("Luanch RStudio Server".equals(e.getActionCommand())) {
+			result = luanchApp(rStudioServer);
 		} else if ("Luanch Hadoop Psudo".equals(e.getActionCommand())) {
 			result = luanchApp(hadoopPsudo);
 		} else {

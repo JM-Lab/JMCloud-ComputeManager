@@ -8,7 +8,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JToolBar;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.SwingConstants;
 
 public class CloudAppJDialog extends JDialog {
 	private JTextArea cloudAppLogView;
@@ -32,8 +31,9 @@ public class CloudAppJDialog extends JDialog {
 		scrollPane.setViewportView(cloudAppLogView);
 
 		cloudAppActiontoolBar = new JToolBar();
-		cloudAppActiontoolBar.setOrientation(SwingConstants.VERTICAL);
-		getContentPane().add(cloudAppActiontoolBar, BorderLayout.WEST);
+		// cloudAppActiontoolBar.setOrientation(SwingConstants.HORIZONTAL);
+		getContentPane().add(cloudAppActiontoolBar, BorderLayout.NORTH);
+		setAlwaysOnTop(false);
 		setModal(false);
 	}
 

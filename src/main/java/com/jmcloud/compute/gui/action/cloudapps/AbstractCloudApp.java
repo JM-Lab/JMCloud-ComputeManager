@@ -31,22 +31,22 @@ public abstract class AbstractCloudApp implements CloudApp {
 		@Override
 		public void run() {
 			if (!mkdirWorkingDir() || !sendLaunchPack() || !unpackLaunchPack()) {
-				writeErrLog("Can't Ready To Install A Cloud App!!!");
+				writeErrOnView("Can't Ready To Install A Cloud App!!!");
 				return;
 			}
-			writeOutLog("Ready To Install A Cloud App");
+			writeOutOnView("[START] Ready To Install A Cloud App");
 
 			runLuanchPack();
 		}
 
 		private void runLuanchPack() {
-			writeOutLog("Start To Install A Cloud App");
+			writeOutOnView("Start To Install A Cloud App");
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " sudo sh "
 					+ cloudAppRootDir + getLuanchPackName() + "/"
 					+ getLuanchPackName() + ".sh";
-			writeOutLog("Command To Run Process: " + command);
-			writeOutLog("Install Logs Are As Follows...");
+			writeErrLog("Command To Run Process: " + command);
+			writeOutOnView("Install Logs Are As Follows...");
 			startTime = System.currentTimeMillis();
 			try {
 				Process process = new ProcessBuilder(command.split(" "))
@@ -62,18 +62,18 @@ public abstract class AbstractCloudApp implements CloudApp {
 				stdErrThread.start();
 				try {
 					if (process.waitFor() == 0) {
-						writeOutLog("Finish Luanching A Cloud App!!!");
+						writeOutOnView("Finish Luanching A Cloud App!!!");
 						showNextSteps();
 					} else {
-						writeErrLog("Can't Luanch A Cloud App!!!");
+						writeErrOnView("Can't Luanch A Cloud App!!!");
 					}
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-					writeErrLog("Can't Luanch A Cloud App!!!");
+					writeErrOnView("Can't Luanch A Cloud App!!!");
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
-				writeErrLog("Can't Luanch An App!!!");
+				writeErrOnView("Can't Luanch An App!!!");
 			} finally {
 				cleanUpLuanchPack();
 				showElasoptime(startTime);
@@ -87,11 +87,11 @@ public abstract class AbstractCloudApp implements CloudApp {
 					String resultLine;
 					try {
 						while ((resultLine = stdOut.readLine()) != null) {
-							writeOut(resultLine);
+							writeStdOutLog(resultLine);
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
-						writeErr(e.toString());
+						writeErrLog(e.toString());
 					}
 				}
 			});
@@ -104,20 +104,20 @@ public abstract class AbstractCloudApp implements CloudApp {
 					String resultLine;
 					try {
 						while ((resultLine = stdErr.readLine()) != null) {
-							writeErr(resultLine);
+							writeErrLog(resultLine);
 						}
 					} catch (IOException e) {
 						e.printStackTrace();
-						writeErr(e.toString());
+						writeErrLog(e.toString());
 					}
 				}
 			});
 		}
 
 		private boolean mkdirWorkingDir() {
-			writeOutLog("Make A Working Directory");
+			writeOutOnView("Make A Working Directory");
 			if (!new File(keypair).exists()) {
-				writeErrLog(keypair + " File Dosen't Exist!!!");
+				writeErrOnView(keypair + " File Dosen't Exist!!!");
 				return false;
 			}
 			String command = "ssh -o StrictHostKeyChecking=no -i "
@@ -127,7 +127,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 		}
 
 		private boolean unpackLaunchPack() {
-			writeOutLog("Unpack A Luanch Pack File");
+			writeOutOnView("Unpack A Luanch Pack File");
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " tar xvzf "
 					+ cloudAppRootDir + luanchPackFile + " -C "
@@ -136,10 +136,10 @@ public abstract class AbstractCloudApp implements CloudApp {
 		}
 
 		private boolean sendLaunchPack() {
-			writeOutLog("Send A Luanch Pack File");
+			writeOutOnView("Send A Luanch Pack File");
 			Path luanchPack = SystemCloudApp.getLuanchPackFile(luanchPackFile);
 			if (luanchPack == null) {
-				writeErrLog("A Luanch Pack File Doesn't Exist!!!");
+				writeErrOnView("A Luanch Pack File Doesn't Exist!!!");
 				return false;
 			}
 			String luanchPackFilePath = luanchPack.toFile().getAbsolutePath();
@@ -155,7 +155,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 		}
 
 		private void cleanUpLuanchPack() {
-			writeOutLog("Clean Up Luanch Pack Directory");
+			writeOutOnView("Clean Up Luanch Pack Directory");
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " rm -rf "
 					+ cloudAppRootDir;
@@ -165,7 +165,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 		private void showElasoptime(long startTime) {
 			long endTime = System.currentTimeMillis();
 			long elapsedTime = (endTime - startTime) / 1000;
-			writeOutLog("Elapsed Time (sec) : " + elapsedTime);
+			writeOutOnView("[END]\tElapsed Time (sec) : " + elapsedTime);
 		}
 
 	}
@@ -178,7 +178,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 	}
 
 	private boolean runProcess(String command) {
-		writeOutLog("Command To Run Process: " + command);
+		writeErrLog("Command To Run Process: " + command);
 		Process process;
 		try {
 			process = new ProcessBuilder(command.split(" ")).start();
@@ -204,15 +204,15 @@ public abstract class AbstractCloudApp implements CloudApp {
 		String resultLine;
 
 		while ((resultLine = stdOut.readLine()) != null) {
-			writeOut(resultLine);
+			writeStdOutLog(resultLine);
 		}
 
 		while ((resultLine = stdErr.readLine()) != null) {
-			writeErr(resultLine);
+			writeErrLog(resultLine);
 		}
 	}
 
-	protected final String LUANCH_PROGRESS_INFO = "[Luanch Progress Info]\t";
+	protected final String LUANCH_PROGRESS_INFO = "[Luanch Progress Info] ";
 	protected JFrame mainFrame;
 	protected String region;
 	protected String group;
@@ -287,31 +287,31 @@ public abstract class AbstractCloudApp implements CloudApp {
 			public void actionPerformed(ActionEvent e) {
 				if (UtilWithRunCLI.connectServerWithSSH(getKeypairPath(), id,
 						publicIP, logger)) {
-					writeOutLog("Connect Compute With SSH Console");
+					writeOutOnView("Connect Compute With SSH Console");
 				} else {
-					writeErrLog("Can't Connect Compute With SSH Console!!!");
+					writeErrOnView("Can't Connect Compute With SSH Console!!!");
 				}
 			}
 		};
 	}
 
 	protected void connectAppWithBrowser(String appURL) {
-		writeOutLog("Connect An App With Browser : " + appURL);
+		writeOutOnView("Connect An App With Browser : " + appURL);
 		try {
 			Desktop.getDesktop().browse(new URI(appURL));
 		} catch (IOException | URISyntaxException e) {
 			e.printStackTrace();
-			writeErrLog("Can't Connect An App With Browser : " + appURL);
+			writeErrOnView("Can't Connect An App With Browser : " + appURL);
 		}
 	}
 
 	protected void createAccount() {
-		writeOutLog("Create A New Account");
+		writeOutOnView("Input Your A New Account");
 		String[] accountInfo = DialogsUtil.showAccountInputDialog(mainFrame,
 				"Create A New Account", JOptionPane.OK_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE);
 		if (accountInfo == null) {
-			writeErrLog("Can't Create A New Account");
+			writeErrOnView("Can't Create A New Account");
 			return;
 		}
 
@@ -319,36 +319,37 @@ public abstract class AbstractCloudApp implements CloudApp {
 		String password = accountInfo[1];
 
 		String command = "ssh -o StrictHostKeyChecking=no -i " + keypairPath
-				+ " " + id + "@" + publicIP + " \"sudo useradd -m " + newId
-				+ " && echo " + newId + ":" + password + " | sudo chpasswd\"";
+				+ " " + id + "@" + publicIP + " sudo useradd -m " + newId
+				+ " && echo " + newId + ":" + password + " | sudo chpasswd";
 		if (runProcess(command)) {
-			writeOutLog("Create A New Account : " + newId);
+			writeOutOnView("Create A New Account : " + newId);
 		} else {
-			writeErrLog("Can't Create A New Account!!!");
+			writeErrOnView("Can't Create A New Account!!!");
 		}
 	}
 
-	protected void writeErrLog(String line) {
-		writeErr(LUANCH_PROGRESS_INFO + "[ERROR]\t" + line);
+	synchronized protected void writeErrOnView(String line) {
+		line = LUANCH_PROGRESS_INFO + "[ERROR] " + line;
+		writeErrLog(line);
+		writeCloudAppLogView(line);
 	}
 
-	protected void writeOutLog(String line) {
-		writeOut(LUANCH_PROGRESS_INFO + line);
+	synchronized protected void writeOutOnView(String line) {
+		line = LUANCH_PROGRESS_INFO + line;
+		writeStdOutLog(line);
 	}
 
-	protected void writeOut(String line) {
+	synchronized protected void writeErrLog(String line) {
+		logger.fatal(line);
+	}
+
+	synchronized protected void writeStdOutLog(String line) {
 		logger.info(line);
 		writeCloudAppLogView(line);
 	}
 
-	protected void writeErr(String line) {
-		logger.fatal(line);
-		writeCloudAppLogView(line);
-	}
-
-	synchronized private void writeCloudAppLogView(String line) {
-		line += "\n";
-		cloudAppLogView.append(line);
+	private void writeCloudAppLogView(String line) {
+		cloudAppLogView.append(line += "\n");
 		cloudAppLogView.setCaretPosition(cloudAppLogView.getText().length());
 	}
 
