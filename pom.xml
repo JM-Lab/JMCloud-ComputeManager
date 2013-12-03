@@ -179,8 +179,8 @@
 						</goals>
 						<configuration>
 							<headerType>gui</headerType>
-							<jar>${deployment.dir}/${artifactId}-${version}.jar</jar>
-							<outfile>${deployment.dir}/${artifactId}.exe</outfile>
+							<jar>${deployment.dir}/${project.artifactId}-${project.version}.jar</jar>
+							<outfile>${deployment.dir}/${project.artifactId}.exe</outfile>
 							<downloadUrl>http://java.com/download</downloadUrl>
 							<classPath>
 								<mainClass>com.jmcloud.compute.JMCloudComputeMain</mainClass>

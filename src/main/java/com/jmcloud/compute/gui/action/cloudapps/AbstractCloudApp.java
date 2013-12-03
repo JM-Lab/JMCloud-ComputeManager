@@ -30,7 +30,7 @@ public abstract class AbstractCloudApp implements CloudApp {
 
 		@Override
 		public void run() {
-			if (!mkdirWorkingDir() || !sendLaunchPack() || !unpackLaunchPack()) {
+			if (!mkdirWorkingDir() || !sendLaunchPack() || !setPermissionOfLaunchPack() || !unpackLaunchPack()) {
 				writeErrOnView("Can't Ready To Install A Cloud App!!!");
 				return;
 			}
@@ -123,6 +123,14 @@ public abstract class AbstractCloudApp implements CloudApp {
 			String command = "ssh -o StrictHostKeyChecking=no -i "
 					+ keypairPath + " " + id + "@" + publicIP + " mkdir -p "
 					+ cloudAppRootDir;
+			return runProcess(command);
+		}
+		
+		private boolean setPermissionOfLaunchPack() {
+			writeOutOnView("Set permission of A Luanch Pack File");
+			String command = "ssh -o StrictHostKeyChecking=no -i "
+					+ keypairPath + " " + id + "@" + publicIP + " sudo chmod 755 "
+					+ cloudAppRootDir + luanchPackFile;
 			return runProcess(command);
 		}
 
