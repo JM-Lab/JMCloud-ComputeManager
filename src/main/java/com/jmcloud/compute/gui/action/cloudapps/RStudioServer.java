@@ -9,7 +9,7 @@ import javax.swing.JToolBar;
 import org.springframework.stereotype.Service;
 
 @Service("rStudioServer")
-public class RServer extends AbstractCloudApp {
+public class RStudioServer extends AbstractCloudApp {
 	private final String portRange = "8787";
 	private final String title = "R Server";
 	private final String luanchPackName = "RStudioServer";

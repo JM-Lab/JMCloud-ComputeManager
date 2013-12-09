@@ -24,7 +24,7 @@ public class UtilWithRunCLI {
 		} else if (SystemEnviroment.getOS().contains("Mac")) {
 			command.add("osascript");
 			command.add("-e");
-			command.add("tell application \"Terminal\" to do script \""
+			command.add("tell application \"Terminal\" to activate do script \""
 					+ commonCommand + "\"");
 		} else {
 			logger.error("Not Support On " + SystemEnviroment.getOS());
