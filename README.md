@@ -53,12 +53,12 @@ JMCloud-ComputeManager is a stand-alone GUI application for managing Amazon publ
 ## Running Images on Mac OS
 * Menu : File - Load Region
 
-[[https://github.com/JM-Lab/JMCloud-ComputeManager/wiki/images/09-LoadRegionOnMac.png]]
+![Screenshot](https://github.com/JM-Lab/JMCloud-ComputeManager/wiki/images/09-LoadRegionOnMac.png)
 
 * See information of VMs in regions
 
-[[https://github.com/JM-Lab/JMCloud-ComputeManager/wiki/images/10-OneViewOnMac.png]]
+![Screenshot](https://github.com/JM-Lab/JMCloud-ComputeManager/wiki/images/10-OneViewOnMac.png)
 
 * Connect VM with SSH
 
-[[https://github.com/JM-Lab/JMCloud-ComputeManager/wiki/images/11-ConnectVMWithSSHOnMac.png]]
+![Screenshot](https://github.com/JM-Lab/JMCloud-ComputeManager/wiki/images/11-ConnectVMWithSSHOnMac.png)
