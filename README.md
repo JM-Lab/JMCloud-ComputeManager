@@ -44,5 +44,21 @@ JMCloud-ComputeManager is a stand-alone GUI application for managing Amazon publ
 	See the License for the specific language governing permissions and
 	limitations under the License.
 
-===========================================================
-Please see the [JMCloud-ComputeManager wiki](https://github.com/JM-Lab/JMCloud-ComputeManager/wiki) for information. 
+## How to install JMCloud-ComputeManager
+[![JMCloud-ComputeManager Install Guide for Windows](https://i1.ytimg.com/vi/C_C_ISUjAj8/3.jpg)](http://www.youtube.com/watch?v=C_C_ISUjAj8)
+
+## JMCloud ComputeManager & Cloud App RStudio Server Demo
+[![JMCloud ComputeManager & Cloud App RStudio Server Demo](https://i1.ytimg.com/vi/zJBpAcMVvH4/2.jpg)](http://youtu.be/zJBpAcMVvH4)
+
+## Running Images on Mac OS
+* Menu : File - Load Region
+
+[[images/09-LoadRegionOnMac.png]]
+
+* See information of VMs in regions
+
+[[images/10-OneViewOnMac.png]]
+
+* Connect VM with SSH
+
+[[images/11-ConnectVMWithSSHOnMac.png]]
